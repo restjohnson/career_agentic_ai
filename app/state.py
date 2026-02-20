@@ -21,7 +21,7 @@ class EvidenceItem(BaseModel):
     label: str
     snippet: Optional[str] = None
     confidence: float = 0.8
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="")
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 #student model
 class StudentModel(BaseModel):
