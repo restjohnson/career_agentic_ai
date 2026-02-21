@@ -34,7 +34,7 @@ class SupabaseRepo:
         return res.data[0]["id"]
     
 
-    def set_run_satus(self, session_id: str, run_id: str, status: str) -> None:
+    def set_run_status(self, session_id: str, run_id: str, status: str) -> None:
         res = self.sb.table("runs").update({"status": status}).eq("id", run_id).eq("session_id", session_id).execute()
         return None
     
