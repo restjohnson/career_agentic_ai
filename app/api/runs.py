@@ -43,9 +43,10 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
 
     #execute graph
     try:
-        out: AgentState = graph.invoke(state)
+        out: Any = graph.invoke(state)
         repo.set_run_status(session_id=session_id, run_id=run_id, status="done")
-        return RunCreateResponse(run_id=run_id, status="done", final_state=out.model_dump(exclude_none=True))
+        final_state = AgentState.model_validate(out).model_dump(exclude_none=True)
+        return RunCreateResponse(run_id=run_id, status="done", final_state=final_state)
     except Exception as e:
         #mark failed and re-raise
         repo.set_run_status(session_id=session_id, run_id=run_id, status="failed")
