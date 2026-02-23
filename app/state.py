@@ -27,26 +27,27 @@ class EvidenceItem(BaseModel):
 class StudentModel(BaseModel):
     skills: List[str] = Field(default_factory=list, description="career-related skills extracted from evidence")
     experiences: List[str] = Field(default_factory=list, description="career-related experiences extracted from evidence")
-    education: List[str] = Field(default_factory=list, desctiption="career-related education extracted from student submitted evidence")
+    education: List[str] = Field(default_factory=list, description="career-related education extracted from student submitted evidence")
     constraints: Dict[str, Any] = Field(
         default_factory=dict, 
         description="student constraints such as time/week, current college year, anticipated graduation date")
     evidence_map: Dict[str, List[str]] = Field(default_factory=dict)
 
-RoleReqType = Literal["skill", "knowledge", "task", "tech"]
+RoleReqType = Literal["skill", "task", "tech", "hot_technology", "knowledge"]
 
 # role requirement and role model retrived from ONET
 class RoleRequirement(BaseModel):
     req_type: RoleReqType
     label: str
     importance: Optional[float] = None
+    source_id: Optional[str] = None
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 class RoleModel(BaseModel):
     role_title: str
     onet_code: Optional[str] = None
     version: Optional[str] = None
-    summary: Dict[str, Any] = Field(default_factory=list)
+    summary: Dict[str, Any] = Field(default_factory=dict)
     requirements: List[RoleRequirement] = Field(default_factory=list)
 
 #LLM curated verification of role requirement (provenance)
@@ -60,7 +61,6 @@ class ProvenanceRef(BaseModel):
 class RoleSpecRequirement(BaseModel):
     label: str
     category: RoleReqType
-    priority: int = Field(ge=1, le=5, default=3)
     provenance: List[ProvenanceRef] = Field(default_factory=list)
     optional: bool = False
 
@@ -79,7 +79,7 @@ class GapItem(BaseModel):
     evidence_item_ids: List[str] = Field(
         default_factory=list, description="what evidence support the student's current categroy level"
         )
-    target_priority: int = Field(ge=1, le=5, default=3)
+    target_priority: int = Field(ge=1, default=3)
 
 class GapReport(BaseModel):
     summary: str = ""

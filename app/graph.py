@@ -2,6 +2,7 @@ from __future__ import annotations
 from langgraph.graph import StateGraph, END
 from app.state import AgentState
 from app.tools.supabase_repo import SupabaseRepo
+from app.nodes.role_intake import role_intake_node
 
 def snapshot(repo: SupabaseRepo, state: AgentState, 
              step: str, contains_free_text: bool = False) -> None:
@@ -20,10 +21,11 @@ def build_graph(repo: SupabaseRepo):
     g = StateGraph(AgentState)
 
     #current placeholder
-    def role_intake(state: AgentState) -> AgentState:
-        state.step = "role_intake"
+    def role_intake(state: dict) -> dict:
+        out = role_intake_node(state)
+        s = AgentState.model_validate(out)
         snapshot(repo, state, "role_intake")
-        return state
+        return out
     
     def evidence_ingestion(state: AgentState) -> AgentState:
         state.step = "evidence_ingestion"
