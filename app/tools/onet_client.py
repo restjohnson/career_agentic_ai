@@ -19,7 +19,7 @@ class OnetClient:
         self.session.headers.update({
             "Accept": "application/json",
             "X-API-Key": os.environ["ONET_API_KEY"],
-            })
+        })
 
     def _get(self, path: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         url = f"{self.base}/{path.lstrip('/')}"
@@ -40,17 +40,25 @@ class OnetClient:
         Pull occupation summary/details from O*NET Online services.
         """
         details = self._get(f"/online/occupations/{onet_code}/")
-        summary = {"summary": details["description"]}
+        summary = details.get("description")
         return summary
 
-    def get_occupation_tasks(self, onet_code: str) -> Dict[str, Any]:
+    #edited to return only skills
+    '''def get_occupation_tasks(self, onet_code: str) -> Dict[str, Any]:
         return self._get(f"/online/occupations/{onet_code}/summary/tasks", params={"start": 1, "end": 10})
 
     def get_occupation_skills(self, onet_code: str) -> Dict[str, Any]:
-        return self._get(f"/online/occupations/{onet_code}/summary/skills", params={"start": 1, "end": 15})
+        return self._get(f"/online/occupations/{onet_code}/summary/skills", params={"start": 1, "end": 15})'''
 
     def get_occupation_technology(self, onet_code: str) -> Dict[str, Any]:
-        return self._get(f"/online/occupations/{onet_code}/summary/technology_skills", params={"start": 1, "end": 10})
+        occupation_info = self._get(f"/online/occupations/{onet_code}/summary/technology_skills")
+        categories = occupation_info.get("category", [])
+        skills_by_category = {}
+        for category in categories:
+            category_title = category.get("title")
+            examples = [item.get("title") for item in category.get("example", [])]
+            skills_by_category[category_title] = examples
+        return skills_by_category
 
     def get_hot_technology_skills(self, onet_code: str) -> Dict[str, Any]:
         return self._get(f"/online/occupations/{onet_code}/hot_technology")

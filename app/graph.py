@@ -24,7 +24,7 @@ def build_graph(repo: SupabaseRepo):
     def role_intake(state: dict) -> dict:
         out = role_intake_node(state)
         s = AgentState.model_validate(out)
-        snapshot(repo, state, "role_intake")
+        snapshot(repo, s, "role_intake")
         return out
     
     def evidence_ingestion(state: AgentState) -> AgentState:

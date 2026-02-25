@@ -10,7 +10,10 @@ PyJWT
 
 pydantic
 langchain
+langchain_openai
 langgraph
+
+requests
 
 httpx
 

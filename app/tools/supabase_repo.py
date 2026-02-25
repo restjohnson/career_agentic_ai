@@ -99,7 +99,7 @@ class SupabaseRepo:
             raise RuntimeError(f"failed to insert evidence document: {res}")
         return res.data[0]["id"]
     
-    def insert_evidence_items(self, document_id, str, items: List[Dict[str, Any]]) -> List[str]:
+    def insert_evidence_items(self, document_id: str, items: List[Dict[str, Any]]) -> List[str]:
         payload = [{"document_id": document_id, **it} for it in items]
         res = self.sb.table("evidence_items").insert(payload).execute()
         if not res.data:
@@ -123,7 +123,7 @@ class SupabaseRepo:
             "version": version,
             "summary": summary,
         }
-        res = self.sb.table("roles").upsert(payload).execute()
+        res = self.sb.table("roles").upsert(payload, on_conflict="onet_code").execute()
         if not res.data:
             raise RuntimeError(f"Failed to upsert role: {res}")
         return res.data[0]["id"]

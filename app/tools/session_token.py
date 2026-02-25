@@ -51,6 +51,6 @@ def get_session_id(authorization: str = Header(...)) -> str:
     return the session id
     """
     if not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detial="Missing Bearer token")
+        raise HTTPException(status_code=401, detail="Missing Bearer token")
     token = authorization.split(" ", 1)[1].strip()
     return verify_session_token(token)

@@ -1,9 +1,9 @@
 from __future__ import annotations
 from typing import Any, Dict
+
 from app.state import AgentState
 from app.tools.onet_client import OnetClient
-from app.tools.onet_normalize import normalize_onet_to_role_model
-from app.tools.role_spec_llm import llm_refactor_role_spec, build_role_spec_from_onet
+from app.tools.role_spec_llm import build_role_spec_from_onet_raw, llm_refactor_role_spec_from_onet_raw
 from app.tools.supabase_repo import SupabaseRepo
 
 
@@ -25,79 +25,67 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
         s.errors.append(f"Could not extract onet code from the candidate: {top}")
         return s.model_dump(exclude_none=True)
 
-    #onet details
+    #O*NET details
     summary = client.get_occupation_summary(onet_code)
-    skills = client.get_occupation_skills(onet_code)
-    tasks = client.get_occupation_tasks(onet_code)
     tech = client.get_occupation_technology(onet_code)
     hot_tech = client.get_hot_technology_skills(onet_code)
     version = client.get_onet_version()
+    summary_dict = summary if isinstance(summary, dict) else {"raw": summary}
 
-    #normalize the above information to RoleModel
-    s.role_model = normalize_onet_to_role_model(
-        role_title=role_title,
-        onet_code=onet_code,
-        version=version,
-        summary=summary if isinstance(summary, dict) else {"raw": summary},
-        skills_payload=skills,
-        tasks_payload=tasks,
-        tech_payload=tech,
-        hot_tech_payload=hot_tech,
-    )
-
-    #save the information in database
+    #Persist role header using raw O*NET summary.
     try:
         role_id = repo.upsert_role(
-            role_title=s.role_model.role_title,
-            onet_code=s.role_model.onet_code,
-            version=s.role_model.version,
-            summary=s.role_model.summary,
-        )
-        repo.replace_role_requirement(
-            role_id=role_id,
-            requirements=[
-                {
-                    "req_type": r.req_type,
-                    "label": r.label,
-                    "importance": r.importance,
-                    "metadata": {**(r.metadata or {}), "source_id": r.source_id},
-                }
-                for r in s.role_model.requirements
-            ],
+            role_title=role_title,
+            onet_code=onet_code,
+            version=version,
+            summary=summary_dict,
         )
     except Exception as e:
+        role_id = None
         s.errors.append(f"Baseline role cache write failed: {type(e).__name__}: {e}")
 
-    #LLM mapping
+    #LLM mapping from O*NET payload
     try:
-        s.role_spec = llm_refactor_role_spec(s.role_model)
+        s.role_spec = llm_refactor_role_spec_from_onet_raw(
+            desired_role=s.desired_role,
+            role_title=role_title,
+            onet_code=onet_code,
+            version=version,
+            summary=summary_dict,
+            tech_payload=tech,
+            hot_tech_payload=hot_tech,
+            raw_user_text=s.raw_user_text,
+        )
     except Exception as e:
-        s.errors.append(f"LLM role spec failed; using baseline mapping: Error: {type(e).__name__}: {e}")
-        s.role_spec = build_role_spec_from_onet(s.role_model)
+        s.errors.append(
+            f"LLM role spec failed; using raw O*NET fallback mapping: Error: {type(e).__name__}: {e}"
+        )
+        s.role_spec = build_role_spec_from_onet_raw(
+            role_title=role_title,
+            onet_code=onet_code,
+            tech_payload=tech,
+            hot_tech_payload=hot_tech,
+        )
 
-    #Keep ONET-backed categories aligned with baseline req_type.
-    baseline_type_by_source_id = {
-        r.source_id: r.req_type for r in s.role_model.requirements if r.source_id
-    }
-    for req in s.role_spec.requirements:
-        onet_types = set()
-        for prov in req.provenance:
-            if prov.source_type != "ONET":
-                continue
-            for sid in prov.source_ids:
-                t = baseline_type_by_source_id.get(sid)
-                if t:
-                    onet_types.add(t)
-        if len(onet_types) == 1:
-            req.category = next(iter(onet_types))
-
-    #to validate that the ONET source ids given by the LLM actually exist
-    baseline_ids = {r.source_id for r in s.role_model.requirements if r.source_id}
-    for req in s.role_spec.requirements:
-        for prov in req.provenance:
-            if prov.source_type == "ONET":
-                for sid in prov.source_ids:
-                    if sid and sid not in baseline_ids:
-                        s.errors.append(f"RoleSpec references unknown ONET source_id: {sid}")
+    if role_id:
+        try:
+            repo.replace_role_requirement(
+                role_id=role_id,
+                requirements=[
+                    {
+                        "req_type": r.category,
+                        "req_summary": r.req_summary,
+                        "importance": None,
+                        "metadata": {
+                            "source": "role_spec_llm",
+                            "provenance": [p.model_dump(exclude_none=True) for p in r.provenance],
+                            "optional": r.optional,
+                        },
+                    }
+                    for r in s.role_spec.requirements
+                ],
+            )
+        except Exception as e:
+            s.errors.append(f"RoleSpec requirement cache write failed: {type(e).__name__}: {e}")
 
     return s.model_dump(exclude_none=True)

@@ -18,7 +18,7 @@ class EvidenceItem(BaseModel):
     id: Optional[str] = None
     document_id: Optional[str] = None
     item_type: EvidenceItemType
-    label: str
+    summary: str
     snippet: Optional[str] = None
     confidence: float = 0.8
     metadata: Dict[str, Any] = Field(default_factory=dict)
@@ -38,7 +38,7 @@ RoleReqType = Literal["skill", "task", "tech", "hot_technology", "knowledge"]
 # role requirement and role model retrived from ONET
 class RoleRequirement(BaseModel):
     req_type: RoleReqType
-    label: str
+    req_summary: str
     importance: Optional[float] = None
     source_id: Optional[str] = None
     metadata: Dict[str, Any] = Field(default_factory=dict)
@@ -55,11 +55,11 @@ SpecSourceType = Literal["ONET", "JOB_POSTINGS", "CURATED", "USER_INPUT", "INFER
 
 class ProvenanceRef(BaseModel):
     source_type: SpecSourceType
-    source_ids: List[str] = Field(default_factory=list) #role_requirement row IDs, doc IDs, URL IDs
+    source_ids: Optional[List[str]] = None  # required for ONET (onet_code); null for all other source types
     note: Optional[str] = None
 
 class RoleSpecRequirement(BaseModel):
-    label: str
+    req_summary: str
     category: RoleReqType
     provenance: List[ProvenanceRef] = Field(default_factory=list)
     optional: bool = False
@@ -73,7 +73,7 @@ class RoleSpecModel(BaseModel):
 
 # Gap Analysis, Planning, and critque
 class GapItem(BaseModel):
-    label: str
+    summary: str
     category: RoleReqType
     gap_type: Literal["missing", "weak"] = "missing"
     evidence_item_ids: List[str] = Field(
