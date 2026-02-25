@@ -51,3 +51,16 @@ def build_graph(repo: SupabaseRepo):
     g.add_edge("explanation", END)
 
     return g.compile()
+
+
+'''if __name__ == "__main__":
+    import os, pathlib
+
+    class _MockRepo:
+        def append_run_state(self, **_): pass
+
+    png_bytes = build_graph(_MockRepo())
+    out = pathlib.Path("graph.png")
+    out.write_bytes(png_bytes)
+    print(f"Graph saved → {out.resolve()}")
+    os.startfile(out) '''
