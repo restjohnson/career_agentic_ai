@@ -137,5 +137,38 @@ class SupabaseRepo:
         payload = [{"role_id": role_id, **r} for r in requirements]
         if payload:
             self.sb.table("role_requirements").insert(payload).execute()
-        
+
         return None
+
+    # Evidence Storage ---------------------------------------------------
+
+    def upload_evidence_file(
+            self,
+            storage_ref: str,
+            file_bytes: bytes,
+            content_type: str,
+    ) -> None:
+        """Upload a file to the evidence-documents Storage bucket."""
+        self.sb.storage.from_("evidence-documents").upload(
+            path=storage_ref,
+            file=file_bytes,
+            file_options={"content-type": content_type, "upsert": "true"},
+        )
+
+    def download_evidence_file(self, storage_ref: str) -> bytes:
+        """Download a file from the evidence-documents Storage bucket."""
+        return self.sb.storage.from_("evidence-documents").download(storage_ref)
+
+    def get_evidence_document(
+            self, session_id: str, document_id: str
+    ) -> Optional[Dict[str, Any]]:
+        """Return a single evidence_document row if it belongs to the session."""
+        res = (
+            self.sb.table("evidence_documents")
+            .select("*")
+            .eq("id", document_id)
+            .eq("session_id", session_id)
+            .limit(1)
+            .execute()
+        )
+        return res.data[0] if res.data else None
