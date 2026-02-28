@@ -47,11 +47,20 @@ Rules:
    - project: A standalone project the student built or contributed to.
    - coursework: A course, certification, or academic program.
    - claim: A self-description or goal statement that cannot be independently verified.
-3. For matched_requirements: list the exact req_summary strings from the role requirements list that this evidence item supports. Leave empty if it does not clearly match any requirement.
-4. Set confidence (0.0–1.0) based on how clearly and specifically the document text supports the item.
-   - 0.9–1.0: Explicitly stated with specifics (title, dates, measurable outcomes).
-   - 0.7–0.8: Mentioned but vague or without context.
-   - 0.4–0.6: Implied or partially supported.
+3. For matched_requirements: list the exact req_summary strings from the role requirements list that this evidence item supports.
+   - For skill items: match directly against requirements of the same name or close equivalent.
+   - For project and experience items: reason about what technologies, tools, and skills the work
+     DEMONSTRATES (not just mentions), then match those inferred skills to the requirements list.
+     Example: a project "Built a REST API with Django and PostgreSQL" demonstrates Python, Django,
+     and PostgreSQL — match all three to their corresponding requirements if present in the list.
+   - For coursework items: match the subject of the course to relevant requirements.
+   - Leave empty only if no reasonable inference connects this item to any requirement.
+4. Set confidence (0.0–1.0) based on how strongly this evidence demonstrates the matched role requirement(s).
+   - 0.9–1.0: Production or deployed usage with measurable outcomes (e.g. shipped a feature, led a team, deployed to users).
+   - 0.7–0.8: Used independently in a self-directed project with clear context and outcomes.
+   - 0.4–0.6: Used in a coursework, guided, or tutorial setting with limited independent application.
+   - 0.1–0.3: Only mentioned or loosely implied — no demonstration of actual usage.
+   If the item has no matched requirements, set confidence to 0.5 as a neutral default.
 5. snippet: Include the most relevant quoted text from the document ONLY if the consent_level is "excerpt_ok" or "raw_ok". Otherwise set snippet to null.
 6. Do not invent capabilities the document does not support. If unsure, lower confidence rather than omitting.
 7. Produce items in order of relevance to the target role (most relevant first).
