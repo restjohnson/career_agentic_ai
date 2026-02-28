@@ -55,11 +55,11 @@ Rules:
      and PostgreSQL — match all three to their corresponding requirements if present in the list.
    - For coursework items: match the subject of the course to relevant requirements.
    - Leave empty only if no reasonable inference connects this item to any requirement.
-4. Set confidence (0.0–1.0) based on how strongly this evidence demonstrates the matched role requirement(s).
-   - 0.9–1.0: Production or deployed usage with measurable outcomes (e.g. shipped a feature, led a team, deployed to users).
-   - 0.7–0.8: Used independently in a self-directed project with clear context and outcomes.
-   - 0.4–0.6: Used in a coursework, guided, or tutorial setting with limited independent application.
-   - 0.1–0.3: Only mentioned or loosely implied — no demonstration of actual usage.
+4. Set confidence (0.00–1.00) based on how strongly this evidence relates to the matched role requirement(s).
+   - range = [0.76 to 1.00]: Production or deployed usage with measurable outcomes at professional/internship levels (e.g. shipped a feature, led a team, deployed to users).
+   - range = [0.51 to 0.75]: Used independently in a self-directed project with clear context and outcomes.
+   - range = [0.26 to 0.50]: Used in a coursework, guided, or tutorial setting with limited independent application.
+   - range = [0.0 to 0.25]: Only mentioned or loosely implied — no demonstration of actual usage.
    If the item has no matched requirements, set confidence to 0.5 as a neutral default.
 5. snippet: Include the most relevant quoted text from the document ONLY if the consent_level is "excerpt_ok" or "raw_ok". Otherwise set snippet to null.
 6. Do not invent capabilities the document does not support. If unsure, lower confidence rather than omitting.
