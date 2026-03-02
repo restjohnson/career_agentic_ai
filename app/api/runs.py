@@ -114,7 +114,10 @@ def submit_knowledge_assessment(
     session_id: str = Depends(get_session_id),
 ):
     config = {"configurable": {"thread_id": run_id}}
-    graph.update_state(config, {"user_knowledge_inputs": payload.inputs})
+    graph.update_state(config, {
+        "user_knowledge_inputs": payload.inputs,
+        "knowledge_needing_assessment": [],  # clear so the node doesn't re-interrupt on resume
+    })
     try:
         graph.invoke(None, config=config)
         snapshot = graph.get_state(config)

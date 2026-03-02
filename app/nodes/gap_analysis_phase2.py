@@ -38,11 +38,14 @@ def gap_analysis_phase2_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     # write finalised prerequisites back — they are mutated in place but
     # re-attach to be explicit
+    def _norm(s: str) -> str:
+        return s.lower().strip().rstrip(".,;:")
+
     prereqs_by_parent: Dict[str, list] = {}
     for p in finalised:
-        prereqs_by_parent.setdefault(p.parent_skill_gap, []).append(p)
+        prereqs_by_parent.setdefault(_norm(p.parent_skill_gap), []).append(p)
     for gap in gap_items:
-        gap.knowledge_prerequisites = prereqs_by_parent.get(gap.summary, [])
+        gap.knowledge_prerequisites = prereqs_by_parent.get(_norm(gap.summary), [])
 
     # Step 2 — derive root causes
     gap_items = derive_root_causes(gap_items, finalised)

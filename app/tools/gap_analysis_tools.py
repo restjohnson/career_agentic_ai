@@ -305,12 +305,15 @@ def derive_root_causes(
     Attach knowledge_prerequisites to each GapItem and derive gap_root_cause.
     Rule-based — no LLM call.
     """
+    def _norm(s: str) -> str:
+        return s.lower().strip().rstrip(".,;:")
+
     prereqs_by_parent: Dict[str, List[KnowledgePrerequisite]] = {}
     for p in prerequisites:
-        prereqs_by_parent.setdefault(p.parent_skill_gap, []).append(p)
+        prereqs_by_parent.setdefault(_norm(p.parent_skill_gap), []).append(p)
 
     for gap in gap_items:
-        gap_prereqs = prereqs_by_parent.get(gap.summary, [])
+        gap_prereqs = prereqs_by_parent.get(_norm(gap.summary), [])
         gap.knowledge_prerequisites = gap_prereqs
 
         if not gap_prereqs:
