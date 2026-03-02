@@ -140,6 +140,35 @@ class SupabaseRepo:
 
         return None
 
+    def get_cached_role_spec(self, onet_code: str) -> Optional[Tuple[str, List[Dict[str, Any]]]]:
+        """
+        Return (role_id, requirements) if a cached role spec exists for this onet_code,
+        or None if not found / no requirements stored yet.
+        """
+        role_res = (
+            self.sb.table("roles")
+            .select("id, role_title, onet_code, version, summary")
+            .eq("onet_code", onet_code)
+            .limit(1)
+            .execute()
+        )
+        if not role_res.data:
+            return None
+
+        role_row = role_res.data[0]
+        role_id = role_row["id"]
+
+        req_res = (
+            self.sb.table("role_requirements")
+            .select("*")
+            .eq("role_id", role_id)
+            .execute()
+        )
+        if not req_res.data:
+            return None
+
+        return role_id, req_res.data
+
     # Evidence Storage ---------------------------------------------------
 
     def upload_evidence_file(

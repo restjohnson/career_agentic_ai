@@ -37,7 +37,22 @@ Rules:
    - provenance.note must explain the reasoning clearly (e.g. "AI research roles universally require familiarity with research methodology and publication practices, which O*NET does not enumerate.")
    - Inferred requirements must be grounded in what is well-known about this role in industry — not speculation.
 
-5. Evaluate importance implicitly:
+5. For every requirement, assign required_level (0–4) and importance (1–5):
+
+   required_level — how demanding the role is for this requirement:
+   - 4: Essential — role cannot be performed without this
+   - 3: Expected of all qualified candidates
+   - 2: Differentiates good from average candidates
+   - 1: Nice-to-have, marginal benefit
+   - 0: Not needed
+
+   importance — how central this requirement is to the role:
+   - 5: Core differentiator — central to what makes this role distinct
+   - 4: High importance — consistently expected
+   - 3: Standard requirement
+   - 2: Supporting requirement
+   - 1: Peripheral
+
    - Core requirements should be optional=false.
    - Nice-to-have requirements should be optional=true.
    - Order requirements from most to least important.

@@ -21,6 +21,8 @@ class EvidenceItem(BaseModel):
     summary: str
     snippet: Optional[str] = None
     confidence: float = 0.8
+    proficiency_score: Optional[int] = None   # 0–4, LLM-assessed per rubric
+    action_verbs: List[str] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 #student model
@@ -63,6 +65,8 @@ class RoleSpecRequirement(BaseModel):
     category: RoleReqType
     provenance: List[ProvenanceRef] = Field(default_factory=list)
     optional: bool = False
+    required_level: float = 3.0   # 0–4, LLM-assigned at role_intake time
+    importance: float = 3.0       # 1–5, LLM-assigned at role_intake time
 
 class RoleSpecModel(BaseModel):
     canonical_role_title: str
@@ -71,15 +75,32 @@ class RoleSpecModel(BaseModel):
     requirements: List[RoleSpecRequirement] = Field(default_factory=list)
     assumptions: List[str] = Field(default_factory=list)
 
-# Gap Analysis, Planning, and critque
+# Gap Analysis, Planning, and critique
+class KnowledgePrerequisite(BaseModel):
+    concept: str                          # specific knowledge concept, role-grounded
+    parent_skill_gap: str                 #req_summary of the parent GapItem
+    is_foundational: bool                 # hard prerequisite vs supporting knowledge
+    inferred_confidence: float            #0–1, LLM-estimated from evidence
+    inference_tier: Literal["direct", "skill_implied", "degree_baseline", "none"]
+    inference_basis: List[str] = Field(default_factory=list)  # evidence summaries
+    needs_self_assessment: bool = False
+    self_assessment: Optional[int] = None   #0–3, from student input
+    final_confidence: Optional[float] = None
+
+
 class GapItem(BaseModel):
     summary: str
     category: RoleReqType
-    gap_type: Literal["missing", "weak"] = "missing"
-    evidence_item_ids: List[str] = Field(
-        default_factory=list, description="what evidence support the student's current categroy level"
-        )
-    target_priority: int = Field(ge=1, default=3)
+    required_level: float
+    student_score: float
+    raw_gap: float
+    weighted_gap: float
+    proficiency: int                      #0–4, aggregated from evidence collection
+    confidence: float                     #0–1, Bayesian-combined from evidence
+    gap_type: Literal["missing", "weak", "not_evidenced", "irrelevant"] = "missing"
+    gap_root_cause: Optional[Literal["missing_entirely", "no_theory", "no_practice"]] = None
+    evidence_item_ids: List[str] = Field(default_factory=list)
+    knowledge_prerequisites: List[KnowledgePrerequisite] = Field(default_factory=list)
 
 class GapReport(BaseModel):
     summary: str = ""
@@ -108,7 +129,8 @@ RunStatus = Literal["queued", "running", "done", "failed"]
 StepName = Literal[
     "role_intake",
     "evidence_ingestion",
-    "gap_analysis",
+    "gap_analysis_phase1",
+    "gap_analysis_phase2",
     "pathway_planning",
     "critique",
     "explanation",
@@ -134,6 +156,10 @@ class AgentState(BaseModel):
     gap_report: Optional[GapReport] = None
     plan: Optional[CareerPlan] = None
     critique: Optional[CritqueReport] = None
+
+    # gap analysis human-in-the-loop
+    knowledge_needing_assessment: List[str] = Field(default_factory=list)
+    user_knowledge_inputs: Dict[str, int] = Field(default_factory=dict)
 
     status: RunStatus = "queued"
     step: Optional[StepName] = None
