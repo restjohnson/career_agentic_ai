@@ -83,7 +83,6 @@ class KnowledgePrerequisite(BaseModel):
     inferred_confidence: float            #0–1, LLM-estimated from evidence
     inference_tier: Literal["direct", "skill_implied", "degree_baseline", "none"]
     inference_basis: List[str] = Field(default_factory=list)  # evidence summaries
-    final_confidence: Optional[float] = None
 
 
 class GapItem(BaseModel):
@@ -127,8 +126,7 @@ RunStatus = Literal["queued", "running", "done", "failed"]
 StepName = Literal[
     "role_intake",
     "evidence_ingestion",
-    "gap_analysis_phase1",
-    "gap_analysis_phase2",
+    "gap_analysis",
     "pathway_planning",
     "critique",
     "explanation",

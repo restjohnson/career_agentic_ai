@@ -5,8 +5,7 @@ from app.state import AgentState
 from app.tools.supabase_repo import SupabaseRepo
 from app.nodes.role_intake import role_intake_node
 from app.nodes.evidence_ingestion import evidence_ingestion_node
-from app.nodes.gap_analysis_phase1 import gap_analysis_phase1_node
-from app.nodes.gap_analysis_phase2 import gap_analysis_phase2_node
+from app.nodes.gap_analysis import gap_analysis_node
 
 def snapshot(repo: SupabaseRepo, state: AgentState,
              step: str, contains_free_text: bool = False) -> None:
@@ -38,16 +37,10 @@ def build_graph(repo: SupabaseRepo):
         ))
         return out
 
-    def gap_analysis_phase1(state: dict) -> dict:
-        out = gap_analysis_phase1_node(state)
+    def gap_analysis(state: dict) -> dict:
+        out = gap_analysis_node(state)
         s = AgentState.model_validate(out)
-        snapshot(repo, s, "gap_analysis_phase1")
-        return out
-
-    def gap_analysis_phase2(state: dict) -> dict:
-        out = gap_analysis_phase2_node(state)
-        s = AgentState.model_validate(out)
-        snapshot(repo, s, "gap_analysis_phase2")
+        snapshot(repo, s, "gap_analysis")
         return out
 
     def explanation(state: AgentState) -> AgentState:
@@ -58,15 +51,13 @@ def build_graph(repo: SupabaseRepo):
 
     g.add_node("role_intake", role_intake)
     g.add_node("evidence_ingestion", evidence_ingestion)
-    g.add_node("gap_analysis_phase1", gap_analysis_phase1)
-    g.add_node("gap_analysis_phase2", gap_analysis_phase2)
+    g.add_node("gap_analysis", gap_analysis)
     g.add_node("explanation", explanation)
 
     g.set_entry_point("role_intake")
     g.add_edge("role_intake", "evidence_ingestion")
-    g.add_edge("evidence_ingestion", "gap_analysis_phase1")
-    g.add_edge("gap_analysis_phase1", "gap_analysis_phase2")
-    g.add_edge("gap_analysis_phase2", "explanation")
+    g.add_edge("evidence_ingestion", "gap_analysis")
+    g.add_edge("gap_analysis", "explanation")
     g.add_edge("explanation", END)
 
     return g.compile(checkpointer=MemorySaver())

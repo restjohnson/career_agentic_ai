@@ -263,19 +263,6 @@ Identify the knowledge prerequisites for each gap and assess evidence-based conf
     return prerequisites
 
 
-# ---------------------------------------------------------------------------
-# Phase 2 — finalise confidence and derive root cause
-# ---------------------------------------------------------------------------
-
-def finalise_knowledge_confidence(
-    prerequisites: List[KnowledgePrerequisite],
-) -> List[KnowledgePrerequisite]:
-    """Set final_confidence from inferred_confidence."""
-    for prereq in prerequisites:
-        prereq.final_confidence = prereq.inferred_confidence
-    return prerequisites
-
-
 def derive_root_causes(
     gap_items: List[GapItem],
     prerequisites: List[KnowledgePrerequisite],
@@ -302,9 +289,7 @@ def derive_root_causes(
         if not foundational:
             continue
 
-        avg_knowledge = sum(
-            (p.final_confidence or p.inferred_confidence) for p in foundational
-        ) / len(foundational)
+        avg_knowledge = sum(p.inferred_confidence for p in foundational) / len(foundational)
 
         if gap.student_score < 0.5 and avg_knowledge < 0.4:
             gap.gap_root_cause = "missing_entirely"
