@@ -83,8 +83,6 @@ class KnowledgePrerequisite(BaseModel):
     inferred_confidence: float            #0–1, LLM-estimated from evidence
     inference_tier: Literal["direct", "skill_implied", "degree_baseline", "none"]
     inference_basis: List[str] = Field(default_factory=list)  # evidence summaries
-    needs_self_assessment: bool = False
-    self_assessment: Optional[int] = None   #0–3, from student input
     final_confidence: Optional[float] = None
 
 
@@ -156,10 +154,6 @@ class AgentState(BaseModel):
     gap_report: Optional[GapReport] = None
     plan: Optional[CareerPlan] = None
     critique: Optional[CritqueReport] = None
-
-    # gap analysis human-in-the-loop
-    knowledge_needing_assessment: List[str] = Field(default_factory=list)
-    user_knowledge_inputs: Dict[str, int] = Field(default_factory=dict)
 
     status: RunStatus = "queued"
     step: Optional[StepName] = None

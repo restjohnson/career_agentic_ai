@@ -1,6 +1,5 @@
 from __future__ import annotations
 from langgraph.graph import StateGraph, END
-from langgraph.types import interrupt
 from langgraph.checkpoint.memory import MemorySaver
 from app.state import AgentState
 from app.tools.supabase_repo import SupabaseRepo
@@ -45,19 +44,6 @@ def build_graph(repo: SupabaseRepo):
         snapshot(repo, s, "gap_analysis_phase1")
         return out
 
-    def knowledge_self_assessment(state: dict) -> dict:
-        """
-        Interrupt node: pauses the graph and surfaces knowledge_needing_assessment
-        to the student. Resumes once user_knowledge_inputs is populated via API.
-        """
-        s = AgentState.model_validate(state)
-        if s.knowledge_needing_assessment:
-            interrupt({
-                "type": "knowledge_self_assessment",
-                "concepts": s.knowledge_needing_assessment,
-            })
-        return state
-
     def gap_analysis_phase2(state: dict) -> dict:
         out = gap_analysis_phase2_node(state)
         s = AgentState.model_validate(out)
@@ -73,29 +59,13 @@ def build_graph(repo: SupabaseRepo):
     g.add_node("role_intake", role_intake)
     g.add_node("evidence_ingestion", evidence_ingestion)
     g.add_node("gap_analysis_phase1", gap_analysis_phase1)
-    g.add_node("knowledge_self_assessment", knowledge_self_assessment)
     g.add_node("gap_analysis_phase2", gap_analysis_phase2)
     g.add_node("explanation", explanation)
 
     g.set_entry_point("role_intake")
     g.add_edge("role_intake", "evidence_ingestion")
     g.add_edge("evidence_ingestion", "gap_analysis_phase1")
-
-    # conditional edge: bypass interrupt if no concepts need self-assessment
-    g.add_conditional_edges(
-        "gap_analysis_phase1",
-        lambda state: (
-            "knowledge_self_assessment"
-            if AgentState.model_validate(state).knowledge_needing_assessment
-            else "gap_analysis_phase2"
-        ),
-        {
-            "knowledge_self_assessment": "knowledge_self_assessment",
-            "gap_analysis_phase2": "gap_analysis_phase2",
-        },
-    )
-
-    g.add_edge("knowledge_self_assessment", "gap_analysis_phase2")
+    g.add_edge("gap_analysis_phase1", "gap_analysis_phase2")
     g.add_edge("gap_analysis_phase2", "explanation")
     g.add_edge("explanation", END)
 

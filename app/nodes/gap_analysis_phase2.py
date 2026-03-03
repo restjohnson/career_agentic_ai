@@ -33,8 +33,8 @@ def gap_analysis_phase2_node(state: Dict[str, Any]) -> Dict[str, Any]:
         for prereq in gap.knowledge_prerequisites
     ]
 
-    # Step 1 — finalise confidence (incorporates self-assessment if provided)
-    finalised = finalise_knowledge_confidence(all_prerequisites, s.user_knowledge_inputs)
+    # Step 1 — finalise confidence
+    finalised = finalise_knowledge_confidence(all_prerequisites)
 
     # write finalised prerequisites back — they are mutated in place but
     # re-attach to be explicit
@@ -52,6 +52,5 @@ def gap_analysis_phase2_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     # Step 3 — build final report
     s.gap_report = build_gap_report(gap_items)
-    s.knowledge_needing_assessment = []   # consumed
 
     return s.model_dump(exclude_none=True)

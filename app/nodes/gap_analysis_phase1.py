@@ -20,10 +20,6 @@ def gap_analysis_phase1_node(state: Dict[str, Any]) -> Dict[str, Any]:
     1. Compute student_score per RoleSpecRequirement by aggregating evidence.
     2. Compute raw_gap and weighted_gap; rank by weighted_gap descending.
     3. Decompose top gaps into knowledge prerequisites via LLM.
-    4. Flag prerequisites needing self-assessment → knowledge_needing_assessment.
-
-    If no prerequisites need self-assessment the graph bypasses the interrupt
-    and routes directly to phase 2.
     """
     s = AgentState.model_validate(state)
     s.step = "gap_analysis_phase1"
@@ -56,11 +52,6 @@ def gap_analysis_phase1_node(state: Dict[str, Any]) -> Dict[str, Any]:
     except Exception as e:
         s.errors.append(f"gap_analysis_phase1: knowledge decomposition failed: {type(e).__name__}: {e}")
         prerequisites = []
-
-    # Step 4 — flag for self-assessment
-    s.knowledge_needing_assessment = [
-        p.concept for p in prerequisites if p.needs_self_assessment
-    ]
 
     # store gap_items and prerequisites in gap_report.gaps temporarily
     # (root_cause and final_confidence not yet computed — done in phase 2)

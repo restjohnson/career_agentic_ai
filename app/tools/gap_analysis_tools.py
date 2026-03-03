@@ -87,10 +87,11 @@ def compute_student_scores(
 def compute_gaps(
     scores: Dict[str, Dict[str, Any]],
     role_spec: RoleSpecModel,
+    min_raw_gap: float = 0.5,
 ) -> List[GapItem]:
     """
     Compute raw_gap and weighted_gap per requirement. Return only requirements
-    where raw_gap > 0, ranked by weighted_gap descending.
+    where raw_gap >= min_raw_gap, ranked by weighted_gap descending.
     """
     gap_items: List[GapItem] = []
 
@@ -102,7 +103,7 @@ def compute_gaps(
         ids           = s.get("evidence_item_ids", [])
 
         raw_gap = max(0.0, round(req.required_level - student_score, 4))
-        if raw_gap == 0.0:
+        if raw_gap < min_raw_gap:
             continue
 
         weighted_gap = round(req.importance * raw_gap, 4)
@@ -187,8 +188,6 @@ def decompose_knowledge_prerequisites(
     evidence_items: List[EvidenceItem],
     role_title: str,
     top_n: int = 8,
-    self_assessment_threshold: float = 0.5,
-    max_self_assessment: int = 6,
 ) -> List[KnowledgePrerequisite]:
     """
     For the top-N gaps by weighted_gap, call the LLM to decompose each into
@@ -247,15 +246,6 @@ Identify the knowledge prerequisites for each gap and assess evidence-based conf
 
     deduped = list(seen.values())
 
-    # flag for self-assessment
-    needs_assessment = [
-        p for p in deduped
-        if p.is_foundational and p.inferred_confidence <= self_assessment_threshold
-    ]
-    # cap at max_self_assessment, sorted by parent weighted_gap descending
-    needs_assessment.sort(key=lambda p: gap_weight.get(p.parent_skill_gap, 0), reverse=True)
-    flagged_concepts = {p.concept.lower().strip() for p in needs_assessment[:max_self_assessment]}
-
     valid_tiers = {"direct", "skill_implied", "degree_baseline", "none"}
 
     prerequisites: List[KnowledgePrerequisite] = []
@@ -268,7 +258,6 @@ Identify the knowledge prerequisites for each gap and assess evidence-based conf
             inferred_confidence=p.inferred_confidence,
             inference_tier=tier,
             inference_basis=p.inference_basis,
-            needs_self_assessment=p.concept.lower().strip() in flagged_concepts,
         ))
 
     return prerequisites
@@ -280,20 +269,10 @@ Identify the knowledge prerequisites for each gap and assess evidence-based conf
 
 def finalise_knowledge_confidence(
     prerequisites: List[KnowledgePrerequisite],
-    user_knowledge_inputs: Dict[str, int],
 ) -> List[KnowledgePrerequisite]:
-    """
-    Combine inferred_confidence with student self-assessment (0–3) to produce
-    final_confidence per prerequisite.
-    """
+    """Set final_confidence from inferred_confidence."""
     for prereq in prerequisites:
-        rating = user_knowledge_inputs.get(prereq.concept)
-        if rating is not None:
-            # evidence-capped: self-assessment can raise confidence, not exceed cap
-            self_norm = rating / 3.0
-            prereq.final_confidence = round(min(self_norm + 0.2, 1.0), 4)
-        else:
-            prereq.final_confidence = prereq.inferred_confidence
+        prereq.final_confidence = prereq.inferred_confidence
     return prerequisites
 
 

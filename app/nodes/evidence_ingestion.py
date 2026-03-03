@@ -37,6 +37,27 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
             )
             continue
 
+        # Cache check — reuse persisted items if already extracted for this document
+        if doc.id:
+            cached_rows = repo.get_evidence_items_by_document(doc.id)
+            if cached_rows:
+                items = [
+                    EvidenceItem(
+                        id=row["id"],
+                        document_id=row["document_id"],
+                        item_type=row["item_type"],
+                        summary=row["summary"],
+                        snippet=row.get("snippet"),
+                        confidence=row.get("confidence", 0.8),
+                        proficiency_score=row.get("proficiency_score"),
+                        action_verbs=row.get("action_verbs") or [],
+                        metadata=row.get("metadata") or {},
+                    )
+                    for row in cached_rows
+                ]
+                all_items.extend(items)
+                continue
+
         #download from Supabase Storage
         try:
             file_bytes = repo.download_evidence_file(doc.storage_ref)
@@ -82,6 +103,8 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                         "summary": item.summary,
                         "snippet": item.snippet,
                         "confidence": item.confidence,
+                        "proficiency_score": item.proficiency_score,
+                        "action_verbs": item.action_verbs,
                         "metadata": item.metadata,
                     }
                     for item in items

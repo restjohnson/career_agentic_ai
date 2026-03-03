@@ -201,3 +201,29 @@ class SupabaseRepo:
             .execute()
         )
         return res.data[0] if res.data else None
+
+    def get_evidence_document_by_hash(
+            self, session_id: str, content_hash: str
+    ) -> Optional[str]:
+        """Return existing document_id if same file was already uploaded for this session."""
+        res = (
+            self.sb.table("evidence_documents")
+            .select("id")
+            .eq("session_id", session_id)
+            .eq("content_hash", content_hash)
+            .limit(1)
+            .execute()
+        )
+        return res.data[0]["id"] if res.data else None
+
+    def get_evidence_items_by_document(
+            self, document_id: str
+    ) -> List[Dict[str, Any]]:
+        """Return all persisted evidence items for a document, or [] if none."""
+        res = (
+            self.sb.table("evidence_items")
+            .select("*")
+            .eq("document_id", document_id)
+            .execute()
+        )
+        return res.data or []

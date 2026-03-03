@@ -83,6 +83,16 @@ async def upload_evidence(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Storage upload failed: {type(e).__name__}: {e}")
 
+    # Deduplicate: return existing document_id if same file already uploaded this session
+    existing_id = repo.get_evidence_document_by_hash(session_id, content_hash)
+    if existing_id:
+        return EvidenceUploadResponse(
+            document_id=existing_id,
+            content_hash=content_hash,
+            storage_ref=storage_ref,
+            source_type=source_type,
+        )
+
     # Create DB record
     try:
         document_id = repo.insert_evidence_document(
