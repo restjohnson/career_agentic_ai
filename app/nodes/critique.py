@@ -59,12 +59,15 @@ def _check_prereq_ordering(
     plan: CareerPlan,
     gap_report: GapReport,
 ) -> Tuple[int, List[str], List[str]]:
-    # Map normalised gap label → phase index (0-based)
-    phase_index: Dict[str, int] = {
-        g.lower().strip(): i
-        for i, phase in enumerate(plan.phases)
-        for g in phase.addresses_gaps
-    }
+    # Map normalised gap label → first phase index (0-based) where it appears.
+    # Using first occurrence so multi-phase gaps (e.g. SQL in Phase 1 and Phase 3)
+    # don't get their parent_idx pushed to the last phase by dict overwriting.
+    phase_index: Dict[str, int] = {}
+    for i, phase in enumerate(plan.phases):
+        for g in phase.addresses_gaps:
+            key = g.lower().strip()
+            if key not in phase_index:
+                phase_index[key] = i
 
     violations: List[Tuple[str, str, int, int]] = []
 
@@ -80,13 +83,11 @@ def _check_prereq_ordering(
             prereq_idx = phase_index.get(prereq.concept.lower().strip())
 
             if prereq_idx is None:
-                if prereq.final_confidence < 0.3:
-                    # If the parent gap is already in Phase 1 (index 0), the prerequisite
-                    # is implicitly covered there — it cannot be front-loaded any further.
-                    # Only flag if the parent gap is in a later phase where an explicit
-                    # earlier phase could have addressed the prerequisite.
-                    if parent_idx > 0:
-                        violations.append((prereq.concept, gap.summary, -1, parent_idx))
+                # Prerequisite concept not explicitly labeled in any phase.
+                # The system prompt forbids using prereq concept labels as addresses_gap,
+                # so absence from phase_index means implicit coverage within the parent
+                # gap's phase — not a plan defect. Skip; only flag explicit misordering.
+                pass
             elif prereq_idx >= parent_idx:
                 violations.append((prereq.concept, gap.summary, prereq_idx, parent_idx))
 

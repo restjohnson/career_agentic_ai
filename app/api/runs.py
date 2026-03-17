@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
-from app.state import AgentState, EvidenceDocument
+from app.state import AgentState, EvidenceDocument, StudentConstraints
 from app.tools.supabase_repo import SupabaseRepo
 from app.tools.session_token import get_session_id
 from app.graph import build_graph
@@ -22,6 +22,10 @@ class RunCreateRequest(BaseModel):
     evidence_document_ids: List[str] = Field(
         default_factory=list,
         description="IDs of evidence documents previously uploaded via POST /evidence.",
+    )
+    student_constraints: Optional[StudentConstraints] = Field(
+        default=None,
+        description="Learning constraints: academic_level, hours_per_week, target_goal, target_date (optional ISO date), preferred_learning_mode.",
     )
 
 
@@ -51,6 +55,7 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
         desired_role=payload.desired_role,
         raw_user_text=payload.raw_user_text,
         evidence_documents=evidence_documents,
+        student_constraints=payload.student_constraints,
         status="running",
     )
 

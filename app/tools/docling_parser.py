@@ -5,11 +5,16 @@ import tempfile
 from typing import Optional
 
 
+_TEXT_SUFFIXES = {".txt", ".md", ".markdown"}
+
+
 def parse_document_to_markdown(file_bytes: bytes, suffix: str = ".pdf") -> str:
     """
     Parse a document (PDF, DOCX, etc.) using Docling and return its
     markdown representation. Docling is lazy-imported to avoid loading
     ML models at server startup.
+
+    Plain-text and Markdown files are decoded directly without Docling.
 
     Args:
         file_bytes: Raw file content.
@@ -19,6 +24,9 @@ def parse_document_to_markdown(file_bytes: bytes, suffix: str = ".pdf") -> str:
     Returns:
         Markdown string of the parsed document.
     """
+    if suffix.lower() in _TEXT_SUFFIXES:
+        return file_bytes.decode("utf-8", errors="replace")
+
     from docling.document_converter import DocumentConverter  # lazy import
 
     converter = DocumentConverter()

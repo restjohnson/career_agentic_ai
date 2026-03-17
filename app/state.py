@@ -1,6 +1,7 @@
 from __future__ import annotations
+from datetime import date
 from typing import Any, Dict, List, Literal, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
 EvidenceSourceType = Literal["resume", "transcript", "portfolio", "job_posting", "other"]
 EvidenceItemType = Literal["skill", "experience", "project", "coursework", "claim"]
@@ -25,13 +26,59 @@ class EvidenceItem(BaseModel):
     action_verbs: List[str] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
+# ---------------------------------------------------------------------------
+# Student constraints (supplied upfront at API call time)
+# ---------------------------------------------------------------------------
+
+AcademicLevel = Literal[
+    "freshman", "sophomore", "junior", "senior",   # undergrad years
+    "grad", "bootcamp", "self_taught", "working_professional",
+]
+
+LearningMode = Literal["structured", "project_based", "self_paced", "mixed"]
+
+TargetGoal = Literal[
+    "first_internship",   # wants to land their first internship
+    "graduation",         # wants to be job-ready by graduation
+    "job_ready",          # wants to be ready for full-time roles
+    "career_change",      # transitioning from another field
+]
+
+# Default planning horizons when no target_date is given
+_GOAL_DEFAULT_WEEKS: Dict[str, int] = {
+    "first_internship": 16,   # ~1 semester of prep
+    "graduation":       52,   # ~1 academic year
+    "job_ready":        26,   # ~6 months
+    "career_change":    39,   # ~9 months
+}
+
+
+class StudentConstraints(BaseModel):
+    academic_level: AcademicLevel
+    hours_per_week: int                       # 1–40
+    target_goal: TargetGoal                   # what the student is working toward
+    target_date: Optional[str] = None         # ISO "YYYY-MM-DD"; compute weeks from today if given
+    preferred_learning_mode: LearningMode
+
+    @computed_field
+    @property
+    def target_weeks(self) -> int:
+        """Weeks from today to target_date, or the goal-based default."""
+        if self.target_date:
+            try:
+                delta = (date.fromisoformat(self.target_date) - date.today()).days
+                return max(1, round(delta / 7))
+            except ValueError:
+                pass
+        return _GOAL_DEFAULT_WEEKS.get(self.target_goal, 26)
+
 #student model
 class StudentModel(BaseModel):
     skills: List[str] = Field(default_factory=list, description="career-related skills extracted from evidence")
     experiences: List[str] = Field(default_factory=list, description="career-related experiences extracted from evidence")
     education: List[str] = Field(default_factory=list, description="career-related education extracted from student submitted evidence")
     constraints: Dict[str, Any] = Field(
-        default_factory=dict, 
+        default_factory=dict,
         description="student constraints such as time/week, current college year, anticipated graduation date")
     evidence_map: Dict[str, List[str]] = Field(default_factory=dict)
 
@@ -83,6 +130,7 @@ class KnowledgePrerequisite(BaseModel):
     inferred_confidence: float            #0–1, LLM-estimated from evidence
     inference_tier: Literal["direct", "skill_implied", "degree_baseline", "none"]
     inference_basis: List[str] = Field(default_factory=list)  # evidence summaries
+    final_confidence: float = 0.0
 
 
 class GapItem(BaseModel):
@@ -103,23 +151,76 @@ class GapReport(BaseModel):
     summary: str = ""
     gaps: List[GapItem] = Field(default_factory=list)
 
-class PlanMilestone(BaseModel):
+# ---------------------------------------------------------------------------
+# Pathway planning — learning resources and plan structure
+# ---------------------------------------------------------------------------
+
+ResourceType = Literal[
+    "tutorial",       # blog posts, YouTube walkthroughs — primary informal channel
+    "project",        # hands-on build (guided or self-directed)
+    "open_source",    # contributing to existing OSS repos
+    "workshop",       # hackathons, bootcamp-style intensives
+    "certification",  # professional certs (AWS, Google, etc.)
+    "internship",     # internship opportunity
+    "online_course",  # structured MOOCs — secondary (less informal)
+    "documentation",  # official docs + guided practice
+]
+
+BloomLevel = Literal[
+    "remember", "understand", "apply", "analyse", "evaluate", "create"
+]
+
+class LearningResource(BaseModel):
     title: str
+    provider: Optional[str] = None            # "Coursera", "GitHub", "Handshake", etc.
+    url: Optional[str] = None
+    resource_type: ResourceType
+    estimated_hours: Optional[int] = None
+    is_free: Optional[bool] = None
+    addresses_gap: str                        # req_summary of the gap this covers
+
+
+class LearningAction(BaseModel):
+    """
+    An authored learning step within a phase.
+    The LLM writes the curriculum; resources are attached as examples.
+    """
+    title: str                                # e.g. "Build a SQL analytics dashboard on the NYC taxi dataset"
+    summary: str                              # what the student will practise / produce
+    rationale: str                            # personalised: why this closes their specific gap
+    addresses_gap: str                        # gap label this action primarily advances
+    bloom_level: BloomLevel = "apply"
+    example_resources: List[LearningResource] = Field(default_factory=list)
+
+
+class PlanPhase(BaseModel):
+    title: str
+    rationale: str
     outcome: str
+    checkpoint: str = ""                      # "After this phase, you will be able to..."
     weeks: int = Field(ge=1, default=2)
-    resources: List[str] = Field(default_factory=list)
+    learning_actions: List[LearningAction] = Field(default_factory=list)
+    resources: List[LearningResource] = Field(default_factory=list)
+    # ^ derived from learning_actions[].example_resources; kept for critique compatibility
+    addresses_gaps: List[str] = Field(default_factory=list)
+    resume_updates: List[str] = Field(default_factory=list)
+    # ^ Skills/projects to add to resume before the NEXT phase (machine-readable for critique)
 
 class CareerPlan(BaseModel):
     timeline_weeks: int = Field(ge=1, default=8)
-    milestones: List[PlanMilestone] = Field(default_factory=list)
-    projects: List[str] = Field(default_factory=list)
-    risks: List[str] = Field(default_factory=list)
+    phases: List[PlanPhase] = Field(default_factory=list)
 
-class CritqueReport(BaseModel):
+class CritiqueReport(BaseModel):
     rubric_scores: Dict[str, int] = Field(default_factory=dict)
+    # Dimensions and minimum passing thresholds (out of 5):
+    #   "feasibility"           >= 3
+    #   "internship_readiness"  >= 4  (high bar — structural gate)
+    #   "prerequisite_ordering" >= 4  (high bar — KST compliance)
+    #   "level_appropriateness" >= 3
+    #   "gap_coverage"          >= 3
     issues: List[str] = Field(default_factory=list)
     fixes: List[str] = Field(default_factory=list)
-    satisfactory: bool=False
+    satisfactory: bool = False
 
 #Shared State
 RunStatus = Literal["queued", "running", "done", "failed"]
@@ -141,17 +242,25 @@ class AgentState(BaseModel):
     desired_role: str
 
     #evidence from user
-    evidence_documents: List[EvidenceDocument] =Field(default_factory=list)
+    evidence_documents: List[EvidenceDocument] = Field(default_factory=list)
     evidence_items: List[EvidenceItem] = Field(default_factory=list)
-    raw_user_text: Optional[str] =None
+    raw_user_text: Optional[str] = None
 
     #information from agents
     student_model: Optional[StudentModel] = None
+    student_constraints: Optional[StudentConstraints] = None
     role_model: Optional[RoleModel] = None
     role_spec: Optional[RoleSpecModel] = None
     gap_report: Optional[GapReport] = None
     plan: Optional[CareerPlan] = None
-    critique: Optional[CritqueReport] = None
+    critique: Optional[CritiqueReport] = None
+
+    # Iterative refinement tracking
+    critique_iterations: int = 0
+    best_plan: Optional[CareerPlan] = None
+    best_critique_score: float = 0.0
+    prev_critique_issues: List[str] = Field(default_factory=list)
+    # ^ holds the issues from the previous critique iteration for stall detection
 
     status: RunStatus = "queued"
     step: Optional[StepName] = None

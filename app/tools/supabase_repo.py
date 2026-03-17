@@ -35,8 +35,7 @@ class SupabaseRepo:
     
 
     def set_run_status(self, session_id: str, run_id: str, status: str) -> None:
-        res = self.sb.table("runs").update({"status": status}).eq("id", run_id).eq("session_id", session_id).execute()
-        return None
+        self.sb.table("runs").update({"status": status}).eq("id", run_id).eq("session_id", session_id).execute()
     
     def append_run_state(
             self, 
@@ -227,3 +226,34 @@ class SupabaseRepo:
             .execute()
         )
         return res.data or []
+
+    # Learning resource cache ---------------------------------------------------
+
+    def get_cached_resource(self, cache_key: str) -> Optional[Dict[str, Any]]:
+        """Return a cached learning resource row if it exists and has not expired."""
+        from datetime import datetime, timezone
+        res = (
+            self.sb.table("learning_resources")
+            .select("*")
+            .eq("cache_key", cache_key)
+            .gt("expires_at", datetime.now(timezone.utc).isoformat())
+            .limit(1)
+            .execute()
+        )
+        return res.data[0] if res.data else None
+
+    def upsert_cached_resource(
+            self,
+            cache_key: str,
+            resource_data: Dict[str, Any],
+            expires_at_iso: str,
+    ) -> None:
+        """Insert or update a learning resource cache entry."""
+        self.sb.table("learning_resources").upsert(
+            {
+                "cache_key": cache_key,
+                "resource_data": resource_data,
+                "expires_at": expires_at_iso,
+            },
+            on_conflict="cache_key",
+        ).execute()

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Any, Dict, List, Optional
 
 from langchain_openai import ChatOpenAI
@@ -41,7 +42,6 @@ class _PhaseSpec(BaseModel):
 
 class _PlanSpec(BaseModel):
     phases: List[_PhaseSpec]
-    risks: List[str]
 
 
 # ---------------------------------------------------------------------------
@@ -258,7 +258,6 @@ For each phase, write 2–4 specific learning_actions that YOU author (see syste
 Use the example resources as references you may attach to actions, but the action titles and
 rationale must be your own authored curriculum — not restatements of resource titles.
 
-Also list overall risks (timeline infeasibility, skill dependencies, application-readiness gaps).
 """
 
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)
@@ -284,6 +283,8 @@ def assemble_plan(
     - Derive phase.addresses_gaps from the actions (no LLM double-output).
     - Derive phase.resources from all example_resources for critique compatibility.
     """
+    _phase_prefix = re.compile(r"^phase\s*\d+\s*[:\-–]\s*", re.IGNORECASE)
+
     phases: List[PlanPhase] = []
 
     for spec in plan_spec.phases:
@@ -318,7 +319,7 @@ def assemble_plan(
         addresses_gaps = list(dict.fromkeys(a.addresses_gap for a in learning_actions))
 
         phases.append(PlanPhase(
-            title=spec.title,
+            title=_phase_prefix.sub("", spec.title).strip(),
             rationale=spec.rationale,
             outcome=spec.outcome,
             checkpoint=spec.checkpoint,
@@ -332,5 +333,4 @@ def assemble_plan(
     return CareerPlan(
         timeline_weeks=sum(p.weeks for p in phases),
         phases=phases,
-        risks=plan_spec.risks,
     )
