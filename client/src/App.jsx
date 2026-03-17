@@ -1,18 +1,13 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import UploadPage from './pages/UploadPage';
 import ConstraintsPage from './pages/ConstraintsPage';
 import LoadingPage from './pages/LoadingPage';
 import ResultsPage from './pages/ResultsPage';
 
-/* Navbar is hidden on the landing page per design spec */
-function AppInner() {
-  const { pathname } = useLocation();
-  const showNav = pathname !== '/';
+export default function App() {
   return (
-    <>
-      {showNav && <Navbar />}
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/upload" element={<UploadPage />} />
@@ -20,14 +15,6 @@ function AppInner() {
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/results" element={<ResultsPage />} />
       </Routes>
-    </>
-  );
-}
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <AppInner />
     </BrowserRouter>
   );
 }
