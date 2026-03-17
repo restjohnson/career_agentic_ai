@@ -1,0 +1,130 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  gap: 1.5rem;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.logoIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.logoText strong {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* Desktop links */
+.links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.link {
+  padding: 0.5rem 0.875rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.link:hover {
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+/* CTA */
+.cta {
+  flex-shrink: 0;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.bar,
+.barOpen {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-text);
+  border-radius: 2px;
+  transition: all var(--transition-base);
+}
+
+/* Mobile menu */
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem 1.5rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.mobileLink {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.mobileLink:hover {
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+@media (max-width: 768px) {
+  .links,
+  .cta {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .mobileMenu {
+    display: flex;
+  }
+}
