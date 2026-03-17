@@ -157,7 +157,7 @@
 .dropZoneSuccess {
   border-color: var(--color-success);
   border-style: solid;
-  background: #f0fdf4;
+  background: rgba(16, 185, 129, 0.1);
 }
 
 .fileInputHidden {
@@ -307,7 +307,7 @@
 .removeRowBtn:hover {
   border-color: #ef4444;
   color: #ef4444;
-  background: #fef2f2;
+  background: rgba(239, 68, 68, 0.1);
 }
 
 .addRowBtn {
