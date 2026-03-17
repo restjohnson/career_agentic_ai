@@ -99,7 +99,7 @@ class SupabaseRepo:
             raise RuntimeError(f"failed to insert evidence document: {res}")
         return res.data[0]["id"]
     
-    def insert_evidence_items(self, document_id, str, items: List[Dict[str, Any]]) -> List[str]:
+    def insert_evidence_items(self, document_id: str, items: List[Dict[str, Any]]) -> List[str]:
         payload = [{"document_id": document_id, **it} for it in items]
         res = self.sb.table("evidence_items").insert(payload).execute()
         if not res.data:
@@ -123,7 +123,7 @@ class SupabaseRepo:
             "version": version,
             "summary": summary,
         }
-        res = self.sb.table("roles").upsert(payload).execute()
+        res = self.sb.table("roles").upsert(payload, on_conflict="onet_code").execute()
         if not res.data:
             raise RuntimeError(f"Failed to upsert role: {res}")
         return res.data[0]["id"]
@@ -137,5 +137,93 @@ class SupabaseRepo:
         payload = [{"role_id": role_id, **r} for r in requirements]
         if payload:
             self.sb.table("role_requirements").insert(payload).execute()
-        
+
         return None
+
+    def get_cached_role_spec(self, onet_code: str) -> Optional[Tuple[str, List[Dict[str, Any]]]]:
+        """
+        Return (role_id, requirements) if a cached role spec exists for this onet_code,
+        or None if not found / no requirements stored yet.
+        """
+        role_res = (
+            self.sb.table("roles")
+            .select("id, role_title, onet_code, version, summary")
+            .eq("onet_code", onet_code)
+            .limit(1)
+            .execute()
+        )
+        if not role_res.data:
+            return None
+
+        role_row = role_res.data[0]
+        role_id = role_row["id"]
+
+        req_res = (
+            self.sb.table("role_requirements")
+            .select("*")
+            .eq("role_id", role_id)
+            .execute()
+        )
+        if not req_res.data:
+            return None
+
+        return role_id, req_res.data
+
+    # Evidence Storage ---------------------------------------------------
+
+    def upload_evidence_file(
+            self,
+            storage_ref: str,
+            file_bytes: bytes,
+            content_type: str,
+    ) -> None:
+        """Upload a file to the evidence-documents Storage bucket."""
+        self.sb.storage.from_("evidence-documents").upload(
+            path=storage_ref,
+            file=file_bytes,
+            file_options={"content-type": content_type, "upsert": "true"},
+        )
+
+    def download_evidence_file(self, storage_ref: str) -> bytes:
+        """Download a file from the evidence-documents Storage bucket."""
+        return self.sb.storage.from_("evidence-documents").download(storage_ref)
+
+    def get_evidence_document(
+            self, session_id: str, document_id: str
+    ) -> Optional[Dict[str, Any]]:
+        """Return a single evidence_document row if it belongs to the session."""
+        res = (
+            self.sb.table("evidence_documents")
+            .select("*")
+            .eq("id", document_id)
+            .eq("session_id", session_id)
+            .limit(1)
+            .execute()
+        )
+        return res.data[0] if res.data else None
+
+    def get_evidence_document_by_hash(
+            self, session_id: str, content_hash: str
+    ) -> Optional[str]:
+        """Return existing document_id if same file was already uploaded for this session."""
+        res = (
+            self.sb.table("evidence_documents")
+            .select("id")
+            .eq("session_id", session_id)
+            .eq("content_hash", content_hash)
+            .limit(1)
+            .execute()
+        )
+        return res.data[0]["id"] if res.data else None
+
+    def get_evidence_items_by_document(
+            self, document_id: str
+    ) -> List[Dict[str, Any]]:
+        """Return all persisted evidence items for a document, or [] if none."""
+        res = (
+            self.sb.table("evidence_items")
+            .select("*")
+            .eq("document_id", document_id)
+            .execute()
+        )
+        return res.data or []

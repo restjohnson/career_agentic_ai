@@ -10,9 +10,15 @@ PyJWT
 
 pydantic
 langchain
+langchain_openai
 langgraph
+
+requests
 
 httpx
 
 structlog
 websockets>=13,<16
+
+docling
+python-multipart

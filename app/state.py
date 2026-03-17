@@ -18,35 +18,38 @@ class EvidenceItem(BaseModel):
     id: Optional[str] = None
     document_id: Optional[str] = None
     item_type: EvidenceItemType
-    label: str
+    summary: str
     snippet: Optional[str] = None
     confidence: float = 0.8
+    proficiency_score: Optional[int] = None   # 0–4, LLM-assessed per rubric
+    action_verbs: List[str] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 #student model
 class StudentModel(BaseModel):
     skills: List[str] = Field(default_factory=list, description="career-related skills extracted from evidence")
     experiences: List[str] = Field(default_factory=list, description="career-related experiences extracted from evidence")
-    education: List[str] = Field(default_factory=list, desctiption="career-related education extracted from student submitted evidence")
+    education: List[str] = Field(default_factory=list, description="career-related education extracted from student submitted evidence")
     constraints: Dict[str, Any] = Field(
         default_factory=dict, 
         description="student constraints such as time/week, current college year, anticipated graduation date")
     evidence_map: Dict[str, List[str]] = Field(default_factory=dict)
 
-RoleReqType = Literal["skill", "knowledge", "task", "tech"]
+RoleReqType = Literal["skill", "task", "tech", "hot_technology", "knowledge"]
 
 # role requirement and role model retrived from ONET
 class RoleRequirement(BaseModel):
     req_type: RoleReqType
-    label: str
+    req_summary: str
     importance: Optional[float] = None
+    source_id: Optional[str] = None
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 class RoleModel(BaseModel):
     role_title: str
     onet_code: Optional[str] = None
     version: Optional[str] = None
-    summary: Dict[str, Any] = Field(default_factory=list)
+    summary: Dict[str, Any] = Field(default_factory=dict)
     requirements: List[RoleRequirement] = Field(default_factory=list)
 
 #LLM curated verification of role requirement (provenance)
@@ -54,15 +57,16 @@ SpecSourceType = Literal["ONET", "JOB_POSTINGS", "CURATED", "USER_INPUT", "INFER
 
 class ProvenanceRef(BaseModel):
     source_type: SpecSourceType
-    source_ids: List[str] = Field(default_factory=list) #role_requirement row IDs, doc IDs, URL IDs
+    source_ids: Optional[List[str]] = None  # required for ONET (onet_code); null for all other source types
     note: Optional[str] = None
 
 class RoleSpecRequirement(BaseModel):
-    label: str
+    req_summary: str
     category: RoleReqType
-    priority: int = Field(ge=1, le=5, default=3)
     provenance: List[ProvenanceRef] = Field(default_factory=list)
     optional: bool = False
+    required_level: float = 3.0   # 0–4, LLM-assigned at role_intake time
+    importance: float = 3.0       # 1–5, LLM-assigned at role_intake time
 
 class RoleSpecModel(BaseModel):
     canonical_role_title: str
@@ -71,15 +75,29 @@ class RoleSpecModel(BaseModel):
     requirements: List[RoleSpecRequirement] = Field(default_factory=list)
     assumptions: List[str] = Field(default_factory=list)
 
-# Gap Analysis, Planning, and critque
+# Gap Analysis, Planning, and critique
+class KnowledgePrerequisite(BaseModel):
+    concept: str                          # specific knowledge concept, role-grounded
+    parent_skill_gap: str                 #req_summary of the parent GapItem
+    is_foundational: bool                 # hard prerequisite vs supporting knowledge
+    inferred_confidence: float            #0–1, LLM-estimated from evidence
+    inference_tier: Literal["direct", "skill_implied", "degree_baseline", "none"]
+    inference_basis: List[str] = Field(default_factory=list)  # evidence summaries
+
+
 class GapItem(BaseModel):
-    label: str
+    summary: str
     category: RoleReqType
-    gap_type: Literal["missing", "weak"] = "missing"
-    evidence_item_ids: List[str] = Field(
-        default_factory=list, description="what evidence support the student's current categroy level"
-        )
-    target_priority: int = Field(ge=1, le=5, default=3)
+    required_level: float
+    student_score: float
+    raw_gap: float
+    weighted_gap: float
+    proficiency: int                      #0–4, aggregated from evidence collection
+    confidence: float                     #0–1, Bayesian-combined from evidence
+    gap_type: Literal["missing", "weak", "not_evidenced", "irrelevant"] = "missing"
+    gap_root_cause: Optional[Literal["missing_entirely", "no_theory", "no_practice"]] = None
+    evidence_item_ids: List[str] = Field(default_factory=list)
+    knowledge_prerequisites: List[KnowledgePrerequisite] = Field(default_factory=list)
 
 class GapReport(BaseModel):
     summary: str = ""
