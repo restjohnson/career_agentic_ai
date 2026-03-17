@@ -2,7 +2,7 @@
    Results Page  —  Career Plan Dashboard
    ════════════════════════════════════════════════════════════════════ */
 .page {
-  min-height: calc(100vh - 68px);
+  min-height: 100vh;
   background: var(--color-bg);
   padding-bottom: 4rem;
 }
