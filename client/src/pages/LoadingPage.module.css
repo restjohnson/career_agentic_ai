@@ -1,0 +1,223 @@
+/* ════════════════════════════════════════════════════════════════════
+   Loading Page  —  orbital glow loader
+   ════════════════════════════════════════════════════════════════════ */
+.page {
+  min-height: calc(100vh - 68px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(140deg, #060e1e 0%, #0b1a36 60%, #0e203f 100%);
+  padding: 2rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+  max-width: 520px;
+  width: 100%;
+}
+
+/* ── Orbital loader ──────────────────────────────────────────────── */
+.loaderWrap {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ambient glow behind core */
+.coreGlow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.3) 0%, transparent 65%);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(0.9); opacity: 0.6; }
+  50%       { transform: scale(1.1); opacity: 1; }
+}
+
+/* Core brain */
+.core {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e3a8a, #312e81);
+  border: 2px solid rgba(96, 165, 250, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  box-shadow:
+    0 0 20px rgba(37, 99, 235, 0.5),
+    0 0 40px rgba(37, 99, 235, 0.25);
+}
+
+.coreIcon {
+  font-size: 1.75rem;
+}
+
+/* Orbit rings */
+.orbit1,
+.orbit2,
+.orbit3 {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid transparent;
+}
+
+/* Orbit 1 — innermost */
+.orbit1 {
+  width: 90px;
+  height: 90px;
+  border-top-color:   rgba(96, 165, 250, 0.7);
+  border-right-color: rgba(96, 165, 250, 0.2);
+  animation: spin1 1.8s linear infinite;
+}
+
+@keyframes spin1 {
+  to { transform: rotate(360deg); }
+}
+
+.orbitDot1 {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #60a5fa;
+  box-shadow: 0 0 8px #60a5fa;
+}
+
+/* Orbit 2 — middle */
+.orbit2 {
+  width: 130px;
+  height: 130px;
+  border-top-color:  rgba(167, 139, 250, 0.7);
+  border-left-color: rgba(167, 139, 250, 0.2);
+  animation: spin2 2.8s linear infinite;
+}
+
+@keyframes spin2 {
+  to { transform: rotate(-360deg); }
+}
+
+.orbitDot2 {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #a78bfa;
+  box-shadow: 0 0 10px #a78bfa;
+}
+
+/* Orbit 3 — outer */
+.orbit3 {
+  width: 170px;
+  height: 170px;
+  border-bottom-color: rgba(52, 211, 153, 0.65);
+  border-right-color:  rgba(52, 211, 153, 0.2);
+  animation: spin3 4s linear infinite;
+}
+
+@keyframes spin3 {
+  to { transform: rotate(360deg); }
+}
+
+.orbitDot3 {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+}
+
+/* ── Text ────────────────────────────────────────────────────────── */
+.title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: rgba(148, 163, 184, 0.75);
+  line-height: 1.65;
+  margin-top: -0.5rem;
+}
+
+/* ── Agent steps ─────────────────────────────────────────────────── */
+.steps {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  background: rgba(10, 18, 38, 0.7);
+  border: 1px solid rgba(96, 165, 250, 0.12);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9375rem;
+  color: rgba(148, 163, 184, 0.5);
+  transition: all 300ms ease;
+}
+
+.stepDone {
+  color: #34d399;
+}
+
+.stepActive {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.stepIcon {
+  font-size: 0.875rem;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.stepLabel {
+  flex: 1;
+  text-align: left;
+}
+
+/* Spinner for active step */
+.stepSpinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(96, 165, 250, 0.3);
+  border-top-color: #60a5fa;
+  animation: stepSpin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes stepSpin {
+  to { transform: rotate(360deg); }
+}
