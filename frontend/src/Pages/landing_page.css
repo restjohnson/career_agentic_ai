@@ -1,0 +1,108 @@
+.landing-container {
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 60px;
+  align-items: center;
+}
+
+.logo {
+  font-weight: bold;
+}
+
+.nav-button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: white;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+/* Hero */
+
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.tag {
+  background: #eef3ff;
+  color: #4f6ef7;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.highlight {
+  color: #3b5cff;
+}
+
+.cta-button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: #0d0f1c;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Feature cards */
+
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 60px;
+}
+
+.card {
+  width: 260px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+/* How it works */
+
+.how-it-works {
+  text-align: center;
+  padding: 60px;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 30px;
+}
+
+.step {
+  width: 180px;
+}
+
+.circle {
+  width: 35px;
+  height: 35px;
+  background: #6b6cff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+/* Footer */
+
+.footer {
+  text-align: center;
+  padding: 30px;
+  color: gray;
+}

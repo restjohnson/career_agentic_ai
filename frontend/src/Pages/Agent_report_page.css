@@ -1,0 +1,292 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: #f6f8fc;
+  color: #111827;
+}
+
+.report-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 24px 60px;
+  background: #f6f8fc;
+}
+
+.report-content {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.plan-badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 44px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.header p {
+  max-width: 720px;
+  margin: 14px auto 0;
+  color: #4b5563;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.tabs {
+  width: 100%;
+  max-width: 360px;
+  margin: 24px auto 0;
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  background: #e9eaf0;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 11px 16px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: #374151;
+  transition: 0.2s ease;
+}
+
+.tabs .active {
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.card {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.target-card {
+  border-color: #bfd4ff;
+}
+
+.card-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.card-heading h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.subtext {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.blue-light {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.blue-strong {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.purple-light {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+.three-column {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.4fr;
+  gap: 24px;
+}
+
+.three-column h3,
+.card h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.tag-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.soft-tag {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.blue-tag {
+  background: #3b82f6;
+  color: #ffffff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.plain-text {
+  margin: 0;
+  font-size: 15px;
+  color: #111827;
+  font-weight: 500;
+}
+
+.role-title {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.role-description {
+  margin: 0 0 18px;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.gap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.gap-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.gap-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.gap-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.gap-time {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.priority {
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.priority.high {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.priority.medium {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.priority.low {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.pathway-text {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .header h1 {
+    font-size: 34px;
+  }
+
+  .three-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .report-container {
+    padding: 24px 14px 40px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+  }
+
+  .card-heading h2 {
+    font-size: 20px;
+  }
+}
