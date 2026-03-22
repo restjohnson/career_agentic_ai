@@ -1,8 +1,44 @@
 import { useState } from "react";
 import "./Agent_report_page.css";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+
 
 function AgentsReportPage() {
   const [activeTab, setActiveTab] = useState("career");
+
+  const handleDownload = async () => {
+  const element = document.querySelector(".report-content");
+
+  const canvas = await html2canvas(element, {
+    scale: 2, // improves quality
+    useCORS: true
+  });
+
+  const imgData = canvas.toDataURL("image/png");
+
+  const pdf = new jsPDF("p", "mm", "a4");
+
+  const imgWidth = 210; // A4 width
+  const pageHeight = 295;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
+
+  // for multi-page support
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+  }
+
+  pdf.save("career_plan.pdf");
+};
 
   const currentSkills = ["JavaScript", "React", "HTML/CSS", "Basic Python", "Git"];
   const requiredSkills = [
@@ -24,6 +60,12 @@ function AgentsReportPage() {
   return (
     <div className="report-container">
       <div className="report-content">
+        <div className="top-bar">
+  <button className="download-btn" onClick={handleDownload}>
+    Export Plan
+  </button>
+</div>
+
         <div className="header">
           <span className="plan-badge">Your Personalized Career Plan</span>
           <h1>Path to Software Developer</h1>
