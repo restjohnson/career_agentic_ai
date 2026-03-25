@@ -4,6 +4,43 @@ import styles from './ConstraintsPage.module.css';
 
 const ACADEMIC_LEVELS = ['Undergraduate', 'Graduate', 'Professional'];
 
+const DEGREE_PROGRAMS = [
+  'BSc Computer Science',
+  'BSc Information Technology',
+  'BSc Software Engineering',
+  'BSc Data Science',
+  'BSc Cybersecurity',
+  'BSc Electrical Engineering',
+  'BSc Mechanical Engineering',
+  'BSc Business Administration',
+  'BA Communications',
+  'BA Psychology',
+  'MSc Computer Science',
+  'MSc Data Science',
+  'MSc Information Systems',
+  'MBA',
+  'Other',
+];
+
+const TARGET_ROLES = [
+  'Software Engineer',
+  'Frontend Developer',
+  'Backend Developer',
+  'Full-Stack Developer',
+  'Data Analyst',
+  'Data Scientist',
+  'Machine Learning Engineer',
+  'DevOps Engineer',
+  'Cloud Engineer',
+  'Cybersecurity Analyst',
+  'Product Manager',
+  'UX Designer',
+  'Business Analyst',
+  'Project Manager',
+  'Systems Administrator',
+  'Other',
+];
+
 const LEARNING_MODES = [
   { id: 'structured',    label: 'Structured',     desc: 'Guided courses with set schedules' },
   { id: 'project_based', label: 'Project-Based',  desc: 'Learning through building real projects' },
@@ -88,25 +125,31 @@ export default function ConstraintsPage() {
           {/* Degree / Program */}
           <div className={styles.card}>
             <h2 className={styles.cardTitle}>Degree / Program</h2>
-            <input
-              type="text"
+            <select
               value={degreeProgram}
               onChange={(e) => setDegreeProgram(e.target.value)}
-              placeholder="e.g. BSc Computer Science"
-              className={styles.textInput}
-            />
+              className={styles.selectInput}
+            >
+              <option value="" disabled>Select your degree / program</option>
+              {DEGREE_PROGRAMS.map((prog) => (
+                <option key={prog} value={prog}>{prog}</option>
+              ))}
+            </select>
           </div>
 
           {/* Target Role */}
           <div className={styles.card}>
             <h2 className={styles.cardTitle}>Target Role</h2>
-            <input
-              type="text"
+            <select
               value={targetRole}
               onChange={(e) => setTargetRole(e.target.value)}
-              placeholder="e.g. Software Engineer, Data Analyst"
-              className={styles.textInput}
-            />
+              className={styles.selectInput}
+            >
+              <option value="" disabled>Select your target role</option>
+              {TARGET_ROLES.map((role) => (
+                <option key={role} value={role}>{role}</option>
+              ))}
+            </select>
           </div>
 
           {/* Estimated time to goal */}
