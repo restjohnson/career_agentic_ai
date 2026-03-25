@@ -29,67 +29,6 @@ const ICONS = {
   chart:   'M18 20V10M12 20V4M6 20v-6',
 };
 
-/* ── Animated Roadmap SVG ─────────────────────────────────────────── */
-function RoadmapVisual() {
-  return (
-    <svg viewBox="0 0 520 390" className={styles.roadmapSvg} aria-hidden="true">
-      <defs>
-        <linearGradient id="route" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#60a5fa" />
-          <stop offset="100%" stopColor="#6366f1" />
-        </linearGradient>
-        <linearGradient id="routeSoft" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="rgba(96,165,250,0.2)" />
-          <stop offset="100%" stopColor="rgba(99,102,241,0.2)" />
-        </linearGradient>
-        <filter id="roadGlow" x="-25%" y="-25%" width="150%" height="150%">
-          <feGaussianBlur stdDeviation="4" result="blur" />
-          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
-      </defs>
-
-      <path
-        d="M34 320 C 90 260, 130 285, 180 225 S 270 165, 320 195 S 400 250, 486 84"
-        stroke="url(#routeSoft)"
-        strokeWidth="18"
-        fill="none"
-        strokeLinecap="round"
-      />
-
-      <path
-        d="M34 320 C 90 260, 130 285, 180 225 S 270 165, 320 195 S 400 250, 486 84"
-        className={styles.routePath}
-        stroke="url(#route)"
-        strokeWidth="6"
-        fill="none"
-        strokeLinecap="round"
-        strokeDasharray="9 9"
-      />
-
-      <circle cx="34" cy="320" r="14" className={styles.milestone} />
-      <circle cx="180" cy="225" r="12" className={styles.milestone} />
-      <circle cx="320" cy="195" r="12" className={styles.milestone} />
-      <circle cx="486" cy="84" r="14" className={styles.milestoneGoal} />
-
-      <g className={styles.mapLabel}>
-        <text x="20" y="350">Start</text>
-        <text x="148" y="255">Skill Build</text>
-        <text x="285" y="225">Projects</text>
-        <text x="438" y="70">Target Role</text>
-      </g>
-
-      <circle className={styles.routePulse} r="6" fill="#93c5fd" filter="url(#roadGlow)">
-        <animateMotion
-          dur="6s"
-          repeatCount="indefinite"
-          rotate="auto"
-          path="M34 320 C 90 260, 130 285, 180 225 S 270 165, 320 195 S 400 250, 486 84"
-        />
-      </circle>
-    </svg>
-  );
-}
-
 /* ── Data ───────────────────────────────────────────────────────────── */
 const FEATURES = [
   {
@@ -117,12 +56,14 @@ const STEPS = [
 ];
 
 // Feel free to update these stats with real data once you have it!
+/*
 const STATS = [
   { value: '500+', label: 'Career Roles Covered' },
   { value: '94%',  label: 'Plan Satisfaction Rate' },
   { value: '3×',   label: 'Faster Gap Identification' },
   { value: '∞',    label: 'Iterations Allowed' },
 ];
+*/
 
 /* ══════════════════════════════════════════════════════════════════════
    Landing Page Component
@@ -166,13 +107,18 @@ export default function LandingPage() {
 
           <div className={styles.heroVisual} aria-hidden="true">
             <div className={styles.roadmapWrap}>
-              <RoadmapVisual />
+              <img
+                src="/career_ai_roadmap.png"
+                alt=""
+                className={styles.roadmapSvg}
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Stats bar ─────────────────────────────────────────────────── */}
+      {/* ── Stats bar (temporarily disabled) ────────────────────────────── */}
+      {/**
       <section className={styles.statsBar}>
         <div className={`container ${styles.statsGrid}`}>
           {STATS.map((s) => (
@@ -183,6 +129,7 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+      */}
 
       {/* ── Features ──────────────────────────────────────────────────── */}
       <section id="features" className={styles.section}>
