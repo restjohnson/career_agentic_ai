@@ -119,6 +119,7 @@ const STEPS = [
   { num: '04', icon: 'sparkle', title: 'Receive Your Career Plan',   description: 'Get a structured, phased pathway with curated resources, resume tips, and milestones.' },
 ];
 
+// Feel free to update these stats with real data once you have it!
 const STATS = [
   { value: '500+', label: 'Career Roles Covered' },
   { value: '94%',  label: 'Plan Satisfaction Rate' },

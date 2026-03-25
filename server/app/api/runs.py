@@ -1,15 +1,20 @@
 # app/api/runs.py
 from __future__ import annotations
 
+import asyncio
+import json
+import threading
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from app.state import AgentState, EvidenceDocument, StudentConstraints
 from app.tools.supabase_repo import SupabaseRepo
-from app.tools.session_token import get_session_id
+from app.tools.session_token import get_session_id, get_session_id_from_query
 from app.graph import build_graph
+from app.run_events import get_queue, publish, cleanup
 
 router = APIRouter(prefix="/runs", tags=["runs"])
 repo = SupabaseRepo()
@@ -32,7 +37,6 @@ class RunCreateRequest(BaseModel):
 class RunCreateResponse(BaseModel):
     run_id: str
     status: str
-    final_state: Dict[str, Any]
 
 
 @router.post("", response_model=RunCreateResponse)
@@ -61,15 +65,43 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
 
     config = {"configurable": {"thread_id": run_id}}
 
-    try:
-        out: Any = graph.invoke(state, config=config)
-        repo.set_run_status(session_id=session_id, run_id=run_id, status="done")
-        final_state = AgentState.model_validate(out).model_dump(exclude_none=True)
-        return RunCreateResponse(run_id=run_id, status="done", final_state=final_state)
+    def _run_graph():
+        try:
+            out: Any = graph.invoke(state, config=config)
+            repo.set_run_status(session_id=session_id, run_id=run_id, status="done")
+            final_state = AgentState.model_validate(out).model_dump(exclude_none=True)
+            publish(run_id, {"type": "done", "final_state": final_state})
+        except Exception as e:
+            repo.set_run_status(session_id=session_id, run_id=run_id, status="failed")
+            publish(run_id, {"type": "error", "detail": f"{type(e).__name__}: {e}"})
 
-    except Exception as e:
-        repo.set_run_status(session_id=session_id, run_id=run_id, status="failed")
-        raise HTTPException(status_code=500, detail=f"Run failed: {type(e).__name__}: {e}")
+    threading.Thread(target=_run_graph, daemon=True).start()
+
+    return RunCreateResponse(run_id=run_id, status="running")
+
+
+@router.get("/{run_id}/stream")
+async def stream_run(run_id: str, session_id: str = Depends(get_session_id_from_query)):
+    """SSE endpoint — streams step events as the agent graph executes."""
+    queue = get_queue(run_id)
+
+    async def event_generator():
+        try:
+            while True:
+                event = await asyncio.wait_for(queue.get(), timeout=300)
+                yield f"data: {json.dumps(event)}\n\n"
+                if event.get("type") in ("done", "error"):
+                    break
+        except asyncio.TimeoutError:
+            yield f"data: {json.dumps({'type': 'error', 'detail': 'Timeout waiting for agent'})}\n\n"
+        finally:
+            cleanup(run_id)
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 class RunLatestStateResponse(BaseModel):

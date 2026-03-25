@@ -8,6 +8,9 @@
 
 /* ── Progress bar ────────────────────────────────────────────────── */
 .progressBar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
   padding: 1rem 2rem;
@@ -231,7 +234,7 @@
   border-radius: 50%;
   background: var(--color-primary);
   border: 3px solid var(--color-surface);
-  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
   cursor: pointer;
 }
 
@@ -241,7 +244,7 @@
   border-radius: 50%;
   background: var(--color-primary);
   border: 3px solid var(--color-surface);
-  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
   cursor: pointer;
 }
 

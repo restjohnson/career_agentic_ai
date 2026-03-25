@@ -54,3 +54,8 @@ def get_session_id(authorization: str = Header(...)) -> str:
         raise HTTPException(status_code=401, detail="Missing Bearer token")
     token = authorization.split(" ", 1)[1].strip()
     return verify_session_token(token)
+
+
+def get_session_id_from_query(token: str) -> str:
+    """Dependency for SSE endpoints where headers can't be set (EventSource)."""
+    return verify_session_token(token)

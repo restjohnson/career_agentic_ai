@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles from './ConstraintsPage.module.css';
 
 const ACADEMIC_LEVELS = ['Undergraduate', 'Graduate', 'Professional'];
@@ -20,7 +20,27 @@ export default function ConstraintsPage() {
   const [learningMode,   setLearningMode]   = useState('mixed');
 
   const navigate   = useNavigate();
+  const location   = useLocation();
+  const evidenceDocIds = location.state?.evidenceDocIds ?? [];
   const canSubmit  = degreeProgram.trim() !== '' && targetRole.trim() !== '';
+
+  const handleSubmit = () => {
+    if (!canSubmit) return;
+    const rawUserText = [
+      `Academic level: ${academicLevel}`,
+      `Degree/Program: ${degreeProgram}`,
+      `Hours per week: ${hoursPerWeek}`,
+      `Target weeks: ${targetWeeks}`,
+      `Learning mode: ${learningMode}`,
+    ].join('. ');
+    navigate('/loading', {
+      state: {
+        targetRole,
+        evidenceDocIds,
+        rawUserText,
+      },
+    });
+  };
 
   return (
     <div className={styles.page}>
@@ -158,7 +178,7 @@ export default function ConstraintsPage() {
             <button
               className={`${styles.submitBtn} ${!canSubmit ? styles.submitBtnDisabled : ''}`}
               disabled={!canSubmit}
-              onClick={() => canSubmit && navigate('/loading')}
+              onClick={handleSubmit}
             >
               Generate My Career Plan →
             </button>
