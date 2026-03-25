@@ -29,66 +29,63 @@ const ICONS = {
   chart:   'M18 20V10M12 20V4M6 20v-6',
 };
 
-/* ── Animated Neural Network SVG ────────────────────────────────────── */
-function NeuralNetwork() {
-  const nodes = [
-    { id: 'i1', x: 70,  y: 70  },
-    { id: 'i2', x: 70,  y: 150 },
-    { id: 'i3', x: 70,  y: 230 },
-    { id: 'i4', x: 70,  y: 310 },
-    { id: 'h1', x: 200, y: 100 },
-    { id: 'h2', x: 200, y: 190 },
-    { id: 'h3', x: 200, y: 280 },
-    { id: 'h4', x: 330, y: 130 },
-    { id: 'h5', x: 330, y: 215 },
-    { id: 'h6', x: 330, y: 300 },
-    { id: 'o1', x: 450, y: 155 },
-    { id: 'o2', x: 450, y: 235 },
-  ];
-
-  const edges = [
-    ['i1','h1'],['i1','h2'],['i2','h1'],['i2','h2'],['i2','h3'],
-    ['i3','h2'],['i3','h3'],['i4','h2'],['i4','h3'],
-    ['h1','h4'],['h1','h5'],['h2','h4'],['h2','h5'],['h2','h6'],
-    ['h3','h5'],['h3','h6'],
-    ['h4','o1'],['h4','o2'],['h5','o1'],['h5','o2'],['h6','o1'],['h6','o2'],
-  ];
-
-  const nodeMap = Object.fromEntries(nodes.map((n) => [n.id, n]));
-
+/* ── Animated Roadmap SVG ─────────────────────────────────────────── */
+function RoadmapVisual() {
   return (
-    <svg viewBox="0 0 520 390" className={styles.neuralSvg} aria-hidden="true">
+    <svg viewBox="0 0 520 390" className={styles.roadmapSvg} aria-hidden="true">
       <defs>
-        <radialGradient id="ng" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="#93c5fd" stopOpacity="1" />
-          <stop offset="100%" stopColor="#2563eb" stopOpacity="0.7" />
-        </radialGradient>
-        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+        <linearGradient id="route" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#60a5fa" />
+          <stop offset="100%" stopColor="#6366f1" />
+        </linearGradient>
+        <linearGradient id="routeSoft" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="rgba(96,165,250,0.2)" />
+          <stop offset="100%" stopColor="rgba(99,102,241,0.2)" />
+        </linearGradient>
+        <filter id="roadGlow" x="-25%" y="-25%" width="150%" height="150%">
           <feGaussianBlur stdDeviation="4" result="blur" />
-          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
-        <filter id="softglow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="8" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
       </defs>
 
-      {edges.map(([a, b], i) => {
-        const na = nodeMap[a], nb = nodeMap[b];
-        return (
-          <line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
-            stroke="rgba(96,165,250,0.18)" strokeWidth="1.2" />
-        );
-      })}
+      <path
+        d="M34 320 C 90 260, 130 285, 180 225 S 270 165, 320 195 S 400 250, 486 84"
+        stroke="url(#routeSoft)"
+        strokeWidth="18"
+        fill="none"
+        strokeLinecap="round"
+      />
 
-      {nodes.map((n, i) => (
-        <g key={n.id} filter="url(#glow)">
-          <circle cx={n.x} cy={n.y} r="14" fill="url(#ng)" opacity="0.85"
-            className={styles.neuralNode}
-            style={{ animationDelay: `${i * 0.18}s` }} />
-          <circle cx={n.x} cy={n.y} r="5" fill="#bfdbfe" />
-        </g>
-      ))}
+      <path
+        d="M34 320 C 90 260, 130 285, 180 225 S 270 165, 320 195 S 400 250, 486 84"
+        className={styles.routePath}
+        stroke="url(#route)"
+        strokeWidth="6"
+        fill="none"
+        strokeLinecap="round"
+        strokeDasharray="9 9"
+      />
+
+      <circle cx="34" cy="320" r="14" className={styles.milestone} />
+      <circle cx="180" cy="225" r="12" className={styles.milestone} />
+      <circle cx="320" cy="195" r="12" className={styles.milestone} />
+      <circle cx="486" cy="84" r="14" className={styles.milestoneGoal} />
+
+      <g className={styles.mapLabel}>
+        <text x="20" y="350">Start</text>
+        <text x="148" y="255">Skill Build</text>
+        <text x="285" y="225">Projects</text>
+        <text x="438" y="70">Target Role</text>
+      </g>
+
+      <circle className={styles.routePulse} r="6" fill="#93c5fd" filter="url(#roadGlow)">
+        <animateMotion
+          dur="6s"
+          repeatCount="indefinite"
+          rotate="auto"
+          path="M34 320 C 90 260, 130 285, 180 225 S 270 165, 320 195 S 400 250, 486 84"
+        />
+      </circle>
     </svg>
   );
 }
@@ -168,8 +165,8 @@ export default function LandingPage() {
           </div>
 
           <div className={styles.heroVisual} aria-hidden="true">
-            <div className={styles.neuralWrap}>
-              <NeuralNetwork />
+            <div className={styles.roadmapWrap}>
+              <RoadmapVisual />
             </div>
           </div>
         </div>
