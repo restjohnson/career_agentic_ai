@@ -4,6 +4,7 @@ import UploadPage from './pages/UploadPage';
 import ConstraintsPage from './pages/ConstraintsPage';
 import LoadingPage from './pages/LoadingPage';
 import ResultsPage from './pages/ResultsPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/constraints" element={<ConstraintsPage />} />
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/results" element={<ResultsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
