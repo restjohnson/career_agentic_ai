@@ -8,7 +8,6 @@ from app.nodes.evidence_ingestion import evidence_ingestion_node
 from app.nodes.gap_analysis import gap_analysis_node
 from app.nodes.pathway_planning import pathway_planning_node
 from app.nodes.critique import critique_node
-
 from app.run_events import publish
 
 def snapshot(repo: SupabaseRepo, state: AgentState,
