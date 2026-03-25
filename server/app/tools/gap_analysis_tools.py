@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
+from app.tools.llm_resilience import invoke_with_retry
 from app.state import (
     EvidenceItem,
     GapItem,
@@ -222,8 +223,9 @@ Student evidence (summaries):
 Identify the knowledge prerequisites for each gap and assess evidence-based confidence.
 """
 
-    result: _DecompositionResult = llm_struct.invoke(
-        [{"role": "system", "content": _DECOMP_SYSTEM}, {"role": "user", "content": prompt}]
+    result: _DecompositionResult = invoke_with_retry(
+        llm_struct,
+        [{"role": "system", "content": _DECOMP_SYSTEM}, {"role": "user", "content": prompt}],
     )
 
     # deduplicate by concept (case-insensitive), keep highest-weighted-gap parent

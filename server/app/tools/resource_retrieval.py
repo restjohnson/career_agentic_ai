@@ -8,6 +8,7 @@ from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
 
 from app.state import GapItem, LearningResource, StudentConstraints
+from app.tools.llm_resilience import invoke_with_retry
 from app.tools.supabase_repo import SupabaseRepo
 
 # ---------------------------------------------------------------------------
@@ -153,10 +154,13 @@ def _generate_resource(
     llm_struct = llm.with_structured_output(_ResourceRaw, method="json_schema", strict=True)
 
     try:
-        raw: _ResourceRaw = llm_struct.invoke([
-            {"role": "system", "content": _GENERATE_SYSTEM},
-            {"role": "user",   "content": user_msg},
-        ])
+        raw: _ResourceRaw = invoke_with_retry(
+            llm_struct,
+            [
+                {"role": "system", "content": _GENERATE_SYSTEM},
+                {"role": "user", "content": user_msg},
+            ],
+        )
     except Exception:
         return None
 

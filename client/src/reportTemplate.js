@@ -23,7 +23,7 @@ function levelDots(value, max = 4) {
   return '●'.repeat(filled) + '○'.repeat(Math.max(0, max - filled));
 }
 
-export function generateReportHTML({ studentModel, roleSpec, gapReport, targetRole }) {
+export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, targetRole }) {
   const roleName = esc(roleSpec?.canonical_role_title ?? targetRole ?? 'Unknown Role');
   const onet = roleSpec?.matched_onet_code ? ` (O*NET ${esc(roleSpec.matched_onet_code)})` : '';
   const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -40,6 +40,9 @@ export function generateReportHTML({ studentModel, roleSpec, gapReport, targetRo
   const gaps = [...(gapReport?.gaps ?? [])]
     .sort((a, b) => b.weighted_gap - a.weighted_gap)
     ;
+
+  const phases = plan?.phases ?? [];
+  const risks = plan?.risks ?? [];
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -177,6 +180,36 @@ export function generateReportHTML({ studentModel, roleSpec, gapReport, targetRo
       }).join('')}
     </div>
   ` : '<p style="color:#94a3b8">No gaps identified.</p>'}
+
+  <h2>Pathway Plan</h2>
+  ${phases.length > 0 ? `
+    <p class="summary-text">Timeline: ${esc(plan?.timeline_weeks ?? '?')} weeks · Phases: ${phases.length}</p>
+    ${phases.map((phase, idx) => `
+      <div class="gap-card" style="margin-bottom:8pt;">
+        <div class="gap-name">Phase ${idx + 1}: ${esc(phase.title)} <span class="cat">${esc(phase.weeks)} weeks</span></div>
+        <p style="font-size:8.5pt;color:#475569;margin:2pt 0;"><strong>Rationale:</strong> ${esc(phase.rationale)}</p>
+        <p style="font-size:8.5pt;color:#475569;margin:2pt 0;"><strong>Outcome:</strong> ${esc(phase.outcome)}</p>
+        ${phase.checkpoint ? `<p style="font-size:8.5pt;color:#475569;margin:2pt 0;"><strong>Checkpoint:</strong> ${esc(phase.checkpoint)}</p>` : ''}
+        ${phase.learning_actions?.length ? `
+          <h3>Learning Actions</h3>
+          <ul>${phase.learning_actions.map(a => `<li><strong>${esc(a.title)}</strong>: ${esc(a.summary)}</li>`).join('')}</ul>
+        ` : ''}
+        ${phase.resources?.length ? `
+          <h3>Resources</h3>
+          <ul>${phase.resources.map(r => `<li>${esc(r.title)}${r.provider ? ` (${esc(r.provider)})` : ''}</li>`).join('')}</ul>
+        ` : ''}
+        ${phase.resume_updates?.length ? `
+          <h3>Resume Updates</h3>
+          <ul>${phase.resume_updates.map(u => `<li>${esc(u)}</li>`).join('')}</ul>
+        ` : ''}
+      </div>
+    `).join('')}
+  ` : '<p style="color:#94a3b8">No pathway plan available for this run.</p>'}
+
+  ${risks.length > 0 ? `
+    <h3>Risks To Watch</h3>
+    <ul>${risks.map(r => `<li>${esc(r)}</li>`).join('')}</ul>
+  ` : ''}
 
   <div class="footer">CareerAI — AI-Powered Career Gap Analysis</div>
   </div>

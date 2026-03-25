@@ -1,8 +1,47 @@
 const API = '/api';
 
+function normalizeErrorDetail(detail, fallbackMessage = 'Request failed') {
+  const raw = typeof detail === 'string' ? detail.trim() : '';
+  if (!raw) return fallbackMessage;
+
+  // Hide backend/provider internals and show actionable UI-safe messages.
+  if (
+    raw.includes('httpx.RemoteProtocolError')
+    || raw.includes('RemoteProtocolError')
+    || raw.includes('Server disconnected')
+  ) {
+    return 'Temporary connection issue while processing your request. Please try again.';
+  }
+
+  if (raw.includes('ReadTimeout') || raw.includes('TimeoutError')) {
+    return 'The request timed out. Please try again.';
+  }
+
+  return raw;
+}
+
+async function getErrorDetail(res, fallbackMessage) {
+  const contentType = res.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    const payload = await res.json().catch(() => null);
+    if (payload && typeof payload.detail === 'string' && payload.detail.trim()) {
+      return normalizeErrorDetail(payload.detail, `${fallbackMessage}: ${res.status}`);
+    }
+  }
+
+  const text = await res.text().catch(() => '');
+  if (text && text.trim()) {
+    return normalizeErrorDetail(text.trim(), `${fallbackMessage}: ${res.status}`);
+  }
+
+  return `${fallbackMessage}: ${res.status}`;
+}
+
 export async function startSession() {
   const res = await fetch(`${API}/session/start`, { method: 'POST' });
-  if (!res.ok) throw new Error(`Session start failed: ${res.status}`);
+  if (!res.ok) {
+    throw new Error(await getErrorDetail(res, 'Session start failed'));
+  }
   return res.json(); // { session_token, session_id }
 }
 
@@ -17,8 +56,7 @@ export async function uploadEvidence(sessionToken, file, sourceType = 'resume', 
     body: form,
   });
   if (!res.ok) {
-    const detail = await res.json().catch(() => ({}));
-    throw new Error(detail.detail || `Evidence upload failed: ${res.status}`);
+    throw new Error(await getErrorDetail(res, 'Evidence upload failed'));
   }
   return res.json(); // { document_id, content_hash, storage_ref, source_type }
 }
@@ -37,8 +75,7 @@ export async function createRun(sessionToken, desiredRole, evidenceDocumentIds, 
     }),
   });
   if (!res.ok) {
-    const detail = await res.json().catch(() => ({}));
-    throw new Error(detail.detail || `Run failed: ${res.status}`);
+    throw new Error(await getErrorDetail(res, 'Run failed'));
   }
   return res.json(); // { run_id, status }
 }
@@ -53,12 +90,17 @@ export async function createRun(sessionToken, desiredRole, evidenceDocumentIds, 
 export function streamRun(sessionToken, runId, onEvent) {
   const url = `${API}/runs/${runId}/stream?token=${encodeURIComponent(sessionToken)}`;
   const evtSource = new EventSource(url);
+  let streamClosed = false;
 
   evtSource.onmessage = (msg) => {
     try {
       const event = JSON.parse(msg.data);
+      if (event?.type === 'error') {
+        event.detail = normalizeErrorDetail(event.detail, 'Something went wrong while processing your request.');
+      }
       onEvent(event);
       if (event.type === 'done' || event.type === 'error') {
+        streamClosed = true;
         evtSource.close();
       }
     } catch {
@@ -67,9 +109,17 @@ export function streamRun(sessionToken, runId, onEvent) {
   };
 
   evtSource.onerror = () => {
-    onEvent({ type: 'error', detail: 'Connection to server lost' });
-    evtSource.close();
+    // EventSource auto-reconnects for transient network/server restarts.
+    // Only emit an error when the stream is permanently closed.
+    if (!streamClosed && evtSource.readyState === EventSource.CLOSED) {
+      onEvent({ type: 'error', detail: normalizeErrorDetail('Connection to server lost', 'Connection to server lost') });
+      streamClosed = true;
+      evtSource.close();
+    }
   };
 
-  return () => evtSource.close();
+  return () => {
+    streamClosed = true;
+    evtSource.close();
+  };
 }

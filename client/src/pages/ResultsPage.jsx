@@ -41,9 +41,10 @@ function extractData(finalState) {
   const studentModel = finalState?.student_model ?? null;
   const roleSpec = finalState?.role_spec ?? null;
   const gapReport = finalState?.gap_report ?? null;
+  const plan = finalState?.plan ?? finalState?.best_plan ?? null;
   const targetRole = finalState?.desired_role ?? 'Unknown Role';
 
-  return { studentModel, roleSpec, gapReport, targetRole };
+  return { studentModel, roleSpec, gapReport, plan, targetRole };
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -60,7 +61,7 @@ export default function ResultsPage() {
     }
   })();
   const finalState = location.state?.finalState ?? storedFinalState;
-  const { studentModel, roleSpec, gapReport, targetRole } =
+  const { studentModel, roleSpec, gapReport, plan, targetRole } =
     extractData(finalState);
 
   useEffect(() => {
@@ -72,8 +73,8 @@ export default function ResultsPage() {
   const [activeTab, setActiveTab] = useState('career');
 
   const handleDownloadReport = useCallback(() => {
-    downloadReport({ studentModel, roleSpec, gapReport, targetRole });
-  }, [studentModel, roleSpec, gapReport, targetRole]);
+    downloadReport({ studentModel, roleSpec, gapReport, plan, targetRole });
+  }, [studentModel, roleSpec, gapReport, plan, targetRole]);
 
   return (
     <div className={styles.page}>
@@ -130,7 +131,7 @@ export default function ResultsPage() {
             gapReport={gapReport}
           />
         ) : (
-          <PathwayPlanTab />
+          <PathwayPlanTab plan={plan} />
         )}
       </div>
     </div>
@@ -317,25 +318,107 @@ function CareerPlanTab({ studentModel, roleSpec, gapReport }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   Pathway Plan Tab  (placeholder)
+   Pathway Plan Tab
    ══════════════════════════════════════════════════════════════════════ */
-function PathwayPlanTab() {
-  return (
-    <div className={styles.placeholderWrap}>
-      <div className={styles.placeholderCard}>
-        <div className={styles.placeholderIcon}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-          </svg>
+function PathwayPlanTab({ plan }) {
+  if (!plan?.phases?.length) {
+    return (
+      <div className={styles.placeholderWrap}>
+        <div className={styles.placeholderCard}>
+          <div className={styles.placeholderIcon}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+            </svg>
+          </div>
+          <h2 className={styles.placeholderTitle}>Pathway Plan Not Available</h2>
+          <p className={styles.placeholderText}>
+            We could not find a pathway plan in this run result. Try generating a new run.
+          </p>
         </div>
-        <h2 className={styles.placeholderTitle}>Pathway Plan Coming Soon</h2>
-        <p className={styles.placeholderText}>
-          The pathway planning agent is currently being designed. Once complete,
-          this tab will contain your personalised learning pathway with
-          recommended courses, projects, milestones, and a week-by-week schedule
-          to close your identified gaps.
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.pathwayGrid}>
+      <div className={styles.card}>
+        <h2 className={styles.cardTitle}>
+          <span className={styles.dotBlue} />Pathway Overview
+        </h2>
+        <p className={styles.cardSubtitle}>
+          Timeline: <strong>{plan.timeline_weeks}</strong> weeks · Phases: <strong>{plan.phases.length}</strong>
         </p>
       </div>
+
+      {plan.phases.map((phase, idx) => (
+        <section key={`${phase.title}-${idx}`} className={styles.card}>
+          <div className={styles.phaseHeader}>
+            <h3 className={styles.phaseTitle}>Phase {idx + 1}: {phase.title}</h3>
+            <span className={styles.phaseWeeks}>{phase.weeks} weeks</span>
+          </div>
+
+          <p className={styles.phaseText}><strong>Rationale:</strong> {phase.rationale}</p>
+          <p className={styles.phaseText}><strong>Outcome:</strong> {phase.outcome}</p>
+          {phase.checkpoint && (
+            <p className={styles.phaseText}><strong>Checkpoint:</strong> {phase.checkpoint}</p>
+          )}
+
+          {phase.learning_actions?.length > 0 && (
+            <div className={styles.section}>
+              <h4 className={styles.sectionTitle}>Learning Actions</h4>
+              <ul className={styles.bulletList}>
+                {phase.learning_actions.map((action, i) => (
+                  <li key={`${action.title}-${i}`} className={styles.bulletItem}>
+                    <strong>{action.title}</strong> - {action.summary}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {phase.resources?.length > 0 && (
+            <div className={styles.section}>
+              <h4 className={styles.sectionTitle}>Resources</h4>
+              <ul className={styles.bulletList}>
+                {phase.resources.map((resource, i) => (
+                  <li key={`${resource.title}-${i}`} className={styles.bulletItem}>
+                    {resource.url ? (
+                      <a href={resource.url} target="_blank" rel="noreferrer">{resource.title}</a>
+                    ) : (
+                      resource.title
+                    )}
+                    {resource.provider ? ` (${resource.provider})` : ''}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {phase.resume_updates?.length > 0 && (
+            <div className={styles.section}>
+              <h4 className={styles.sectionTitle}>Resume Updates</h4>
+              <ul className={styles.bulletList}>
+                {phase.resume_updates.map((item, i) => (
+                  <li key={`${item}-${i}`} className={styles.bulletItem}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      ))}
+
+      {plan.risks?.length > 0 && (
+        <section className={styles.card}>
+          <h3 className={styles.cardTitle}>
+            <span className={styles.dotOrange} />Risks To Watch
+          </h3>
+          <ul className={styles.bulletList}>
+            {plan.risks.map((risk, i) => (
+              <li key={`${risk}-${i}`} className={styles.bulletItem}>{risk}</li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

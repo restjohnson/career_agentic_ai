@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 from langchain_openai import ChatOpenAI
 
 from app.state import ProvenanceRef, RoleSpecModel, RoleSpecRequirement
+from app.tools.llm_resilience import invoke_with_retry
 
 
 _SYSTEM = """You are an expert role intake analyst with deep knowledge of industry hiring standards.
@@ -177,6 +178,7 @@ Task:
 5. For any requirement directly supported by payload, set provenance source_type=ONET, source_ids=[onet_code], and include a short note naming the payload section.
 6. For inferred requirements, set provenance source_type=INFERRED, source_ids=null, and give a short provenance.note.
 """
-    return llm_struct.invoke(
-        [{"role": "system", "content": _SYSTEM}, {"role": "user", "content": prompt}]
+    return invoke_with_retry(
+        llm_struct,
+        [{"role": "system", "content": _SYSTEM}, {"role": "user", "content": prompt}],
     )

@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
+from app.tools.llm_resilience import invoke_with_retry
 from app.state import (
     EvidenceItem,
     EvidenceItemType,
@@ -139,8 +140,9 @@ Parsed document content:
 Extract all relevant evidence items from this document. For each item, return the index numbers of the requirements it supports in matched_requirement_indices.
 """
 
-    result: _ExtractionResult = llm_struct.invoke(
-        [{"role": "system", "content": _SYSTEM}, {"role": "user", "content": prompt}]
+    result: _ExtractionResult = invoke_with_retry(
+        llm_struct,
+        [{"role": "system", "content": _SYSTEM}, {"role": "user", "content": prompt}],
     )
 
     return [

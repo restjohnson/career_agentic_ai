@@ -15,6 +15,7 @@ from app.tools.supabase_repo import SupabaseRepo
 from app.tools.session_token import get_session_id, get_session_id_from_query
 from app.graph import build_graph
 from app.run_events import get_queue, publish, cleanup
+from app.tools.llm_resilience import normalize_exception_message
 
 router = APIRouter(prefix="/runs", tags=["runs"])
 repo = SupabaseRepo()
@@ -73,7 +74,7 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
             publish(run_id, {"type": "done", "final_state": final_state})
         except Exception as e:
             repo.set_run_status(session_id=session_id, run_id=run_id, status="failed")
-            publish(run_id, {"type": "error", "detail": f"{type(e).__name__}: {e}"})
+            publish(run_id, {"type": "error", "detail": normalize_exception_message(e)})
 
     threading.Thread(target=_run_graph, daemon=True).start()
 

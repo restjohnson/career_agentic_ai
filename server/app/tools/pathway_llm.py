@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
+from app.tools.llm_resilience import invoke_with_retry
 from app.state import (
     CareerPlan,
     CritiqueReport,
@@ -263,10 +264,13 @@ rationale must be your own authored curriculum — not restatements of resource 
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)
     llm_struct = llm.with_structured_output(_PlanSpec, method="json_schema", strict=True)
 
-    return llm_struct.invoke([
-        {"role": "system", "content": _SYSTEM},
-        {"role": "user",   "content": user_prompt},
-    ])
+    return invoke_with_retry(
+        llm_struct,
+        [
+            {"role": "system", "content": _SYSTEM},
+            {"role": "user", "content": user_prompt},
+        ],
+    )
 
 
 # ---------------------------------------------------------------------------
