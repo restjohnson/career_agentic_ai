@@ -1,6 +1,13 @@
 .env
-.venv
-.env
-.venv
-.vscode
-__pycache__
+.env.*
+.venv/
+venv/
+.vscode/
+
+# Python caches
+__pycache__/
+**/__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
