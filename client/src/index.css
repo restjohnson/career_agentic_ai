@@ -2,23 +2,23 @@
    CSS Custom Properties
    =========================== */
 :root {
-  /* ── Deep navy + electric-blue palette ─────────────────────────── */
+  /* ── Light palette with blue accents ──────────────────────────── */
   --color-primary:       #3b82f6;                    /* electric blue      */
   --color-primary-dark:  #2563eb;                    /* deeper blue        */
-  --color-primary-light: rgba(59, 130, 246, 0.15);   /* blue tint (dark)   */
+  --color-primary-light: rgba(59, 130, 246, 0.08);   /* blue tint (light)  */
   --color-accent:        #8b5cf6;                    /* violet accent      */
-  --color-accent-light:  rgba(139, 92, 246, 0.15);   /* violet tint (dark) */
+  --color-accent-light:  rgba(139, 92, 246, 0.08);   /* violet tint (light)*/
   --color-success:       #10b981;                    /* emerald            */
 
-  --color-bg:        #060e1e;   /* deepest navy */
-  --color-surface:   #0b1a36;   /* card surface */
-  --color-surface-2: #0e203f;   /* raised layer */
+  --color-bg:        #f8fafc;   /* near-white         */
+  --color-surface:   #ffffff;   /* card surface       */
+  --color-surface-2: #f1f5f9;   /* raised layer       */
 
-  --color-text:           #e2e8f0;  /* primary text   */
-  --color-text-secondary: #94a3b8;  /* secondary text */
-  --color-text-muted:     #64748b;  /* muted text     */
+  --color-text:           #1e293b;  /* primary text   */
+  --color-text-secondary: #475569;  /* secondary text */
+  --color-text-muted:     #94a3b8;  /* muted text     */
 
-  --color-border: rgba(96, 165, 250, 0.15);  /* blue-tinted border */
+  --color-border: #e2e8f0;  /* light gray border */
 
   /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -30,11 +30,11 @@
   --radius-xl:   1.5rem;
   --radius-full: 9999px;
 
-  /* Shadows — deeper for dark backgrounds */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+  /* Shadows — subtle for light backgrounds */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.05);
 
   /* Transitions */
   --transition-base: 250ms ease;

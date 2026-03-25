@@ -191,8 +191,8 @@
   font-weight: 500;
 }
 
-.skillTagGreen  { background: rgba(16, 185, 129, 0.12); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
-.skillTagOrange { background: rgba(245, 158, 11, 0.12); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
+.skillTagGreen  { background: rgba(16, 185, 129, 0.08); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); }
+.skillTagOrange { background: rgba(245, 158, 11, 0.08); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.3); }
 
 .skillDot {
   font-size: 0.8rem;
@@ -247,8 +247,8 @@
   z-index: 1;
 }
 
-.phaseDotGreen { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 2px solid rgba(16, 185, 129, 0.5); }
-.phaseDotBlue  { background: var(--color-primary-light); color: var(--color-primary); border: 2px solid #93c5fd; }
+.phaseDotGreen { background: rgba(16, 185, 129, 0.1); color: #059669; border: 2px solid rgba(16, 185, 129, 0.4); }
+.phaseDotBlue  { background: var(--color-primary-light); color: var(--color-primary); border: 2px solid rgba(59, 130, 246, 0.4); }
 .phaseDotGrey  { background: var(--color-surface-2); color: var(--color-text-muted); border: 2px solid var(--color-border); }
 
 .phaseLine {
@@ -308,7 +308,7 @@
   border-radius: var(--radius-full);
 }
 
-.phaseComplete .phaseStatus { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+.phaseComplete .phaseStatus { background: rgba(16, 185, 129, 0.1); color: #059669; }
 .phaseActive   .phaseStatus { background: var(--color-primary-light); color: var(--color-primary); }
 .phaseUpcoming .phaseStatus { background: var(--color-surface-2); color: var(--color-text-muted); }
 

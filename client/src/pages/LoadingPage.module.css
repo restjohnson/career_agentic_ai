@@ -1,12 +1,12 @@
 /* ════════════════════════════════════════════════════════════════════
-   Loading Page  —  orbital glow loader
+   Loading Page  —  orbital glow loader (light theme)
    ════════════════════════════════════════════════════════════════════ */
 .page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(140deg, #060e1e 0%, #0b1a36 60%, #0e203f 100%);
+  background: linear-gradient(140deg, #f8fafc 0%, #eef2ff 60%, #e0e7ff 100%);
   padding: 2rem;
 }
 
@@ -35,7 +35,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.3) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 65%);
   animation: pulse 2.5s ease-in-out infinite;
 }
 
@@ -50,15 +50,15 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1e3a8a, #312e81);
-  border: 2px solid rgba(96, 165, 250, 0.5);
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border: 2px solid rgba(59, 130, 246, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 4;
   box-shadow:
-    0 0 20px rgba(37, 99, 235, 0.5),
-    0 0 40px rgba(37, 99, 235, 0.25);
+    0 0 20px rgba(59, 130, 246, 0.25),
+    0 0 40px rgba(59, 130, 246, 0.1);
 }
 
 .coreIcon {
@@ -78,8 +78,8 @@
 .orbit1 {
   width: 90px;
   height: 90px;
-  border-top-color:   rgba(96, 165, 250, 0.7);
-  border-right-color: rgba(96, 165, 250, 0.2);
+  border-top-color:   rgba(59, 130, 246, 0.6);
+  border-right-color: rgba(59, 130, 246, 0.15);
   animation: spin1 1.8s linear infinite;
 }
 
@@ -95,16 +95,16 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #60a5fa;
-  box-shadow: 0 0 8px #60a5fa;
+  background: #3b82f6;
+  box-shadow: 0 0 8px #3b82f6;
 }
 
 /* Orbit 2 — middle */
 .orbit2 {
   width: 130px;
   height: 130px;
-  border-top-color:  rgba(167, 139, 250, 0.7);
-  border-left-color: rgba(167, 139, 250, 0.2);
+  border-top-color:  rgba(139, 92, 246, 0.6);
+  border-left-color: rgba(139, 92, 246, 0.15);
   animation: spin2 2.8s linear infinite;
 }
 
@@ -120,16 +120,16 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #a78bfa;
-  box-shadow: 0 0 10px #a78bfa;
+  background: #8b5cf6;
+  box-shadow: 0 0 10px #8b5cf6;
 }
 
 /* Orbit 3 — outer */
 .orbit3 {
   width: 170px;
   height: 170px;
-  border-bottom-color: rgba(52, 211, 153, 0.65);
-  border-right-color:  rgba(52, 211, 153, 0.2);
+  border-bottom-color: rgba(16, 185, 129, 0.55);
+  border-right-color:  rgba(16, 185, 129, 0.15);
   animation: spin3 4s linear infinite;
 }
 
@@ -145,21 +145,21 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 10px #34d399;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
 }
 
 /* ── Text ────────────────────────────────────────────────────────── */
 .title {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 800;
-  color: #f1f5f9;
+  color: #0f172a;
   letter-spacing: -0.03em;
 }
 
 .subtitle {
   font-size: 1rem;
-  color: rgba(148, 163, 184, 0.75);
+  color: #64748b;
   line-height: 1.65;
   margin-top: -0.5rem;
 }
@@ -170,11 +170,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
-  background: rgba(10, 18, 38, 0.7);
-  border: 1px solid rgba(96, 165, 250, 0.12);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 1rem;
   padding: 1.25rem 1.5rem;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .step {
@@ -182,16 +182,16 @@
   align-items: center;
   gap: 0.75rem;
   font-size: 0.9375rem;
-  color: rgba(148, 163, 184, 0.5);
+  color: #cbd5e1;
   transition: all 300ms ease;
 }
 
 .stepDone {
-  color: #34d399;
+  color: #10b981;
 }
 
 .stepActive {
-  color: #e2e8f0;
+  color: #1e293b;
   font-weight: 600;
 }
 
@@ -212,8 +212,8 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 2px solid rgba(96, 165, 250, 0.3);
-  border-top-color: #60a5fa;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-top-color: #3b82f6;
   animation: stepSpin 0.7s linear infinite;
   flex-shrink: 0;
 }

@@ -6,6 +6,7 @@ from app.tools.supabase_repo import SupabaseRepo
 from app.nodes.role_intake import role_intake_node
 from app.nodes.evidence_ingestion import evidence_ingestion_node
 from app.nodes.gap_analysis import gap_analysis_node
+from app.run_events import publish
 
 def snapshot(repo: SupabaseRepo, state: AgentState,
              step: str, contains_free_text: bool = False) -> None:
@@ -19,6 +20,8 @@ def snapshot(repo: SupabaseRepo, state: AgentState,
         state_json=AgentState.model_validate(state).model_dump(exclude_none=True),
         contains_free_text=contains_free_text,
     )
+    if state.run_id:
+        publish(state.run_id, {"type": "step", "step": step, "status": "done"})
 
 def build_graph(repo: SupabaseRepo):
     g = StateGraph(AgentState)

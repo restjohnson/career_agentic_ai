@@ -8,6 +8,9 @@
 
 /* ── Progress bar ────────────────────────────────────────────────── */
 .progressBar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
   padding: 1rem 2rem;
@@ -97,17 +100,10 @@
   color: var(--color-text-secondary);
 }
 
-/* ── Split layout ────────────────────────────────────────────────── */
-.splitLayout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.75rem;
-  align-items: start;
-}
-
-/* ── Panel shared ────────────────────────────────────────────────── */
-.leftPanel,
-.rightPanel {
+/* ── Upload panel (centered, single column) ──────────────────────── */
+.uploadPanel {
+  max-width: 600px;
+  margin-inline: auto;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
@@ -389,10 +385,6 @@
 }
 
 /* ── Responsive ──────────────────────────────────────────────────── */
-@media (max-width: 860px) {
-  .splitLayout { grid-template-columns: 1fr; }
-}
-
 @media (max-width: 480px) {
   .content { padding-inline: 1.25rem; }
 }

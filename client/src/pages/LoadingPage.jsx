@@ -1,35 +1,53 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './LoadingPage.module.css';
+import { createRun, streamRun } from '../api';
 
+/* Map backend step names → UI labels (in order) */
 const AGENT_STEPS = [
-  { id: 1, label: 'Ingesting your evidence…',           delay: 0    },
-  { id: 2, label: 'Matching role requirements…',        delay: 2000 },
-  { id: 3, label: 'Performing gap analysis…',           delay: 4000 },
-  { id: 4, label: 'Generating personalised pathway…',   delay: 6500 },
-  { id: 5, label: 'Finalising your career blueprint…',  delay: 9000 },
+  { key: 'role_intake',        label: 'Matching role requirements from O*NET…' },
+  { key: 'evidence_ingestion', label: 'Ingesting & analysing your evidence…' },
+  { key: 'gap_analysis',       label: 'Performing gap analysis…' },
+  { key: 'explanation',        label: 'Finalising your career blueprint…' },
 ];
 
-const NAVIGATE_AFTER_MS = 12000;
-
 export default function LoadingPage() {
-  const [completedIds, setCompletedIds] = useState([]);
-  const [activeId,     setActiveId]     = useState(1);
+  const [completedSteps, setCompletedSteps] = useState(new Set());
+  const [activeStep,     setActiveStep]     = useState(AGENT_STEPS[0].key);
+  const [runError,       setRunError]       = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const timers = AGENT_STEPS.map((step) =>
-      setTimeout(() => {
-        setCompletedIds((prev) => [...prev, step.id]);
-        setActiveId(step.id + 1);
-      }, step.delay + 1400)
-    );
+    const { targetRole, evidenceDocIds = [], rawUserText } = location.state ?? {};
+    const sessionToken = localStorage.getItem('session_token');
+    let closeStream = null;
 
-    const finalTimer = setTimeout(() => navigate('/results'), NAVIGATE_AFTER_MS);
-    timers.push(finalTimer);
+    createRun(sessionToken, targetRole, evidenceDocIds, rawUserText)
+      .then(({ run_id }) => {
+        closeStream = streamRun(sessionToken, run_id, (event) => {
+          if (event.type === 'step') {
+            // Mark step complete, advance active to the next one
+            setCompletedSteps((prev) => new Set([...prev, event.step]));
+            const idx = AGENT_STEPS.findIndex((s) => s.key === event.step);
+            if (idx >= 0 && idx < AGENT_STEPS.length - 1) {
+              setActiveStep(AGENT_STEPS[idx + 1].key);
+            }
+          } else if (event.type === 'done') {
+            // All steps done — mark remaining and navigate
+            setCompletedSteps(new Set(AGENT_STEPS.map((s) => s.key)));
+            setTimeout(() => {
+              navigate('/results', { state: { finalState: event.final_state } });
+            }, 600);
+          } else if (event.type === 'error') {
+            setRunError(event.detail);
+          }
+        });
+      })
+      .catch((err) => setRunError(err.message));
 
-    return () => timers.forEach(clearTimeout);
-  }, [navigate]);
+    return () => { if (closeStream) closeStream(); };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={styles.page}>
@@ -53,19 +71,25 @@ export default function LoadingPage() {
         </div>
 
         <h1 className={styles.title}>Analysing Your Profile</h1>
-        <p className={styles.subtitle}>
-          Our AI agent is building your personalised career blueprint.
-          This usually takes under 60 seconds.
-        </p>
+        {runError ? (
+          <p className={styles.subtitle} style={{ color: '#f87171' }}>
+            Something went wrong: {runError}
+          </p>
+        ) : (
+          <p className={styles.subtitle}>
+            Our AI agent is building your personalised career blueprint.
+            This usually takes under 60 seconds.
+          </p>
+        )}
 
-        {/* ── Agent step list ─────────────────────────────────────── */}
+        {/* ── Agent step list — driven by real SSE events ────────── */}
         <div className={styles.steps}>
           {AGENT_STEPS.map((step) => {
-            const done   = completedIds.includes(step.id);
-            const active = activeId === step.id && !done;
+            const done   = completedSteps.has(step.key);
+            const active = activeStep === step.key && !done;
             return (
               <div
-                key={step.id}
+                key={step.key}
                 className={[
                   styles.step,
                   done   ? styles.stepDone   : '',
