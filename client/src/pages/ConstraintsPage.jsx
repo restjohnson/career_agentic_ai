@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles from './ConstraintsPage.module.css';
 
@@ -58,8 +58,21 @@ export default function ConstraintsPage() {
 
   const navigate   = useNavigate();
   const location   = useLocation();
-  const evidenceDocIds = location.state?.evidenceDocIds ?? [];
+  const storedEvidenceDocIds = (() => {
+    try {
+      return JSON.parse(sessionStorage.getItem('career_flow_evidence_ids') ?? '[]');
+    } catch {
+      return [];
+    }
+  })();
+  const evidenceDocIds = location.state?.evidenceDocIds ?? storedEvidenceDocIds;
   const canSubmit  = degreeProgram.trim() !== '' && targetRole.trim() !== '';
+
+  useEffect(() => {
+    if (!evidenceDocIds.length) {
+      navigate('/upload', { replace: true });
+    }
+  }, [evidenceDocIds.length, navigate]);
 
   const handleSubmit = () => {
     if (!canSubmit) return;
@@ -70,6 +83,12 @@ export default function ConstraintsPage() {
       `Target weeks: ${targetWeeks}`,
       `Learning mode: ${learningMode}`,
     ].join('. ');
+
+    sessionStorage.setItem(
+      'career_flow_constraints',
+      JSON.stringify({ targetRole, evidenceDocIds, rawUserText })
+    );
+
     navigate('/loading', {
       state: {
         targetRole,

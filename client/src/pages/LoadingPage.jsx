@@ -19,7 +19,21 @@ export default function LoadingPage() {
   const location = useLocation();
 
   useEffect(() => {
-    const { targetRole, evidenceDocIds = [], rawUserText } = location.state ?? {};
+    const storedConstraints = (() => {
+      try {
+        return JSON.parse(sessionStorage.getItem('career_flow_constraints') ?? 'null');
+      } catch {
+        return null;
+      }
+    })();
+
+    const { targetRole, evidenceDocIds = [], rawUserText } = location.state ?? storedConstraints ?? {};
+
+    if (!targetRole || !evidenceDocIds.length) {
+      navigate('/constraints', { replace: true });
+      return;
+    }
+
     const sessionToken = localStorage.getItem('session_token');
     let closeStream = null;
 
@@ -36,6 +50,7 @@ export default function LoadingPage() {
           } else if (event.type === 'done') {
             // All steps done — mark remaining and navigate
             setCompletedSteps(new Set(AGENT_STEPS.map((s) => s.key)));
+            sessionStorage.setItem('career_flow_final_state', JSON.stringify(event.final_state));
             setTimeout(() => {
               navigate('/results', { state: { finalState: event.final_state } });
             }, 600);
@@ -47,7 +62,7 @@ export default function LoadingPage() {
       .catch((err) => setRunError(err.message));
 
     return () => { if (closeStream) closeStream(); };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [location.state, navigate]);
 
   return (
     <div className={styles.page}>

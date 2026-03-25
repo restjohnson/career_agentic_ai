@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useCallback, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './ResultsPage.module.css';
 import { downloadReport } from '../reportTemplate';
 
@@ -51,9 +51,23 @@ function extractData(finalState) {
    ══════════════════════════════════════════════════════════════════════ */
 export default function ResultsPage() {
   const location = useLocation();
-  const finalState = location.state?.finalState ?? null;
+  const navigate = useNavigate();
+  const storedFinalState = (() => {
+    try {
+      return JSON.parse(sessionStorage.getItem('career_flow_final_state') ?? 'null');
+    } catch {
+      return null;
+    }
+  })();
+  const finalState = location.state?.finalState ?? storedFinalState;
   const { studentModel, roleSpec, gapReport, targetRole } =
     extractData(finalState);
+
+  useEffect(() => {
+    if (!finalState) {
+      navigate('/upload', { replace: true });
+    }
+  }, [finalState, navigate]);
 
   const [activeTab, setActiveTab] = useState('career');
 

@@ -13,6 +13,11 @@ export default function UploadPage() {
   const navigate     = useNavigate();
 
   useEffect(() => {
+    // Starting upload step resets downstream flow state.
+    sessionStorage.removeItem('career_flow_evidence_ids');
+    sessionStorage.removeItem('career_flow_constraints');
+    sessionStorage.removeItem('career_flow_final_state');
+
     startSession()
       .then(({ session_token, session_id }) => {
         localStorage.setItem('session_token', session_token);
@@ -41,6 +46,7 @@ export default function UploadPage() {
     try {
       const token = localStorage.getItem('session_token');
       const { document_id } = await uploadEvidence(token, uploadedFile, 'resume', consentLevel);
+      sessionStorage.setItem('career_flow_evidence_ids', JSON.stringify([document_id]));
       navigate('/constraints', { state: { evidenceDocIds: [document_id] } });
     } catch (err) {
       setUploadError(err.message);
