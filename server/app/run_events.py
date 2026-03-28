@@ -8,26 +8,22 @@ to the browser.
 from __future__ import annotations
 
 import asyncio
+import queue
 from typing import Any, Dict
 
-_queues: Dict[str, asyncio.Queue] = {}
+_queues: Dict[str, queue.Queue] = {}
 
 
-def get_queue(run_id: str) -> asyncio.Queue:
+def get_queue(run_id: str) -> queue.Queue:
     if run_id not in _queues:
-        _queues[run_id] = asyncio.Queue()
+        _queues[run_id] = queue.Queue()
     return _queues[run_id]
 
 
 def publish(run_id: str, event: Dict[str, Any]) -> None:
-    """Push a step event into the run's queue (safe to call from sync code)."""
+    """Push a step event into the run's queue (thread-safe)."""
     q = get_queue(run_id)
-    try:
-        loop = asyncio.get_running_loop()
-        loop.call_soon_threadsafe(q.put_nowait, event)
-    except RuntimeError:
-        # No running loop (e.g. unit tests) — fire-and-forget
-        q.put_nowait(event)
+    q.put(event)
 
 
 def cleanup(run_id: str) -> None:

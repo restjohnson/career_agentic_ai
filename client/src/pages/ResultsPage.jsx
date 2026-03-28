@@ -41,9 +41,10 @@ function extractData(finalState) {
   const studentModel = finalState?.student_model ?? null;
   const roleSpec = finalState?.role_spec ?? null;
   const gapReport = finalState?.gap_report ?? null;
+  const plan = finalState?.plan ?? null;
   const targetRole = finalState?.desired_role ?? 'Unknown Role';
 
-  return { studentModel, roleSpec, gapReport, targetRole };
+  return { studentModel, roleSpec, gapReport, plan, targetRole };
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -60,7 +61,7 @@ export default function ResultsPage() {
     }
   })();
   const finalState = location.state?.finalState ?? storedFinalState;
-  const { studentModel, roleSpec, gapReport, targetRole } =
+  const { studentModel, roleSpec, gapReport, plan, targetRole } =
     extractData(finalState);
 
   useEffect(() => {
@@ -130,7 +131,7 @@ export default function ResultsPage() {
             gapReport={gapReport}
           />
         ) : (
-          <PathwayPlanTab />
+          <PathwayPlanTab plan={plan} />
         )}
       </div>
     </div>
@@ -317,25 +318,186 @@ function CareerPlanTab({ studentModel, roleSpec, gapReport }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   Pathway Plan Tab  (placeholder)
+   Pathway Plan Tab
    ══════════════════════════════════════════════════════════════════════ */
-function PathwayPlanTab() {
-  return (
-    <div className={styles.placeholderWrap}>
-      <div className={styles.placeholderCard}>
-        <div className={styles.placeholderIcon}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-          </svg>
+
+const RESOURCE_TYPE_ICONS = {
+  tutorial: '📚',
+  project: '🔨',
+  open_source: '⭐',
+  workshop: '🎓',
+  certification: '🏆',
+  internship: '💼',
+  online_course: '🎬',
+  documentation: '📖',
+};
+
+const BLOOM_LEVEL_COLORS = {
+  remember: '#6b7280',
+  understand: '#3b82f6',
+  apply: '#10b981',
+  analyse: '#f59e0b',
+  evaluate: '#ef4444',
+  create: '#8b5cf6',
+};
+
+function PathwayPlanTab({ plan }) {
+  if (!plan || !plan.phases || plan.phases.length === 0) {
+    return (
+      <div className={styles.placeholderWrap}>
+        <div className={styles.placeholderCard}>
+          <div className={styles.placeholderIcon}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+            </svg>
+          </div>
+          <h2 className={styles.placeholderTitle}>No Pathway Plan Available</h2>
+          <p className={styles.placeholderText}>
+            The pathway planning agent did not generate a plan for your profile.
+            This may occur if all requirements are already met or if the agent
+            encountered an issue during planning.
+          </p>
         </div>
-        <h2 className={styles.placeholderTitle}>Pathway Plan Coming Soon</h2>
-        <p className={styles.placeholderText}>
-          The pathway planning agent is currently being designed. Once complete,
-          this tab will contain your personalised learning pathway with
-          recommended courses, projects, milestones, and a week-by-week schedule
-          to close your identified gaps.
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.pathwayContainer}>
+      {/* ── Timeline overview ──────────────────────────────────────── */}
+      <div className={styles.card}>
+        <h2 className={styles.cardTitle}>
+          <span className={styles.dotPurple} />Learning Pathway
+        </h2>
+        <p className={styles.cardSubtitle}>
+          {plan.timeline_weeks}-week plan with {plan.phases.length} phases
         </p>
       </div>
+
+      {/* ── Phases ─────────────────────────────────────────────────── */}
+      <div className={styles.phasesTimeline}>
+        {plan.phases.map((phase, phaseIdx) => (
+          <div key={phaseIdx} className={styles.phaseBlock}>
+            {/* Phase header */}
+            <div className={styles.phaseHeader}>
+              <div className={styles.phaseNumber}>{phaseIdx + 1}</div>
+              <div className={styles.phaseInfo}>
+                <h3 className={styles.phaseTitle}>{phase.title}</h3>
+                <p className={styles.phaseDuration}>
+                  {phase.weeks} {phase.weeks === 1 ? 'week' : 'weeks'}
+                </p>
+              </div>
+            </div>
+
+            {/* Phase details */}
+            <div className={styles.phaseBody}>
+              {phase.rationale && (
+                <div className={styles.phaseSection}>
+                  <h4 className={styles.phaseSectionTitle}>Rationale</h4>
+                  <p className={styles.phaseSectionText}>{phase.rationale}</p>
+                </div>
+              )}
+
+              {phase.outcome && (
+                <div className={styles.phaseSection}>
+                  <h4 className={styles.phaseSectionTitle}>Outcome</h4>
+                  <p className={styles.phaseSectionText}>{phase.outcome}</p>
+                </div>
+              )}
+
+              {phase.checkpoint && (
+                <div className={styles.phaseSection}>
+                  <h4 className={styles.phaseSectionTitle}>Checkpoint</h4>
+                  <p className={styles.phaseSectionText}>{phase.checkpoint}</p>
+                </div>
+              )}
+
+              {/* Learning actions */}
+              {phase.learning_actions && phase.learning_actions.length > 0 && (
+                <div className={styles.phaseSection}>
+                  <h4 className={styles.phaseSectionTitle}>Learning Actions</h4>
+                  <div className={styles.actionsList}>
+                    {phase.learning_actions.map((action, actionIdx) => (
+                      <div key={actionIdx} className={styles.actionCard}>
+                        <div className={styles.actionHeader}>
+                          <h5 className={styles.actionTitle}>{action.title}</h5>
+                          <span
+                            className={styles.bloomBadge}
+                            style={{ backgroundColor: BLOOM_LEVEL_COLORS[action.bloom_level] || '#6b7280' }}
+                          >
+                            {action.bloom_level}
+                          </span>
+                        </div>
+                        <p className={styles.actionSummary}>{action.summary}</p>
+                        {action.rationale && (
+                          <p className={styles.actionRationale}>{action.rationale}</p>
+                        )}
+
+                        {/* Resources for this action */}
+                        {action.example_resources && action.example_resources.length > 0 && (
+                          <div className={styles.resourcesList}>
+                            <span className={styles.resourcesLabel}>Recommended resources:</span>
+                            <div className={styles.resourceItems}>
+                              {action.example_resources.map((resource, resIdx) => (
+                                <ResourceTag key={resIdx} resource={resource} />
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Resume updates */}
+              {phase.resume_updates && phase.resume_updates.length > 0 && (
+                <div className={styles.phaseSection}>
+                  <h4 className={styles.phaseSectionTitle}>Resume Updates</h4>
+                  <ul className={styles.bulletList}>
+                    {phase.resume_updates.map((update, idx) => (
+                      <li key={idx} className={styles.bulletItem}>{update}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Gaps addressed */}
+              {phase.addresses_gaps && phase.addresses_gaps.length > 0 && (
+                <div className={styles.phaseSection}>
+                  <h4 className={styles.phaseSectionTitle}>Gaps Addressed</h4>
+                  <ul className={styles.gapsList}>
+                    {phase.addresses_gaps.map((gap, idx) => (
+                      <li key={idx} className={styles.gapItem}>{gap}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
+  );
+}
+
+function ResourceTag({ resource }) {
+  const icon = RESOURCE_TYPE_ICONS[resource.resource_type] || '📌';
+
+  return (
+    <a
+      href={resource.url || '#'}
+      target={resource.url ? '_blank' : undefined}
+      rel={resource.url ? 'noopener noreferrer' : undefined}
+      className={styles.resourceTag}
+      title={resource.provider ? `${resource.provider} • ${resource.resource_type}` : resource.resource_type}
+    >
+      <span className={styles.resourceIcon}>{icon}</span>
+      <span className={styles.resourceTitle}>{resource.title}</span>
+      {resource.is_free && <span className={styles.freeLabel}>Free</span>}
+      {resource.estimated_hours && (
+        <span className={styles.hoursLabel}>{resource.estimated_hours}h</span>
+      )}
+    </a>
   );
 }

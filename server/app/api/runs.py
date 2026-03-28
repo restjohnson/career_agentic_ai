@@ -67,11 +67,18 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
 
     def _run_graph():
         try:
+            print(f"[{run_id}] Starting graph invocation...")
             out: Any = graph.invoke(state, config=config)
+            print(f"[{run_id}] Graph completed, setting status to done...")
             repo.set_run_status(session_id=session_id, run_id=run_id, status="done")
             final_state = AgentState.model_validate(out).model_dump(exclude_none=True)
+            print(f"[{run_id}] Publishing done event...")
             publish(run_id, {"type": "done", "final_state": final_state})
+            print(f"[{run_id}] Done event published")
         except Exception as e:
+            print(f"[{run_id}] Graph error: {type(e).__name__}: {e}", flush=True)
+            import traceback
+            traceback.print_exc()
             repo.set_run_status(session_id=session_id, run_id=run_id, status="failed")
             publish(run_id, {"type": "error", "detail": f"{type(e).__name__}: {e}"})
 
@@ -83,18 +90,37 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
 @router.get("/{run_id}/stream")
 async def stream_run(run_id: str, session_id: str = Depends(get_session_id_from_query)):
     """SSE endpoint — streams step events as the agent graph executes."""
-    queue = get_queue(run_id)
+    q = get_queue(run_id)
+    print(f"[{run_id}] SSE stream opened")
 
     async def event_generator():
         try:
+            loop = asyncio.get_event_loop()
             while True:
-                event = await asyncio.wait_for(queue.get(), timeout=300)
-                yield f"data: {json.dumps(event)}\n\n"
-                if event.get("type") in ("done", "error"):
+                try:
+                    # Use run_in_executor to call blocking queue.get() from thread pool
+                    def get_event():
+                        return q.get(block=True, timeout=300)
+
+                    event = await asyncio.wait_for(
+                        loop.run_in_executor(None, get_event),
+                        timeout=310
+                    )
+                    print(f"[{run_id}] SSE sending event: {event.get('type')}")
+                    yield f"data: {json.dumps(event)}\n\n"
+                    if event.get("type") in ("done", "error"):
+                        print(f"[{run_id}] SSE stream closing (type={event.get('type')})")
+                        break
+                except asyncio.TimeoutError:
+                    print(f"[{run_id}] SSE timeout")
+                    yield f"data: {json.dumps({'type': 'error', 'detail': 'Timeout waiting for agent'})}\n\n"
                     break
-        except asyncio.TimeoutError:
-            yield f"data: {json.dumps({'type': 'error', 'detail': 'Timeout waiting for agent'})}\n\n"
+        except Exception as e:
+            print(f"[{run_id}] SSE error: {type(e).__name__}: {e}")
+            import traceback
+            traceback.print_exc()
         finally:
+            print(f"[{run_id}] SSE stream cleaned up")
             cleanup(run_id)
 
     return StreamingResponse(

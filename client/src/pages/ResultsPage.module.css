@@ -522,6 +522,235 @@
   line-height: 1.6;
 }
 
+/* ── Pathway Plan styles ─────────────────────────────────────────── */
+.pathwayContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.phasesTimeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.phaseBlock {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.phaseHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--color-surface-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.phaseNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.phaseInfo {
+  flex: 1;
+}
+
+.phaseTitle {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.phaseDuration {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.phaseBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.phaseSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.phaseSectionTitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.phaseSectionText {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Learning actions ────────────────────────────────────────────── */
+.actionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.actionCard {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.actionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.actionTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+.bloomBadge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  color: #fff;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.actionSummary {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.actionRationale {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  font-style: italic;
+  padding: 0.625rem 0.75rem;
+  background: var(--color-surface-2);
+  border-left: 3px solid var(--color-primary-light);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* ── Resources ───────────────────────────────────────────────────── */
+.resourcesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.resourcesLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.resourceItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.resourceTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  text-decoration: none;
+  transition: all 200ms ease;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.resourceTag:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.resourceIcon {
+  font-size: 0.875rem;
+}
+
+.resourceTitle {
+  font-weight: 500;
+}
+
+.freeLabel {
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-full);
+  background: rgba(16, 185, 129, 0.15);
+  color: #059669;
+}
+
+.hoursLabel {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* ── Resume updates & gaps ───────────────────────────────────────── */
+.gapsList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.gapItem {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  padding: 0.375rem 0.75rem;
+  background: var(--color-bg);
+  border-left: 3px solid #f59e0b;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 960px) {
   .careerGrid     { grid-template-columns: 1fr; }
@@ -537,4 +766,6 @@
   .reqRow         { grid-template-columns: 1fr; gap: 0.25rem; }
   .reqColCat,
   .reqColLevel    { justify-content: flex-start; }
+  .actionHeader   { flex-direction: column; }
+  .bloomBadge     { align-self: flex-start; }
 }

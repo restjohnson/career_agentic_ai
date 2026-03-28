@@ -189,6 +189,9 @@ def pathway_planning_node(state: Dict[str, Any], repo: SupabaseRepo) -> Dict[str
 
     # Step 5 — assemble plan
     s.plan = assemble_plan(plan_spec, resources_by_gap)
+    print(f"[PATHWAY_PLANNING] Plan created: {len(s.plan.phases)} phases, {s.plan.timeline_weeks} weeks total", flush=True)
+    if s.plan.phases:
+        print(f"[PATHWAY_PLANNING] Phase 0: {s.plan.phases[0].title} ({s.plan.phases[0].weeks} weeks, {len(s.plan.phases[0].learning_actions)} actions)", flush=True)
 
     # Step 6 — normalise addresses_gap values to canonical gap summary strings
     # The LLM may paraphrase labels or use prerequisite concept labels.
