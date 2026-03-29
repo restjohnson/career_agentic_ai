@@ -1,22 +1,25 @@
 /* ════════════════════════════════════════════════════════════════════
-   Results Page  —  Career Report with Tabs
+   Results Page
    ════════════════════════════════════════════════════════════════════ */
 .page {
   min-height: 100vh;
   background: var(--color-bg);
-  padding-bottom: 4rem;
+  padding-bottom: 5rem;
 }
 
 /* ── Page header ─────────────────────────────────────────────────── */
 .pageHeader {
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .headerInner {
   max-width: 1100px;
   margin-inline: auto;
-  padding: 2rem 2rem 0;
+  padding: 1.5rem 2rem 0;
 }
 
 .headerRow {
@@ -36,19 +39,19 @@
   font-size: 0.8125rem;
   font-weight: 700;
   border-radius: var(--radius-full);
-  margin-bottom: 0.625rem;
+  margin-bottom: 0.5rem;
 }
 
 .pageTitle {
-  font-size: clamp(1.625rem, 3vw, 2.25rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--color-text);
 }
 
 .pageMeta {
-  margin-top: 0.375rem;
-  font-size: 0.9375rem;
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
   color: var(--color-text-secondary);
 }
 
@@ -62,32 +65,26 @@
   gap: 0.75rem;
   align-items: center;
   flex-shrink: 0;
+  padding-top: 0.25rem;
 }
 
 .downloadBtn {
   padding: 0.625rem 1.25rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 700;
   color: #fff;
-  border: 1px solid transparent;
+  border: none;
   border-radius: var(--radius-md);
   background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
   cursor: pointer;
   transition: transform 180ms ease, filter 180ms ease;
 }
-
-.downloadBtn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.03);
-}
-
-.downloadBtn:active {
-  transform: translateY(0);
-}
+.downloadBtn:hover  { transform: translateY(-1px); filter: brightness(1.04); }
+.downloadBtn:active { transform: translateY(0); }
 
 .restartBtn {
   padding: 0.625rem 1.25rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
@@ -96,20 +93,13 @@
   text-decoration: none;
   transition: all 250ms ease;
 }
-
-.restartBtn:hover {
-  background: var(--color-surface-2);
-  color: var(--color-text);
-}
+.restartBtn:hover { background: var(--color-surface-2); color: var(--color-text); }
 
 /* ── Tab bar ─────────────────────────────────────────────────────── */
-.tabBar {
-  display: flex;
-  gap: 0;
-}
+.tabBar { display: flex; gap: 0; }
 
 .tab {
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.375rem;
   font-size: 0.9375rem;
   font-weight: 600;
   font-family: inherit;
@@ -119,15 +109,31 @@
   border-bottom: 3px solid transparent;
   cursor: pointer;
   transition: all 200ms ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
+.tab:hover    { color: var(--color-text-secondary); }
+.tabActive    { color: var(--color-primary); border-bottom-color: var(--color-primary); }
 
-.tab:hover {
-  color: var(--color-text-secondary);
+.tabBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 0.35rem;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: all 200ms ease;
 }
-
-.tabActive {
+.tabBadgeActive {
+  background: var(--color-primary-light);
   color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
 }
 
 /* ── Container ───────────────────────────────────────────────────── */
@@ -137,14 +143,7 @@
   padding: 2rem;
 }
 
-/* ── Career Plan grid ────────────────────────────────────────────── */
-.careerGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-/* ── Card ────────────────────────────────────────────────────────── */
+/* ── Shared card ────────────────────────────────────────────────── */
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -154,10 +153,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-.cardFull {
-  grid-column: 1 / -1;
 }
 
 .cardTitle {
@@ -175,55 +170,27 @@
   margin-top: -0.5rem;
 }
 
-/* ── Status dots ─────────────────────────────────────────────────── */
-.dotBlue   { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); }
-.dotPurple { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #8b5cf6; }
-.dotOrange { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; }
+.dotBlue   { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); flex-shrink: 0; }
+.dotPurple { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #8b5cf6; flex-shrink: 0; }
+.dotOrange { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; flex-shrink: 0; }
 
-/* ── Section within card ─────────────────────────────────────────── */
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+.section { display: flex; flex-direction: column; gap: 0.5rem; }
 
 .sectionTitle {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--color-text-muted);
 }
 
-/* ── Tag list (skills) ───────────────────────────────────────────── */
-.tagList {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.tag {
-  padding: 0.3rem 0.75rem;
-  border-radius: var(--radius-full);
-  font-size: 0.8125rem;
-  font-weight: 600;
-}
-
-.tagGreen {
-  background: rgba(16, 185, 129, 0.1);
-  color: #059669;
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
+/* ── Tag list ────────────────────────────────────────────────────── */
+.tagList { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tag     { padding: 0.3rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8125rem; font-weight: 600; }
+.tagGreen { background: rgba(16,185,129,0.1); color: #059669; border: 1px solid rgba(16,185,129,0.25); }
 
 /* ── Bullet list ─────────────────────────────────────────────────── */
-.bulletList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
-
+.bulletList { list-style: none; display: flex; flex-direction: column; gap: 0.375rem; }
 .bulletItem {
   position: relative;
   padding-left: 1rem;
@@ -231,14 +198,11 @@
   color: var(--color-text-secondary);
   line-height: 1.5;
 }
-
 .bulletItem::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0.55em;
-  width: 5px;
-  height: 5px;
+  left: 0; top: 0.58em;
+  width: 5px; height: 5px;
   border-radius: 50%;
   background: var(--color-border);
 }
@@ -247,7 +211,6 @@
 .reqTable {
   display: flex;
   flex-direction: column;
-  gap: 0;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -255,20 +218,20 @@
 
 .reqHeader {
   display: grid;
-  grid-template-columns: 1fr 100px 120px;
+  grid-template-columns: 1fr 110px 130px;
   gap: 0.75rem;
   padding: 0.625rem 1rem;
   background: var(--color-surface-2);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--color-text-muted);
 }
 
 .reqRow {
   display: grid;
-  grid-template-columns: 1fr 100px 120px;
+  grid-template-columns: 1fr 110px 130px;
   gap: 0.75rem;
   padding: 0.625rem 1rem;
   font-size: 0.875rem;
@@ -276,23 +239,10 @@
   border-top: 1px solid var(--color-border);
   align-items: center;
 }
+.reqRow:hover { background: var(--color-surface-2); }
 
-.reqRow:hover {
-  background: var(--color-surface-2);
-}
-
-.reqColName {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.reqColCat, .reqColLevel {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
+.reqColName  { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.reqColCat, .reqColLevel { display: flex; align-items: center; gap: 0.4rem; }
 
 .optionalBadge {
   font-size: 0.6875rem;
@@ -322,30 +272,46 @@
   overflow: hidden;
   min-width: 40px;
 }
-
 .levelFill {
   height: 100%;
   background: var(--color-primary);
   border-radius: var(--radius-full);
   transition: width 400ms ease;
 }
+.levelNum { font-size: 0.75rem; font-weight: 700; color: var(--color-text-muted); min-width: 24px; text-align: right; }
 
-.levelNum {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--color-text-muted);
-  min-width: 24px;
-  text-align: right;
+/* ── Career grid ─────────────────────────────────────────────────── */
+.careerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }
 
-/* ── Gap analysis ────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════════
+   Gap Analysis Tab
+   ════════════════════════════════════════════════════════════════════ */
+.gapTabWrap  { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.gapTabHeader { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.gapTabTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.gapTabSubtitle { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
 .gapSummary {
   font-size: 0.9375rem;
   color: var(--color-text-secondary);
   line-height: 1.6;
-  padding: 0.75rem 1rem;
-  background: var(--color-surface-2);
+  padding: 0.875rem 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+  border-left: 3px solid var(--color-primary);
 }
 
 .gapGrid {
@@ -361,27 +327,13 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  background: var(--color-bg);
-  transition: box-shadow 250ms ease;
+  background: var(--color-surface);
+  transition: box-shadow 250ms ease, transform 250ms ease;
 }
+.gapCard:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
 
-.gapCard:hover {
-  box-shadow: var(--shadow-md);
-}
-
-.gapCardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.gapCardTitle {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: var(--color-text);
-  line-height: 1.3;
-}
+.gapCardHeader { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+.gapCardTitle  { font-size: 0.9375rem; font-weight: 700; color: var(--color-text); line-height: 1.3; }
 
 .gapTypeBadge {
   font-size: 0.6875rem;
@@ -393,246 +345,330 @@
   background: var(--color-surface-2);
   color: var(--color-text-muted);
 }
+.gapType_missing       { background: rgba(239,68,68,0.1);   color: #dc2626; }
+.gapType_weak          { background: rgba(245,158,11,0.1);  color: #b45309; }
+.gapType_not_evidenced { background: rgba(107,114,128,0.1); color: #6b7280; }
 
-.gapType_missing     { background: rgba(239, 68, 68, 0.1);  color: #dc2626; }
-.gapType_weak        { background: rgba(245, 158, 11, 0.1); color: #b45309; }
-.gapType_not_evidenced { background: rgba(107, 114, 128, 0.1); color: #6b7280; }
+.gapMeta { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.rootCause { font-size: 0.75rem; color: var(--color-text-muted); font-style: italic; }
 
-.gapMeta {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
+.gapLevels   { display: flex; flex-direction: column; gap: 0.375rem; }
+.gapLevelRow { display: flex; align-items: center; gap: 0.5rem; }
+.gapLevelLabel { font-size: 0.75rem; font-weight: 600; color: var(--color-text-muted); min-width: 56px; }
 
-.rootCause {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-  font-style: italic;
-}
-
-.gapLevels {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
-
-.gapLevelRow {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.gapLevelLabel {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  min-width: 56px;
-}
-
-/* ── Prerequisites within gap card ───────────────────────────────── */
-.prereqs {
-  border-top: 1px solid var(--color-border);
-  padding-top: 0.625rem;
-}
-
-.prereqLabel {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--color-text-muted);
-}
-
-.prereqList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin-top: 0.375rem;
-}
-
-.prereqItem {
-  font-size: 0.8125rem;
-  color: var(--color-text-secondary);
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.prereqItem::before {
-  content: '~';
-  color: var(--color-text-muted);
-  font-weight: 700;
-}
-
+.prereqs       { border-top: 1px solid var(--color-border); padding-top: 0.625rem; }
+.prereqLabel   { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); }
+.prereqList    { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.375rem; }
+.prereqItem    { font-size: 0.8125rem; color: var(--color-text-secondary); display: flex; align-items: center; gap: 0.4rem; }
+.prereqItem::before { content: '·'; color: var(--color-text-muted); font-weight: 700; }
 .foundationalBadge {
   font-size: 0.625rem;
   font-weight: 700;
   text-transform: uppercase;
   padding: 0.05rem 0.35rem;
   border-radius: var(--radius-full);
-  background: rgba(245, 158, 11, 0.12);
+  background: rgba(245,158,11,0.12);
   color: #b45309;
 }
 
-/* ── Empty / placeholder states ──────────────────────────────────── */
-.emptyNote {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-  font-style: italic;
-}
+/* ════════════════════════════════════════════════════════════════════
+   Pathway Plan Tab
+   ════════════════════════════════════════════════════════════════════ */
+.pathwayWrap { display: flex; flex-direction: column; gap: 1.5rem; }
 
-/* ── Pathway Plan placeholder ────────────────────────────────────── */
-.placeholderWrap {
-  display: flex;
-  justify-content: center;
-  padding-top: 4rem;
-}
-
-.placeholderCard {
-  text-align: center;
-  max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.placeholderIcon {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: var(--color-surface-2);
+/* Summary banner */
+.pathwaySummary {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: var(--color-text-muted);
+  gap: 2rem;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
 }
 
-.placeholderTitle {
+.pathwaySummaryLeft { display: flex; flex-direction: column; gap: 0.125rem; flex-shrink: 0; }
+
+.pathwaySummaryBadge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+}
+
+.pathwaySummaryTitle {
   font-size: 1.25rem;
   font-weight: 800;
   color: var(--color-text);
+  letter-spacing: -0.02em;
 }
 
-.placeholderText {
-  font-size: 0.9375rem;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-}
+.pathwaySummaryMeta { font-size: 0.875rem; color: var(--color-text-muted); }
 
-/* ── Pathway Plan styles ─────────────────────────────────────────── */
-.pathwayContainer {
+/* Phase pill nav */
+.phasePills {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.phasesTimeline {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.phaseBlock {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  background: var(--color-surface);
-  overflow: hidden;
-}
-
-.phaseHeader {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  background: var(--color-surface-2);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.phaseNumber {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-.phaseInfo {
+  gap: 0.5rem;
+  flex-wrap: wrap;
   flex: 1;
 }
 
-.phaseTitle {
+.phasePill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--pc);
+  background: color-mix(in srgb, var(--pc) 8%, transparent);
+  cursor: pointer;
+  transition: all 180ms ease;
+  font-family: inherit;
+}
+.phasePill:hover { background: color-mix(in srgb, var(--pc) 18%, transparent); transform: translateY(-1px); }
+
+.phasePillNum {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--pc);
+  line-height: 1;
+}
+
+.phasePillWeeks { font-size: 0.6875rem; font-weight: 600; color: var(--pc); opacity: 0.8; }
+
+/* Controls */
+.pathwayControls { display: flex; gap: 0.5rem; flex-shrink: 0; margin-left: auto; }
+
+.ctrlBtn {
+  padding: 0.4rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--color-text-secondary);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.ctrlBtn:hover { background: var(--color-border); color: var(--color-text); }
+
+/* ── Timeline ────────────────────────────────────────────────────── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.timelineEntry { display: flex; flex-direction: column; }
+
+/* Phase card */
+.phaseCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--pc);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 250ms ease;
+}
+.phaseCard:hover { box-shadow: var(--shadow-md); }
+
+/* Phase toggle (header button) */
+.phaseToggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.125rem 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: background 180ms ease;
+}
+.phaseToggle:hover { background: var(--color-surface-2); }
+
+.phaseNode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.0625rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--pc) 40%, transparent);
+}
+
+.phaseToggleBody { flex: 1; display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+
+.phaseToggleMeta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+.phaseWeekBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+.phaseActionsBadge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 0.2rem 0.5rem;
+  background: var(--color-surface-2);
+  border-radius: var(--radius-full);
+}
+
+.phaseCardTitle {
   font-size: 1.0625rem;
   font-weight: 700;
   color: var(--color-text);
+  line-height: 1.3;
 }
 
-.phaseDuration {
-  font-size: 0.8125rem;
+.phasePreview {
+  font-size: 0.875rem;
   color: var(--color-text-muted);
-  margin-top: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 600px;
 }
 
+/* Chevron */
+.chevron {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  transition: transform 250ms ease;
+  display: flex;
+}
+.chevronOpen { transform: rotate(180deg); color: var(--pc); }
+
+/* ── Phase body ──────────────────────────────────────────────────── */
 .phaseBody {
+  border-top: 1px solid var(--color-border);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
-.phaseSection {
+/* Goal callout */
+.outcomeCallout {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.875rem;
+  align-items: flex-start;
+  padding: 1rem 1.125rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid;
 }
 
-.phaseSectionTitle {
-  font-size: 0.8125rem;
+.outcomeIcon { font-size: 1.125rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+.outcomeLabel {
+  display: block;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.outcomeText { font-size: 0.9375rem; color: var(--color-text); font-weight: 500; line-height: 1.5; }
+
+/* Rationale */
+.rationaleBlock { display: flex; flex-direction: column; gap: 0.375rem; }
+
+.blockLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
   color: var(--color-text-muted);
 }
 
-.phaseSectionText {
-  font-size: 0.9375rem;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
+.rationaleText { font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.6; }
+
+/* ── Steps block ─────────────────────────────────────────────────── */
+.stepsBlock { display: flex; flex-direction: column; gap: 1rem; }
+
+.blockTitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* ── Learning actions ────────────────────────────────────────────── */
-.actionsList {
+.blockTitleDot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+.stepsList { display: flex; flex-direction: column; gap: 0; }
+
+.stepItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.stepNumWrap {
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 0.125rem;
 }
 
-.actionCard {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 1rem;
-  background: var(--color-bg);
+.stepNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.stepConnector {
+  width: 2px;
+  flex: 1;
+  min-height: 1.25rem;
+  margin: 0.25rem 0;
+  border-radius: var(--radius-full);
+}
+
+.stepContent {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
+  gap: 0.5rem;
+  padding-bottom: 1.25rem;
 }
 
-.actionHeader {
+.stepHeader {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.75rem;
 }
 
-.actionTitle {
+.stepTitle {
   font-size: 0.9375rem;
   font-weight: 700;
   color: var(--color-text);
@@ -643,58 +679,158 @@
   font-size: 0.625rem;
   font-weight: 700;
   text-transform: capitalize;
-  padding: 0.25rem 0.6rem;
+  padding: 0.25rem 0.625rem;
   border-radius: var(--radius-full);
   color: #fff;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-.actionSummary {
+.stepSummary {
   font-size: 0.875rem;
   color: var(--color-text-secondary);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-.actionRationale {
+.stepRationale {
   font-size: 0.8125rem;
   color: var(--color-text-muted);
-  line-height: 1.5;
   font-style: italic;
-  padding: 0.625rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   background: var(--color-surface-2);
-  border-left: 3px solid var(--color-primary-light);
+  border-left: 3px solid;
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  line-height: 1.5;
 }
 
-/* ── Resources ───────────────────────────────────────────────────── */
-.resourcesList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-top: 0.625rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.resourcesLabel {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--color-text-muted);
-}
-
-.resourceItems {
+.stepResources {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  padding-top: 0.25rem;
 }
 
-.resourceTag {
+/* ── Checkpoint ──────────────────────────────────────────────────── */
+.checkpointBlock {
+  display: flex;
+  gap: 0.875rem;
+  align-items: flex-start;
+  padding: 1rem 1.125rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid;
+}
+
+.checkpointIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.checkpointLabel {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.checkpointText { font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.5; }
+
+/* ── Resume updates ──────────────────────────────────────────────── */
+.resumeBlock { display: flex; flex-direction: column; gap: 0.625rem; }
+
+.resumeList { list-style: none; display: flex; flex-direction: column; gap: 0.375rem; }
+
+.resumeItem {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  padding: 0.5rem 0.875rem;
+  background: rgba(16,185,129,0.06);
+  border-left: 3px solid #10b981;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  line-height: 1.4;
+}
+
+/* ── Gaps addressed ──────────────────────────────────────────────── */
+.gapsAddressedBlock { display: flex; flex-direction: column; gap: 0.625rem; }
+
+.gapTags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.gapTag {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  border: 1px solid;
+}
+
+/* ── Connector between phases ────────────────────────────────────── */
+.phaseConnector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  gap: 0;
+  width: 24px;
+  padding: 0.125rem 0;
+}
+
+.connectorLine {
+  width: 2px;
+  height: 28px;
+  border-radius: var(--radius-full);
+}
+
+.connectorArrow {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid;
+}
+
+/* ── End node ────────────────────────────────────────────────────── */
+.pathwayEnd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+}
+
+.pathwayEndCircle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.3);
+}
+
+.pathwayEndLabel {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* ── Resource chip ───────────────────────────────────────────────── */
+.resourceChip {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
-  padding: 0.4rem 0.65rem;
+  gap: 0.35rem;
+  padding: 0.35rem 0.625rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   background: var(--color-surface);
@@ -703,69 +839,67 @@
   font-size: 0.75rem;
   color: var(--color-text-secondary);
   white-space: nowrap;
+  max-width: 240px;
 }
-
-.resourceTag:hover {
+.resourceChip:hover {
   border-color: var(--color-primary);
   background: var(--color-primary-light);
   color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
-.resourceIcon {
-  font-size: 0.875rem;
-}
-
-.resourceTitle {
+.chipTitle {
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 160px;
 }
 
-.freeLabel {
+.chipFree {
   font-size: 0.625rem;
   font-weight: 700;
   padding: 0.1rem 0.35rem;
   border-radius: var(--radius-full);
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(16,185,129,0.15);
   color: #059669;
+  flex-shrink: 0;
 }
 
-.hoursLabel {
+.chipHours {
   font-size: 0.625rem;
   font-weight: 600;
   color: var(--color-text-muted);
+  flex-shrink: 0;
 }
 
-/* ── Resume updates & gaps ───────────────────────────────────────── */
-.gapsList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
+/* ── Empty / placeholder ─────────────────────────────────────────── */
+.emptyNote { font-size: 0.875rem; color: var(--color-text-muted); font-style: italic; }
 
-.gapItem {
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  padding: 0.375rem 0.75rem;
-  background: var(--color-bg);
-  border-left: 3px solid #f59e0b;
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-}
+.placeholderWrap  { display: flex; justify-content: center; padding-top: 4rem; }
+.placeholderCard  { text-align: center; max-width: 420px; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.placeholderIcon  { width: 80px; height: 80px; border-radius: 50%; background: var(--color-surface-2); display: flex; align-items: center; justify-content: center; color: var(--color-text-muted); }
+.placeholderTitle { font-size: 1.25rem; font-weight: 800; color: var(--color-text); }
+.placeholderText  { font-size: 0.9375rem; color: var(--color-text-secondary); line-height: 1.6; }
 
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 960px) {
-  .careerGrid     { grid-template-columns: 1fr; }
-  .reqHeader,
-  .reqRow         { grid-template-columns: 1fr 80px 100px; }
+  .careerGrid { grid-template-columns: 1fr; }
+  .reqHeader, .reqRow { grid-template-columns: 1fr 90px 110px; }
+  .pathwaySummary { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .pathwayControls { margin-left: 0; }
 }
 
 @media (max-width: 600px) {
-  .headerRow      { flex-direction: column; }
-  .gapGrid        { grid-template-columns: 1fr; }
-  .container      { padding: 1.25rem; }
-  .reqHeader,
-  .reqRow         { grid-template-columns: 1fr; gap: 0.25rem; }
-  .reqColCat,
-  .reqColLevel    { justify-content: flex-start; }
-  .actionHeader   { flex-direction: column; }
-  .bloomBadge     { align-self: flex-start; }
+  .headerRow  { flex-direction: column; }
+  .container  { padding: 1.25rem; }
+  .gapGrid    { grid-template-columns: 1fr; }
+  .reqHeader, .reqRow { grid-template-columns: 1fr; gap: 0.25rem; }
+  .reqColCat, .reqColLevel { justify-content: flex-start; }
+  .phaseToggle { padding: 1rem; }
+  .phaseBody   { padding: 1rem; }
+  .stepHeader  { flex-direction: column; gap: 0.4rem; }
+  .bloomBadge  { align-self: flex-start; }
+  .phasePreview { display: none; }
 }

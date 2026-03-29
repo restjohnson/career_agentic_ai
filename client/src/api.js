@@ -23,7 +23,7 @@ export async function uploadEvidence(sessionToken, file, sourceType = 'resume', 
   return res.json(); // { document_id, content_hash, storage_ref, source_type }
 }
 
-export async function createRun(sessionToken, desiredRole, evidenceDocumentIds, rawUserText = null) {
+export async function createRun(sessionToken, desiredRole, evidenceDocumentIds, rawUserText = null, studentConstraints = null) {
   const res = await fetch(`${API}/runs`, {
     method: 'POST',
     headers: {
@@ -34,6 +34,7 @@ export async function createRun(sessionToken, desiredRole, evidenceDocumentIds, 
       desired_role: desiredRole,
       raw_user_text: rawUserText,
       evidence_document_ids: evidenceDocumentIds,
+      ...(studentConstraints && { student_constraints: studentConstraints }),
     }),
   });
   if (!res.ok) {

@@ -63,7 +63,7 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
         status="running",
     )
 
-    config = {"configurable": {"thread_id": run_id}}
+    config = {"configurable": {"thread_id": run_id}, "recursion_limit": 15}
 
     def _run_graph():
         try:

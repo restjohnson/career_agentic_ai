@@ -8,6 +8,7 @@ const AGENT_STEPS = [
   { key: 'role_intake',        label: 'Matching role requirements from O*NET…' },
   { key: 'evidence_ingestion', label: 'Ingesting & analysing your evidence…' },
   { key: 'gap_analysis',       label: 'Performing gap analysis…' },
+  { key: 'pathway_planning',   label: 'Building your personalised learning pathway…' },
   { key: 'explanation',        label: 'Finalising your career blueprint…' },
 ];
 
@@ -27,7 +28,7 @@ export default function LoadingPage() {
       }
     })();
 
-    const { targetRole, evidenceDocIds = [], rawUserText } = location.state ?? storedConstraints ?? {};
+    const { targetRole, evidenceDocIds = [], rawUserText, studentConstraints } = location.state ?? storedConstraints ?? {};
 
     if (!targetRole || !evidenceDocIds.length) {
       navigate('/constraints', { replace: true });
@@ -37,7 +38,7 @@ export default function LoadingPage() {
     const sessionToken = localStorage.getItem('session_token');
     let closeStream = null;
 
-    createRun(sessionToken, targetRole, evidenceDocIds, rawUserText)
+    createRun(sessionToken, targetRole, evidenceDocIds, rawUserText, studentConstraints)
       .then(({ run_id }) => {
         closeStream = streamRun(sessionToken, run_id, (event) => {
           if (event.type === 'step') {

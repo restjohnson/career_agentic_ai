@@ -74,6 +74,17 @@ export default function ConstraintsPage() {
     }
   }, [evidenceDocIds.length, navigate]);
 
+  const ACADEMIC_LEVEL_MAP = {
+    Undergraduate: 'junior',
+    Graduate: 'grad',
+    Professional: 'working_professional',
+  };
+  const TARGET_GOAL_MAP = {
+    Undergraduate: 'first_internship',
+    Graduate: 'job_ready',
+    Professional: 'career_change',
+  };
+
   const handleSubmit = () => {
     if (!canSubmit) return;
     const rawUserText = [
@@ -84,9 +95,19 @@ export default function ConstraintsPage() {
       `Learning mode: ${learningMode}`,
     ].join('. ');
 
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + targetWeeks * 7);
+    const studentConstraints = {
+      academic_level: ACADEMIC_LEVEL_MAP[academicLevel] ?? 'junior',
+      hours_per_week: hoursPerWeek,
+      target_goal: TARGET_GOAL_MAP[academicLevel] ?? 'job_ready',
+      target_date: targetDate.toISOString().split('T')[0],
+      preferred_learning_mode: learningMode,
+    };
+
     sessionStorage.setItem(
       'career_flow_constraints',
-      JSON.stringify({ targetRole, evidenceDocIds, rawUserText })
+      JSON.stringify({ targetRole, evidenceDocIds, rawUserText, studentConstraints })
     );
 
     navigate('/loading', {
@@ -94,6 +115,7 @@ export default function ConstraintsPage() {
         targetRole,
         evidenceDocIds,
         rawUserText,
+        studentConstraints,
       },
     });
   };

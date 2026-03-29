@@ -138,9 +138,15 @@ def build_graph(repo: SupabaseRepo):
     g.add_edge("finalise",           "explanation")
     g.add_edge("explanation",        END)
 
-    # TODO: Fix routing logic - currently has infinite loop issue
-    # For now, skip to finalise to show results
-    g.add_edge("critique", "finalise")
+    g.add_conditional_edges(
+        "critique",
+        route_after_critique,
+        {
+            "pathway_planning": "pathway_planning",
+            "finalise":         "finalise",
+            "explanation":      "explanation",
+        },
+    )
 
     return g.compile(checkpointer=MemorySaver())
 
