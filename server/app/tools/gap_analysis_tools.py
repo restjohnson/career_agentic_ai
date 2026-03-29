@@ -20,22 +20,22 @@ from app.state import (
 # ---------------------------------------------------------------------------
 
 def aggregate_proficiency(items: List[EvidenceItem]) -> int:
-    """Apply the proficiency rubric to a collection of evidence items."""
-    n_professional = sum(1 for i in items if i.proficiency_score == 4)
-    n_experience   = sum(1 for i in items if i.item_type == "experience")
-    n_projects     = sum(
-        1 for i in items if i.item_type == "project" and (i.proficiency_score or 0) >= 2
-    )
-    n_coursework   = sum(
-        1 for i in items
-        if (i.item_type in ("coursework", "skill") and (i.proficiency_score or 0) >= 1)
-        or (i.item_type == "project" and (i.proficiency_score or 0) == 1)
-    )
+    """
+    Derive proficiency from item_type only.
+    Proficiency is an emergent property of the evidence collection,
+    not a per-item score.
 
-    if n_professional >= 1:                    return 4
-    if n_experience >= 1 or n_projects >= 2:   return 3
-    if n_projects >= 1:                        return 2
-    if n_coursework >= 1:                      return 1
+    experience → 3 (professional/work context)
+    project    → 2 (independent work)
+    coursework → 1 (guided/academic)
+    claim      → 0 (self-reported only, no demonstration)
+    """
+    if any(i.item_type == "experience" for i in items):
+        return 3
+    if any(i.item_type == "project" for i in items):
+        return 2
+    if any(i.item_type == "coursework" for i in items):
+        return 1
     return 0
 
 

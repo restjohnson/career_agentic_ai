@@ -49,7 +49,6 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                         summary=row["summary"],
                         snippet=row.get("snippet"),
                         confidence=row.get("confidence", 0.8),
-                        proficiency_score=row.get("proficiency_score"),
                         action_verbs=row.get("action_verbs") or [],
                         metadata=row.get("metadata") or {},
                     )
@@ -103,7 +102,6 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                         "summary": item.summary,
                         "snippet": item.snippet,
                         "confidence": item.confidence,
-                        "proficiency_score": item.proficiency_score,
                         "action_verbs": item.action_verbs,
                         "metadata": item.metadata,
                     }

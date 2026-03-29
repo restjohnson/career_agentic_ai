@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, Field, computed_field
 
 EvidenceSourceType = Literal["resume", "transcript", "portfolio", "job_posting", "other"]
-EvidenceItemType = Literal["skill", "experience", "project", "coursework", "claim"]
+EvidenceItemType = Literal["experience", "project", "coursework", "claim"]
 
 #student evidence such as resume and others
 
@@ -22,7 +22,6 @@ class EvidenceItem(BaseModel):
     summary: str
     snippet: Optional[str] = None
     confidence: float = 0.8
-    proficiency_score: Optional[int] = None   # 0–4, LLM-assessed per rubric
     action_verbs: List[str] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
