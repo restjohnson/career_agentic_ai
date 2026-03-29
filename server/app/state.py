@@ -136,13 +136,12 @@ class GapItem(BaseModel):
     summary: str
     category: RoleReqType
     required_level: float
-    student_score: float
+    student_level: float
     raw_gap: float
     weighted_gap: float
     proficiency: int                      #0–4, aggregated from evidence collection
     confidence: float                     #0–1, Bayesian-combined from evidence
-    gap_type: Literal["missing", "weak", "not_evidenced", "irrelevant"] = "missing"
-    gap_root_cause: Optional[Literal["missing_entirely", "no_theory", "no_practice"]] = None
+    gap_type: Literal["no_evidence", "claimed_only", "partial", "optional_gap", "met"] = "no_evidence"
     evidence_item_ids: List[str] = Field(default_factory=list)
     knowledge_prerequisites: List[KnowledgePrerequisite] = Field(default_factory=list)
 

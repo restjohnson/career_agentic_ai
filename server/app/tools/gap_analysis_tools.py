@@ -56,10 +56,10 @@ def compute_student_scores(
 ) -> Dict[str, Dict[str, Any]]:
     """
     For each RoleSpecRequirement, aggregate all matching EvidenceItems into
-    a student score.
+    a student level.
 
     Returns a dict keyed by req_summary with:
-      proficiency, confidence, student_score, evidence_item_ids
+      proficiency, confidence, student_level, evidence_item_ids
     """
     item_by_id: Dict[str, EvidenceItem] = {
         item.id: item for item in evidence_items if item.id
@@ -70,59 +70,71 @@ def compute_student_scores(
         ids = student_model.evidence_map.get(req.req_summary, [])
         matching = [item_by_id[i] for i in ids if i in item_by_id]
 
-        proficiency = aggregate_proficiency(matching)
-        confidence  = aggregate_confidence(matching)
-        student_score = round(proficiency * confidence, 4)
+        proficiency   = aggregate_proficiency(matching)
+        confidence    = aggregate_confidence(matching)
+        student_level = round(proficiency * confidence, 4)
 
         scores[req.req_summary] = {
             "proficiency": proficiency,
             "confidence": confidence,
-            "student_score": student_score,
+            "student_level": student_level,
             "evidence_item_ids": ids,
         }
 
     return scores
 
 
+_MET_THRESHOLD = 0.5  # raw_gap below this is considered met
+
 def compute_gaps(
     scores: Dict[str, Dict[str, Any]],
     role_spec: RoleSpecModel,
-    min_raw_gap: float = 0.5,
+    evidence_items: List[EvidenceItem],
 ) -> List[GapItem]:
     """
-    Compute raw_gap and weighted_gap per requirement. Return only requirements
-    where raw_gap >= min_raw_gap, ranked by weighted_gap descending.
+    Compute raw_gap and weighted_gap for ALL requirements (no filter).
+    Classify each with a gap_type label and sort by weighted_gap descending.
+    Requirements the student has met naturally sink to the bottom due to low weighted_gap.
+
+    gap_type labels:
+      met          — raw_gap < _MET_THRESHOLD (student level meets requirement)
+      no_evidence  — no evidence items mapped to this requirement
+      claimed_only — all mapped items are claim type (listed but not demonstrated)
+      partial      — demonstrated but below required level
+      optional_gap — optional requirement with a gap
     """
+    item_by_id: Dict[str, EvidenceItem] = {
+        item.id: item for item in evidence_items if item.id
+    }
+
     gap_items: List[GapItem] = []
 
     for req in role_spec.requirements:
-        s = scores.get(req.req_summary, {})
-        student_score = s.get("student_score", 0.0)
+        s             = scores.get(req.req_summary, {})
+        student_level = s.get("student_level", 0.0)
         proficiency   = s.get("proficiency", 0)
         confidence    = s.get("confidence", 0.0)
         ids           = s.get("evidence_item_ids", [])
 
-        raw_gap = max(0.0, round(req.required_level - student_score, 4))
-        if raw_gap < min_raw_gap:
-            continue
-
+        raw_gap      = max(0.0, round(req.required_level - student_level, 4))
         weighted_gap = round(req.importance * raw_gap, 4)
 
-        # classify gap_type
-        if not ids:
-            gap_type = "missing"
-        elif student_score < 0.5:
-            gap_type = "not_evidenced"
-        elif req.optional and raw_gap < 0.5:
-            gap_type = "irrelevant"
+        if raw_gap < _MET_THRESHOLD:
+            gap_type = "met"
+        elif not ids:
+            gap_type = "no_evidence"
+        elif all(item_by_id[i].item_type == "claim" for i in ids if i in item_by_id):
+            gap_type = "claimed_only"
+        elif req.optional:
+            gap_type = "optional_gap"
         else:
-            gap_type = "weak"
+            gap_type = "partial"
 
         gap_items.append(GapItem(
             summary=req.req_summary,
             category=req.category,
             required_level=req.required_level,
-            student_score=student_score,
+            student_level=student_level,
             raw_gap=raw_gap,
             weighted_gap=weighted_gap,
             proficiency=proficiency,
@@ -194,7 +206,7 @@ def decompose_knowledge_prerequisites(
     knowledge prerequisites. Returns deduplicated KnowledgePrerequisite list
     with needs_self_assessment flagged.
     """
-    qualifying = [g for g in gap_items if g.raw_gap > 0.5 and g.gap_type != "irrelevant"]
+    qualifying = [g for g in gap_items if g.raw_gap > 0.5 and g.gap_type not in ("optional_gap", "met")]
     qualifying = qualifying[:top_n]
 
     if not qualifying:
@@ -263,56 +275,20 @@ Identify the knowledge prerequisites for each gap and assess evidence-based conf
     return prerequisites
 
 
-def derive_root_causes(
-    gap_items: List[GapItem],
-    prerequisites: List[KnowledgePrerequisite],
-) -> List[GapItem]:
-    """
-    Attach knowledge_prerequisites to each GapItem and derive gap_root_cause.
-    Rule-based — no LLM call.
-    """
-    def _norm(s: str) -> str:
-        return s.lower().strip().rstrip(".,;:")
-
-    prereqs_by_parent: Dict[str, List[KnowledgePrerequisite]] = {}
-    for p in prerequisites:
-        prereqs_by_parent.setdefault(_norm(p.parent_skill_gap), []).append(p)
-
-    for gap in gap_items:
-        gap_prereqs = prereqs_by_parent.get(_norm(gap.summary), [])
-        gap.knowledge_prerequisites = gap_prereqs
-
-        if not gap_prereqs:
-            continue
-
-        foundational = [p for p in gap_prereqs if p.is_foundational]
-        if not foundational:
-            continue
-
-        avg_knowledge = sum(p.inferred_confidence for p in foundational) / len(foundational)
-
-        if gap.student_score < 0.5 and avg_knowledge < 0.4:
-            gap.gap_root_cause = "missing_entirely"
-        elif gap.student_score < 0.5 and avg_knowledge >= 0.4:
-            gap.gap_root_cause = "no_practice"
-        elif gap.student_score >= 0.5 and avg_knowledge < 0.4:
-            gap.gap_root_cause = "no_theory"
-        # else: gap is in depth/level, root_cause stays None
-
-    return gap_items
-
-
 def build_gap_report(gap_items: List[GapItem]) -> GapReport:
     """Assemble the final GapReport from finalised GapItems."""
-    n_critical = sum(1 for g in gap_items if g.gap_root_cause == "missing_entirely")
-    n_weak     = sum(1 for g in gap_items if g.gap_type == "weak")
-    n_theory   = sum(1 for g in gap_items if g.gap_root_cause == "no_theory")
-    n_practice = sum(1 for g in gap_items if g.gap_root_cause == "no_practice")
+    n_total        = len(gap_items)
+    n_met          = sum(1 for g in gap_items if g.gap_type == "met")
+    n_no_evidence  = sum(1 for g in gap_items if g.gap_type == "no_evidence")
+    n_claimed_only = sum(1 for g in gap_items if g.gap_type == "claimed_only")
+    n_partial      = sum(1 for g in gap_items if g.gap_type == "partial")
+    n_optional     = sum(1 for g in gap_items if g.gap_type == "optional_gap")
 
-    parts = [f"{len(gap_items)} gap(s) identified."]
-    if n_critical: parts.append(f"{n_critical} missing entirely.")
-    if n_weak:     parts.append(f"{n_weak} partially evidenced.")
-    if n_theory:   parts.append(f"{n_theory} lacking conceptual grounding.")
-    if n_practice: parts.append(f"{n_practice} with knowledge but no demonstrated practice.")
+    parts = [f"{n_total} requirement(s) assessed."]
+    if n_met:          parts.append(f"{n_met} met.")
+    if n_no_evidence:  parts.append(f"{n_no_evidence} with no evidence.")
+    if n_claimed_only: parts.append(f"{n_claimed_only} claimed but not demonstrated.")
+    if n_partial:      parts.append(f"{n_partial} partially evidenced.")
+    if n_optional:     parts.append(f"{n_optional} optional gap(s).")
 
     return GapReport(summary=" ".join(parts), gaps=gap_items)
