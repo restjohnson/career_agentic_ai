@@ -148,7 +148,8 @@
 
 /* ── Segmented control ───────────────────────────────────────────── */
 .segmented {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   background: var(--color-surface-2);
   border-radius: var(--radius-lg);
   padding: 0.25rem;
@@ -398,5 +399,5 @@
 @media (max-width: 480px) {
   .content      { padding-inline: 1.25rem; }
   .modesGrid    { grid-template-columns: 1fr; }
-  .segmented    { flex-wrap: wrap; }
+  .segmented    { grid-template-columns: repeat(2, 1fr); }
 }
