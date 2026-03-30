@@ -157,17 +157,16 @@ def print_gap_report(final_state: dict) -> None:
         print("No gaps found.")
         return
 
-    print(f"\n{'#':<4} {'Requirement':<42} {'Cat':<10} {'Score':<7} {'Req':<5} {'wGap':<7} {'Type':<14} {'RootCause'}")
-    print("-" * 110)
+    print(f"\n{'#':<4} {'Requirement':<42} {'Cat':<10} {'Level':<7} {'Req':<5} {'wGap':<7} {'Type'}")
+    print("-" * 90)
     for i, g in enumerate(gaps, 1):
         print(
             f"{i:<4} {g.get('summary', '')[:41]:<42} "
             f"{g.get('category', '')[:9]:<10} "
-            f"{g.get('student_score', 0):<7.2f} "
+            f"{g.get('student_level', 0):<7.2f} "
             f"{g.get('required_level', 0):<5.1f} "
             f"{g.get('weighted_gap', 0):<7.3f} "
-            f"{g.get('gap_type', ''):<14} "
-            f"{g.get('gap_root_cause') or '-'}"
+            f"{g.get('gap_type', '')}"
         )
 
     print("\n--- Knowledge Prerequisites ---")
