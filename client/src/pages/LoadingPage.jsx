@@ -94,7 +94,7 @@ export default function LoadingPage() {
         ) : (
           <p className={styles.subtitle}>
             Our AI agent is building your personalised career blueprint.
-            This usually takes under 60 seconds.
+            This usually takes under 120 seconds.
           </p>
         )}
 

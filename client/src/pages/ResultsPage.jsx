@@ -108,7 +108,7 @@ export default function ResultsPage() {
               <span className={styles.headerBadge}>Analysis Complete</span>
               <h1 className={styles.pageTitle}>Your Career Report</h1>
               <p className={styles.pageMeta}>
-                Target Role: <strong>{roleSpec?.canonical_role_title ?? targetRole}</strong>
+                Target Role: <strong>{targetRole}</strong>
                 {roleSpec?.matched_onet_code && (
                   <span className={styles.onetCode}> · O*NET {roleSpec.matched_onet_code}</span>
                 )}

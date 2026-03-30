@@ -42,6 +42,7 @@ const LEARNING_MODES = [
 export default function ConstraintsPage() {
   const [academicLevel, setAcademicLevel] = useState('freshman');
   const [targetRole,    setTargetRole]    = useState('');
+  const [customRole,    setCustomRole]    = useState('');
   const [targetWeeks,   setTargetWeeks]   = useState(26);
   const [hoursPerWeek,  setHoursPerWeek]  = useState(10);
   const [learningMode,  setLearningMode]  = useState('mixed');
@@ -58,7 +59,7 @@ export default function ConstraintsPage() {
   })();
 
   const evidenceDocIds = location.state?.evidenceDocIds ?? storedEvidenceDocIds;
-  const canSubmit = targetRole.trim() !== '';
+  const canSubmit = targetRole === 'Other' ? customRole.trim() !== '' : targetRole.trim() !== '';
 
   useEffect(() => {
     if (!evidenceDocIds.length) {
@@ -80,6 +81,8 @@ export default function ConstraintsPage() {
   const handleSubmit = () => {
     if (!canSubmit) return;
 
+    const finalTargetRole = targetRole === 'Other' ? customRole : targetRole;
+
     const rawUserText = [
       `Academic level: ${academicLevel}`,
       `Hours per week: ${hoursPerWeek}`,
@@ -99,12 +102,12 @@ export default function ConstraintsPage() {
 
     sessionStorage.setItem(
       'career_flow_constraints',
-      JSON.stringify({ targetRole, evidenceDocIds, rawUserText, studentConstraints })
+      JSON.stringify({ targetRole: finalTargetRole, evidenceDocIds, rawUserText, studentConstraints })
     );
 
     navigate('/loading', {
       state: {
-        targetRole,
+        targetRole: finalTargetRole,
         evidenceDocIds,
         rawUserText,
         studentConstraints,
@@ -168,6 +171,16 @@ export default function ConstraintsPage() {
                 <option key={role} value={role}>{role}</option>
               ))}
             </select>
+            {targetRole === 'Other' && (
+              <input
+                type="text"
+                placeholder="Enter your target role"
+                value={customRole}
+                onChange={(e) => setCustomRole(e.target.value)}
+                className={styles.textInput}
+                style={{ marginTop: '12px' }}
+              />
+            )}
           </div>
 
           {/* Estimated time to goal */}
