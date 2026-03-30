@@ -36,7 +36,6 @@ def _extract_prereq_items(gaps: List[GapItem]) -> List[Dict[str, Any]]:
                         "final_confidence":  prereq.final_confidence,
                         "is_prereq":         True,
                         "gap_type":          "no_evidence",
-                        "root_cause":        None,
                         "proficiency":       0,
                     }
     return list(seen.values())
@@ -77,7 +76,6 @@ def _topological_sort(
             "summary":      gap.summary,
             "label":        gap.summary,
             "gap_type":     gap.gap_type,
-            "root_cause":   None,
             "proficiency":  gap.proficiency,
             "weighted_gap": gap.weighted_gap,
             "is_prereq":    False,
@@ -158,9 +156,10 @@ def pathway_planning_node(state: Dict[str, Any], repo: SupabaseRepo) -> Dict[str
         s.errors.append("pathway_planning: student_constraints missing.")
         return s.model_dump(exclude_none=True)
 
-    # Steps 1 & 2
-    prereq_items  = _extract_prereq_items(s.gap_report.gaps)
-    ordered_items = _topological_sort(s.gap_report.gaps, prereq_items)
+    # Steps 1 & 2 — exclude met requirements; they need no plan
+    actionable_gaps = [g for g in s.gap_report.gaps if g.gap_type != "met"]
+    prereq_items    = _extract_prereq_items(actionable_gaps)
+    ordered_items   = _topological_sort(actionable_gaps, prereq_items)
 
     # Step 3 — resource retrieval
     try:
