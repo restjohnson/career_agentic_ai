@@ -2,24 +2,15 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles from './ConstraintsPage.module.css';
 
-const ACADEMIC_LEVELS = ['Undergraduate', 'Graduate', 'Professional'];
-
-const DEGREE_PROGRAMS = [
-  'BSc Computer Science',
-  'BSc Information Technology',
-  'BSc Software Engineering',
-  'BSc Data Science',
-  'BSc Cybersecurity',
-  'BSc Electrical Engineering',
-  'BSc Mechanical Engineering',
-  'BSc Business Administration',
-  'BA Communications',
-  'BA Psychology',
-  'MSc Computer Science',
-  'MSc Data Science',
-  'MSc Information Systems',
-  'MBA',
-  'Other',
+const ACADEMIC_LEVELS = [
+  { id: 'freshman',             label: 'Freshman' },
+  { id: 'sophomore',            label: 'Sophomore' },
+  { id: 'junior',               label: 'Junior' },
+  { id: 'senior',               label: 'Senior' },
+  { id: 'grad',                 label: 'Graduate' },
+  { id: 'bootcamp',             label: 'Bootcamp' },
+  { id: 'self_taught',          label: 'Self-Taught' },
+  { id: 'working_professional', label: 'Working Professional' },
 ];
 
 const TARGET_ROLES = [
@@ -42,22 +33,22 @@ const TARGET_ROLES = [
 ];
 
 const LEARNING_MODES = [
-  { id: 'structured',    label: 'Structured',     desc: 'Guided courses with set schedules' },
-  { id: 'project_based', label: 'Project-Based',  desc: 'Learning through building real projects' },
-  { id: 'self_paced',    label: 'Self-Paced',     desc: 'Flexible timing at your own speed' },
-  { id: 'mixed',         label: 'Mixed',           desc: 'Combination of all approaches' },
+  { id: 'structured',    label: 'Structured',    desc: 'Guided courses with set schedules' },
+  { id: 'project_based', label: 'Project-Based', desc: 'Learning through building real projects' },
+  { id: 'self_paced',    label: 'Self-Paced',    desc: 'Flexible timing at your own speed' },
+  { id: 'mixed',         label: 'Mixed',         desc: 'Combination of all approaches' },
 ];
 
 export default function ConstraintsPage() {
-  const [academicLevel,  setAcademicLevel]  = useState('Undergraduate');
-  const [degreeProgram,  setDegreeProgram]  = useState('');
-  const [targetRole,     setTargetRole]     = useState('');
-  const [targetWeeks,    setTargetWeeks]    = useState(26);
-  const [hoursPerWeek,   setHoursPerWeek]   = useState(10);
-  const [learningMode,   setLearningMode]   = useState('mixed');
+  const [academicLevel, setAcademicLevel] = useState('freshman');
+  const [targetRole,    setTargetRole]    = useState('');
+  const [targetWeeks,   setTargetWeeks]   = useState(26);
+  const [hoursPerWeek,  setHoursPerWeek]  = useState(10);
+  const [learningMode,  setLearningMode]  = useState('mixed');
 
-  const navigate   = useNavigate();
-  const location   = useLocation();
+  const navigate  = useNavigate();
+  const location  = useLocation();
+
   const storedEvidenceDocIds = (() => {
     try {
       return JSON.parse(sessionStorage.getItem('career_flow_evidence_ids') ?? '[]');
@@ -65,8 +56,9 @@ export default function ConstraintsPage() {
       return [];
     }
   })();
+
   const evidenceDocIds = location.state?.evidenceDocIds ?? storedEvidenceDocIds;
-  const canSubmit  = degreeProgram.trim() !== '' && targetRole.trim() !== '';
+  const canSubmit = targetRole.trim() !== '';
 
   useEffect(() => {
     if (!evidenceDocIds.length) {
@@ -87,9 +79,9 @@ export default function ConstraintsPage() {
 
   const handleSubmit = () => {
     if (!canSubmit) return;
+
     const rawUserText = [
       `Academic level: ${academicLevel}`,
-      `Degree/Program: ${degreeProgram}`,
       `Hours per week: ${hoursPerWeek}`,
       `Target weeks: ${targetWeeks}`,
       `Learning mode: ${learningMode}`,
@@ -122,7 +114,7 @@ export default function ConstraintsPage() {
 
   return (
     <div className={styles.page}>
-      {/* ── Step progress bar ──────────────────────────────────────── */}
+      {/* ── Step progress bar ─────────────────────────────────── */}
       <div className={styles.progressBar}>
         <div className={styles.progressTrack}>
           <div className={styles.progressFill} style={{ width: '100%' }} />
@@ -141,7 +133,7 @@ export default function ConstraintsPage() {
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>Set Your Goals &amp; Constraints</h1>
           <p className={styles.pageSubtitle}>
-            Tell us about your situation so we can tailor your career plan precisely to you.
+            No pressure — Just tell us where you are and where you're headed — we'll handle the rest.
           </p>
         </div>
 
@@ -153,29 +145,14 @@ export default function ConstraintsPage() {
             <div className={styles.segmented}>
               {ACADEMIC_LEVELS.map((level) => (
                 <button
-                  key={level}
-                  className={`${styles.segBtn} ${academicLevel === level ? styles.segBtnActive : ''}`}
-                  onClick={() => setAcademicLevel(level)}
+                  key={level.id}
+                  className={`${styles.segBtn} ${academicLevel === level.id ? styles.segBtnActive : ''}`}
+                  onClick={() => setAcademicLevel(level.id)}
                 >
-                  {level}
+                  {level.label}
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* Degree / Program */}
-          <div className={styles.card}>
-            <h2 className={styles.cardTitle}>Degree / Program</h2>
-            <select
-              value={degreeProgram}
-              onChange={(e) => setDegreeProgram(e.target.value)}
-              className={styles.selectInput}
-            >
-              <option value="" disabled>Select your degree / program</option>
-              {DEGREE_PROGRAMS.map((prog) => (
-                <option key={prog} value={prog}>{prog}</option>
-              ))}
-            </select>
           </div>
 
           {/* Target Role */}
@@ -254,7 +231,7 @@ export default function ConstraintsPage() {
         <div className={styles.actions}>
           {!canSubmit && (
             <p className={styles.actionHint}>
-              Please fill in your degree program and target role to continue
+              Please select your target role to continue
             </p>
           )}
           <div className={styles.actionBtns}>
