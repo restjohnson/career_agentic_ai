@@ -225,13 +225,17 @@ class SupabaseRepo:
         return res.data[0]["id"] if res.data else None
 
     def get_evidence_items_by_document(
-            self, document_id: str
+            self, document_id: str, role_hash: str
     ) -> List[Dict[str, Any]]:
-        """Return all persisted evidence items for a document, or [] if none."""
+        """
+        Return persisted evidence items for a (document, role) pair, or [] if none.
+        role_hash ensures items extracted for one role are not reused for another.
+        """
         res = (
             self.sb.table("evidence_items")
             .select("*")
             .eq("document_id", document_id)
+            .eq("role_hash", role_hash)
             .execute()
         )
         return res.data or []

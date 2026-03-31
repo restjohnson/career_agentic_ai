@@ -7,7 +7,6 @@ from app.tools.gap_analysis_tools import (
     compute_student_scores,
     compute_gaps,
     decompose_knowledge_prerequisites,
-    derive_root_causes,
     build_gap_report,
 )
 
@@ -19,11 +18,10 @@ def _norm(s: str) -> str:
 def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     Gap analysis:
-    1. Compute student_score per RoleSpecRequirement by aggregating evidence.
-    2. Compute raw_gap and weighted_gap; rank by weighted_gap descending.
+    1. Compute student_level per RoleSpecRequirement by aggregating evidence.
+    2. Compute raw_gap and weighted_gap for ALL requirements; rank by weighted_gap descending.
     3. Decompose top gaps into knowledge prerequisites via LLM.
-    4. Derive gap_root_cause rule-based from student_score + knowledge confidence.
-    5. Build the final GapReport.
+    4. Build the final GapReport.
     """
     s = AgentState.model_validate(state)
     s.step = "gap_analysis"
@@ -38,16 +36,17 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     # Step 1 & 2 — scores and gaps
     scores = compute_student_scores(s.evidence_items, s.student_model, s.role_spec)
-    gap_items = compute_gaps(scores, s.role_spec)
+    gap_items = compute_gaps(scores, s.role_spec, s.evidence_items)
 
     if not gap_items:
-        s.gap_report = GapReport(summary="No gaps identified.", gaps=[])
+        s.gap_report = GapReport(summary="No requirements assessed.", gaps=[])
         return s.model_dump(exclude_none=True)
 
-    # Step 3 — knowledge decomposition (LLM)
+    # Step 3 — knowledge decomposition (LLM); skip met requirements
+    actionable = [g for g in gap_items if g.gap_type != "met"]
     try:
         prerequisites = decompose_knowledge_prerequisites(
-            gap_items=gap_items,
+            gap_items=actionable,
             evidence_items=s.evidence_items,
             role_title=s.role_spec.canonical_role_title,
         )
@@ -65,8 +64,7 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
     for gap in gap_items:
         gap.knowledge_prerequisites = prereqs_by_parent.get(gap.summary, [])
 
-    # Step 4 & 5 — root causes and final report
-    gap_items = derive_root_causes(gap_items, prerequisites)
+    # Step 4 — final report
     s.gap_report = build_gap_report(gap_items)
 
     return s.model_dump(exclude_none=True)

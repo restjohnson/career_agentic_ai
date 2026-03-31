@@ -1,11 +1,25 @@
 from __future__ import annotations
 
-from typing import Any, Dict
+import hashlib
+from typing import Any, Dict, Optional
 
-from app.state import AgentState, EvidenceItem
+from app.state import AgentState, EvidenceItem, RoleSpecModel
 from app.tools.docling_parser import infer_suffix, parse_document_to_markdown
 from app.tools.evidence_llm import build_student_model, extract_evidence_items
 from app.tools.supabase_repo import SupabaseRepo
+
+
+def _role_hash(role_spec: Optional[RoleSpecModel]) -> str:
+    """
+    SHA-256 hash of sorted requirement summaries.
+    Used as a role-scoped cache key for evidence items — ensures that
+    the same document re-extracted for a different role does not reuse
+    stale matched_requirements from a previous run.
+    """
+    if not role_spec or not role_spec.requirements:
+        return "no_role"
+    summaries = sorted(r.req_summary for r in role_spec.requirements)
+    return hashlib.sha256("|".join(summaries).encode()).hexdigest()
 
 
 def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
@@ -30,6 +44,9 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
     repo = SupabaseRepo()
     all_items: list[EvidenceItem] = []
 
+    role_hash = _role_hash(s.role_spec)
+    onet_code = s.role_spec.matched_onet_code if s.role_spec else None
+
     for doc in s.evidence_documents:
         if not doc.storage_ref:
             s.errors.append(
@@ -37,9 +54,9 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
             )
             continue
 
-        # Cache check — reuse persisted items if already extracted for this document
+        # Cache check — reuse persisted items only if extracted for same document + role
         if doc.id:
-            cached_rows = repo.get_evidence_items_by_document(doc.id)
+            cached_rows = repo.get_evidence_items_by_document(doc.id, role_hash)
             if cached_rows:
                 items = [
                     EvidenceItem(
@@ -49,7 +66,6 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                         summary=row["summary"],
                         snippet=row.get("snippet"),
                         confidence=row.get("confidence", 0.8),
-                        proficiency_score=row.get("proficiency_score"),
                         action_verbs=row.get("action_verbs") or [],
                         metadata=row.get("metadata") or {},
                     )
@@ -103,9 +119,10 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                         "summary": item.summary,
                         "snippet": item.snippet,
                         "confidence": item.confidence,
-                        "proficiency_score": item.proficiency_score,
                         "action_verbs": item.action_verbs,
                         "metadata": item.metadata,
+                        "role_hash": role_hash,
+                        "onet_code": onet_code,
                     }
                     for item in items
                 ]
