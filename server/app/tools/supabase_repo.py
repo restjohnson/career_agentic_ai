@@ -270,3 +270,17 @@ class SupabaseRepo:
             },
             on_conflict="cache_key",
         ).execute()
+
+    # Job examples vector DB ---------------------------------------------------
+
+    def insert_job_examples(self, rows: List[Dict[str, Any]]) -> int:
+        """
+        Bulk insert job examples with embeddings into the job_examples table.
+        Returns the count of rows inserted.
+        """
+        if not rows:
+            return 0
+        res = self.sb.table("job_examples").insert(rows).execute()
+        if not res.data:
+            raise RuntimeError(f"Failed to insert job examples: {res}")
+        return len(res.data)

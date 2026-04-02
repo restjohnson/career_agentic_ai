@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, List, Optional
 
+from pydantic import BaseModel
 from langchain_openai import ChatOpenAI
 
 from app.state import ProvenanceRef, RoleSpecModel, RoleSpecRequirement
@@ -60,6 +61,93 @@ Rules:
 
 6. Use categories from this set only: [skill, task, tech, hot_technology, knowledge].
 """
+
+
+# ---------------------------------------------------------------------------
+# Multi-query decomposition
+# ---------------------------------------------------------------------------
+
+class _QueryList(BaseModel):
+    """Internal model for LLM structured output of query decomposition."""
+
+    queries: List[str]
+
+
+def decompose_role_queries(desired_role: str) -> List[str]:
+    """
+    Generate 2-3 alternative O*NET keyword search queries from desired_role.
+
+    Uses a fast LLM call to produce search query variants that may surface
+    different occupation candidates than a single query. Falls back to
+    [desired_role] on any error.
+
+    Returns a deduplicated list (cased-insensitive) with the original query
+    always included as a fallback. Returns at most 4 queries.
+    """
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    llm_struct = llm.with_structured_output(
+        _QueryList, method="json_schema", strict=True
+    )
+
+    system = (
+        "You are an O*NET search assistant. "
+        "Given a job role, produce 2-3 short keyword queries optimised for O*NET keyword search. "
+        "Each query must be 1-4 words. Return only the queries list, no explanation."
+    )
+    prompt = f'Desired role: "{desired_role}"'
+
+    try:
+        result: _QueryList = llm_struct.invoke(
+            [{"role": "system", "content": system}, {"role": "user", "content": prompt}]
+        )
+        queries = [q.strip() for q in result.queries if q.strip()]
+    except Exception:
+        queries = []
+
+    # Always include the original as a guaranteed fallback; deduplicate by lowercased value
+    seen: set[str] = set()
+    deduped: List[str] = []
+    for q in [desired_role] + queries:
+        key = q.lower()
+        if key not in seen:
+            seen.add(key)
+            deduped.append(q)
+    return deduped[:4]  # cap at 4 to avoid runaway API calls
+
+
+def _title_similarity(a: str, b: str) -> float:
+    """
+    Jaccard token-overlap similarity between two job title strings.
+    Range [0.0, 1.0]; higher = more similar.
+    """
+    set_a = set(a.lower().split())
+    set_b = set(b.lower().split())
+    if not set_a or not set_b:
+        return 0.0
+    return len(set_a & set_b) / len(set_a | set_b)
+
+
+def rank_onet_candidates(
+    candidates: List[Dict[str, Any]], desired_role: str
+) -> List[Dict[str, Any]]:
+    """
+    Deduplicate ONET candidates by onet_code and rank by title Jaccard similarity.
+
+    Returns candidates sorted descending by similarity to desired_role.
+    """
+    seen_codes: set[str] = set()
+    unique: List[Dict[str, Any]] = []
+    for c in candidates:
+        code = c.get("code") or c.get("onet_code") or c.get("id")
+        if code and code not in seen_codes:
+            seen_codes.add(code)
+            unique.append(c)
+
+    def score(c: Dict[str, Any]) -> float:
+        title = c.get("title") or c.get("name") or ""
+        return _title_similarity(title, desired_role)
+
+    return sorted(unique, key=score, reverse=True)
 
 
 def _extract_list(payload: Dict[str, Any], keys: List[str]) -> List[Any]:
@@ -149,6 +237,7 @@ def llm_refactor_role_spec_from_onet_raw(
     tech_payload: Optional[Dict[str, Any]] = None,
     hot_tech_payload: Optional[Dict[str, Any]] = None,
     raw_user_text: Optional[str] = None,
+    few_shot_examples: Optional[List[Dict[str, Any]]] = None,
 ) -> RoleSpecModel:
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
     llm_struct = llm.with_structured_output(RoleSpecModel, method="json_schema", strict=True)
@@ -177,6 +266,34 @@ Task:
 5. For any requirement directly supported by payload, set provenance source_type=ONET, source_ids=[onet_code], and include a short note naming the payload section.
 6. For inferred requirements, set provenance source_type=INFERRED, source_ids=null, and give a short provenance.note.
 """
-    return llm_struct.invoke(
-        [{"role": "system", "content": _SYSTEM}, {"role": "user", "content": prompt}]
-    )
+
+    # Build messages: system → few-shot examples (if any) → real user prompt
+    messages = [{"role": "system", "content": _SYSTEM}]
+
+    if few_shot_examples:
+        for ex in few_shot_examples:
+            # Synthetic user turn: minimal prompt mimicking the real one
+            example_user = (
+                f'Desired role: "{ex.get("role", "Unknown")}"\n'
+                f"[Example O*NET payload omitted — calibration example only]"
+            )
+
+            # Synthetic assistant turn: abbreviated role spec skeleton
+            example_assistant = json.dumps(
+                {
+                    "canonical_role_title": ex.get("role", "Unknown"),
+                    "matched_onet_code": None,
+                    "confidence_role_match": 0.85,
+                    "requirements": ex.get("requirements", []),
+                    "assumptions": [],
+                },
+                ensure_ascii=True,
+            )
+
+            messages.append({"role": "user", "content": example_user})
+            messages.append({"role": "assistant", "content": example_assistant})
+
+    # Real user prompt
+    messages.append({"role": "user", "content": prompt})
+
+    return llm_struct.invoke(messages)

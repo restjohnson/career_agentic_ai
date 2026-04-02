@@ -1,9 +1,15 @@
 from __future__ import annotations
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from app.state import AgentState, ProvenanceRef, RoleSpecModel, RoleSpecRequirement
 from app.tools.onet_client import OnetClient
-from app.tools.role_spec_llm import build_role_spec_from_onet_raw, llm_refactor_role_spec_from_onet_raw
+from app.tools.role_spec_llm import (
+    build_role_spec_from_onet_raw,
+    decompose_role_queries,
+    llm_refactor_role_spec_from_onet_raw,
+    rank_onet_candidates,
+)
+from app.tools.role_few_shot_examples import retrieve_few_shot_examples
 from app.tools.supabase_repo import SupabaseRepo
 
 
@@ -37,12 +43,24 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     client = OnetClient()
     repo = SupabaseRepo()
-    candidates = client.search_occupations(s.desired_role, limit=5)
-    if not candidates:
+
+    # --- Multi-query candidate collection ---
+    # Decompose the desired role into 2-3 search query variants
+    queries = decompose_role_queries(s.desired_role)
+    all_candidates: List[Dict[str, Any]] = []
+    for q in queries:
+        try:
+            all_candidates.extend(client.search_occupations(q, limit=5))
+        except Exception as e:
+            s.errors.append(f"ONET search failed for query '{q}': {type(e).__name__}: {e}")
+
+    if not all_candidates:
         s.errors.append("No O*NET occupation candidates found for your keywords.")
         return s.model_dump(exclude_none=True)
 
-    top = candidates[0]
+    # Rank candidates by title similarity to the original desired_role
+    ranked = rank_onet_candidates(all_candidates, s.desired_role)
+    top = ranked[0]
     onet_code = top.get("code") or top.get("onet_code") or top.get("id")
     role_title = top.get("title") or top.get("name") or s.desired_role
     if not onet_code:
@@ -78,6 +96,9 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
         role_id = None
         s.errors.append(f"Baseline role cache write failed: {type(e).__name__}: {e}")
 
+    # --- Few-shot example retrieval (cache miss only) ---
+    few_shot = retrieve_few_shot_examples(s.desired_role, k=2)
+
     try:
         s.role_spec = llm_refactor_role_spec_from_onet_raw(
             desired_role=s.desired_role,
@@ -88,6 +109,7 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
             tech_payload=tech,
             hot_tech_payload=hot_tech,
             raw_user_text=s.raw_user_text,
+            few_shot_examples=few_shot,
         )
     except Exception as e:
         s.errors.append(
