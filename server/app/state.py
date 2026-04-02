@@ -159,7 +159,6 @@ ResourceType = Literal[
     "open_source",    # contributing to existing OSS repos
     "workshop",       # hackathons, bootcamp-style intensives
     "certification",  # professional certs (AWS, Google, etc.)
-    "internship",     # internship opportunity
     "online_course",  # structured MOOCs — secondary (less informal)
     "documentation",  # official docs + guided practice
 ]
@@ -167,6 +166,18 @@ ResourceType = Literal[
 BloomLevel = Literal[
     "remember", "understand", "apply", "analyse", "evaluate", "create"
 ]
+
+
+class InternshipOpportunity(BaseModel):
+    """
+    Internship application recommendation for a phase.
+    Suggests the best recruiting window and tailored resume updates.
+    """
+    message: str                                 # Narrative explaining readiness and timing
+    recruiting_season: str                       # e.g. "Fall 2026 recruiting cycle (Aug–Oct)"
+    suggested_internship_types: List[str]        # e.g. ["Data Analyst Internship", "ML Research Intern"]
+    resume_updates: List[str]                    # Specific projects/skills to add before applying
+
 
 class LearningResource(BaseModel):
     title: str
@@ -203,6 +214,8 @@ class PlanPhase(BaseModel):
     addresses_gaps: List[str] = Field(default_factory=list)
     resume_updates: List[str] = Field(default_factory=list)
     # ^ Skills/projects to add to resume before the NEXT phase (machine-readable for critique)
+    internship_opportunity: Optional[InternshipOpportunity] = None
+    # ^ Optional recommendation to apply for internship after this phase
 
 
 class CareerPlan(BaseModel):
@@ -212,11 +225,10 @@ class CareerPlan(BaseModel):
 class CritiqueReport(BaseModel):
     rubric_scores: Dict[str, int] = Field(default_factory=dict)
     '''Dimensions and minimum passing thresholds (out of 5)
-    feasibility >= 3
-    internship_readiness >= 4
-    prerequisite_ordering >= 4
-    level_appropriateness >= 3
-    gap_coverage   >= 3'''
+    gap_coverage           >= 3
+    prerequisite_ordering  >= 4
+    feasibility            >= 3
+    level_appropriateness  >= 3'''
     issues: List[str] = Field(default_factory=list)
     fixes: List[str] = Field(default_factory=list)
     satisfactory: bool = False

@@ -39,25 +39,6 @@ def _cache_key(skill_summary: str, resource_type: str, academic_level: str) -> s
 
 
 # ---------------------------------------------------------------------------
-# Internship eligibility
-# ---------------------------------------------------------------------------
-
-def _internship_eligible(gap: GapItem, constraints: StudentConstraints) -> bool:
-    level = constraints.academic_level
-    if level == "working_professional":
-        return False
-    if level in ("freshman", "sophomore"):
-        return gap.gap_type == "partial"
-    if level in ("junior", "senior"):
-        return gap.proficiency >= 2
-    if level == "grad":
-        return gap.gap_type not in ("no_evidence", "met")
-    if level in ("bootcamp", "self_taught"):
-        return gap.gap_type == "partial" and gap.proficiency >= 2
-    return False
-
-
-# ---------------------------------------------------------------------------
 # Resource type selection per gap
 # ---------------------------------------------------------------------------
 
@@ -84,9 +65,6 @@ def determine_resource_types(gap: GapItem, constraints: StudentConstraints) -> L
 
     if level == "working_professional":
         types.append("certification")
-
-    if _internship_eligible(gap, constraints):
-        types.append("internship")
 
     return types
 
@@ -164,7 +142,7 @@ def _generate_resource(
 
     valid_types = {
         "tutorial", "project", "open_source", "workshop",
-        "certification", "internship", "online_course", "documentation",
+        "certification", "online_course", "documentation",
     }
     rtype = resource_type if resource_type in valid_types else "tutorial"
 

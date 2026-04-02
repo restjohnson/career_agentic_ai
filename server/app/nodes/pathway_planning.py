@@ -8,7 +8,7 @@ from app.tools.resource_retrieval import (
     determine_resource_types,
     retrieve_resources_for_gap,
 )
-from app.tools.pathway_llm import assemble_plan, synthesise_phases
+from app.tools.pathway_llm import assemble_plan, synthesise_phases, synthesise_internship_opportunities
 from app.tools.supabase_repo import SupabaseRepo
 
 
@@ -58,7 +58,7 @@ def _topological_sort(
     for p in prereq_items:
         prereqs_by_parent.setdefault(p["parent_gap"].lower().strip(), []).append(p)
 
-    ordered:        List[Dict[str, Any]] = []
+    ordered: List[Dict[str, Any]] = []
     emitted_prereqs: set = set()
 
     for gap in gaps:  # already sorted by weighted_gap desc
@@ -95,7 +95,7 @@ def _retrieve_all_resources(
 ) -> Dict[str, List[LearningResource]]:
     """
     For each ordered item, determine appropriate resource types and retrieve them.
-    Returns a dict keyed by item label → list of LearningResource.
+    Returns a dict keyed by item label -> list of LearningResource.
     """
     resources_by_gap: Dict[str, List[LearningResource]] = {}
 
@@ -185,8 +185,25 @@ def pathway_planning_node(state: Dict[str, Any], repo: SupabaseRepo) -> Dict[str
         s.errors.append(f"pathway_planning: phase synthesis failed: {type(e).__name__}: {e}")
         return s.model_dump(exclude_none=True)
 
-    # Step 5 — assemble plan
-    s.plan = assemble_plan(plan_spec, resources_by_gap)
+    # Step 4b — assemble plan temporarily to generate internship recommendations
+    temp_plan = assemble_plan(plan_spec, resources_by_gap)
+
+    # Step 4c — synthesise internship opportunity recommendations
+    try:
+        internship_specs = synthesise_internship_opportunities(
+            ordered_items=ordered_items,
+            plan=temp_plan,
+            constraints=s.student_constraints,
+            gap_report=s.gap_report,
+            student_model=s.student_model,
+            evidence_items=s.evidence_items,
+        )
+    except Exception as e:
+        s.errors.append(f"pathway_planning: internship synthesis failed: {type(e).__name__}: {e}")
+        internship_specs = {}
+
+    # Step 5 — assemble final plan with internship recommendations
+    s.plan = assemble_plan(plan_spec, resources_by_gap, internship_specs)
     print(f"[PATHWAY_PLANNING] Plan created: {len(s.plan.phases)} phases, {s.plan.timeline_weeks} weeks total", flush=True)
     if s.plan.phases:
         print(f"[PATHWAY_PLANNING] Phase 0: {s.plan.phases[0].title} ({s.plan.phases[0].weeks} weeks, {len(s.plan.phases[0].learning_actions)} actions)", flush=True)

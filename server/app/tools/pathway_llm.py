@@ -10,6 +10,8 @@ from app.state import (
     CareerPlan,
     CritiqueReport,
     EvidenceItem,
+    GapReport,
+    InternshipOpportunity,
     LearningAction,
     LearningResource,
     PlanPhase,
@@ -44,6 +46,14 @@ class _PlanSpec(BaseModel):
     phases: List[_PhaseSpec]
 
 
+class _InternshipOpportunitySpec(BaseModel):
+    """Schema for internship recommendation generation."""
+    message: str                                 # Narrative explaining readiness and timing
+    recruiting_season: str                       # e.g. "Fall 2026 recruiting cycle (Aug–Oct)"
+    suggested_internship_types: List[str]        # e.g. ["Data Analyst Internship"]
+    resume_updates: List[str]                    # Specific projects/skills to add before applying
+
+
 # ---------------------------------------------------------------------------
 # System prompt
 # ---------------------------------------------------------------------------
@@ -58,11 +68,12 @@ You receive:
 - Student constraints (academic level, hours/week, target goal, learning mode)
 - Optionally, critique fixes from a previous iteration that MUST be resolved
 
-Your task: author a personalised curriculum in 2–5 phases.
+Your task: author a personalised curriculum in 3-6 phases.
 
 For each phase, write 2–4 specific learning_actions. Each action is a step YOU author —
 not a restatement of a URL or article title.
 
+For example:
 Good action titles (verb-led, specific, outcome-oriented):
   ✓ "Build a SQL analytics dashboard on the NYC taxi dataset to master JOINs and window functions"
   ✓ "Implement a scikit-learn pipeline comparing Logistic Regression and XGBoost on a Kaggle dataset"
@@ -85,33 +96,29 @@ For each phase also write:
   - resume_updates: what to add to the resume before the NEXT phase
 
 Rules:
-1. BLOOM'S PROGRESSION: Phase 1 → remember/understand. Each phase escalates:
-   apply → analyse → evaluate → create.
-
-2. PREREQUISITE ORDERING: Any gap marked [PREREQUISITE] must be addressed by actions in a phase
+1. PREREQUISITE ORDERING: Any gap marked [PREREQUISITE] must be addressed by actions in a phase
    that strictly precedes the phase handling its parent gap.
 
-3. INTERNSHIP GATING: Only include an internship action when the student has prior demonstrated
-   practice (project or tutorial) for that gap in an earlier phase. The preceding phase must
-   declare resume_updates for that skill. Apply ZPD judgement based on academic level and
-   current proficiency.
-
-4. LEARNING MODE BIAS:
+3. LEARNING MODE BIAS:
    - structured    → sequence conceptual before applied actions
    - project_based → lead with build/create actions
    - self_paced    → lead with documentation/tutorial actions
    - mixed         → balance conceptual and applied
 
-5. ADDRESSES_GAP: must be one of the EXACT strings from the "VALID ADDRESSES_GAP LABELS"
+4. ADDRESSES_GAP: must be one of the EXACT strings from the "VALID ADDRESSES_GAP LABELS"
    numbered list — copy the string character-for-character. NEVER use a prerequisite concept
    label. NEVER paraphrase or shorten a gap label.
 
-6. PERSONALISATION: Always reference the student's specific background in rationale fields.
+5. PERSONALISATION: Always reference the student's specific background in rationale fields.
    A student with XGBoost experience needs a different rationale than one with none.
 
-7. WEEKS_ESTIMATE: realistic per-phase estimate. Sum should approach the target timeline.
+6. WEEKS_ESTIMATE: realistic per-phase estimate. Sum should approach the target timeline.
 
-8. CRITIQUE FIXES: address every fix provided. Do not reintroduce previously flagged issues.
+7. CRITIQUE FIXES: address every fix provided. Do not reintroduce previously flagged issues.
+
+8. NO INTERNSHIPS: Learning actions must NOT reference internship opportunities or recommendations.
+   Internships are applied for outside the curriculum and are not learning resources.
+   Focus only on skills, projects, and knowledge building.
 """
 
 
@@ -253,14 +260,14 @@ GAPS TO ADDRESS (in priority order — respect this ordering):
 {_format_gap_context(ordered_items, resources_by_gap)}
 
 {fixes_block}
-Design a personalised learning pathway with 2–5 phases.
+Design a personalised learning pathway with 3–6 phases.
 For each phase, write 2–4 specific learning_actions that YOU author (see system prompt for format).
 Use the example resources as references you may attach to actions, but the action titles and
 rationale must be your own authored curriculum — not restatements of resource titles.
 
 """
 
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
     llm_struct = llm.with_structured_output(_PlanSpec, method="json_schema", strict=True)
 
     return llm_struct.invoke([
@@ -276,13 +283,17 @@ rationale must be your own authored curriculum — not restatements of resource 
 def assemble_plan(
     plan_spec: _PlanSpec,
     resources_by_gap: Dict[str, List[LearningResource]],
+    internship_specs: Optional[Dict[int, _InternshipOpportunitySpec]] = None,
 ) -> CareerPlan:
     """
     Map the LLM _PlanSpec to a CareerPlan:
     - Attach retrieved resources to each LearningAction as example_resources.
     - Derive phase.addresses_gaps from the actions (no LLM double-output).
     - Derive phase.resources from all example_resources for critique compatibility.
+    - Attach internship opportunity recommendations to phases.
     """
+    if internship_specs is None:
+        internship_specs = {}
     _phase_prefix = re.compile(r"^phase\s*\d+\s*[:\-–]\s*", re.IGNORECASE)
 
     phases: List[PlanPhase] = []
@@ -318,6 +329,17 @@ def assemble_plan(
         # Derive addresses_gaps from actions (ordered, deduplicated)
         addresses_gaps = list(dict.fromkeys(a.addresses_gap for a in learning_actions))
 
+        # Build internship opportunity if one exists for this phase
+        internship_opp = None
+        if len(phases) in internship_specs:
+            spec_opp = internship_specs[len(phases)]
+            internship_opp = InternshipOpportunity(
+                message=spec_opp.message,
+                recruiting_season=spec_opp.recruiting_season,
+                suggested_internship_types=spec_opp.suggested_internship_types,
+                resume_updates=spec_opp.resume_updates,
+            )
+
         phases.append(PlanPhase(
             title=_phase_prefix.sub("", spec.title).strip(),
             rationale=spec.rationale,
@@ -328,9 +350,90 @@ def assemble_plan(
             resources=phase_resources,
             addresses_gaps=addresses_gaps,
             resume_updates=spec.resume_updates,
+            internship_opportunity=internship_opp,
         ))
 
     return CareerPlan(
         timeline_weeks=sum(p.weeks for p in phases),
         phases=phases,
     )
+
+
+# ---------------------------------------------------------------------------
+# Internship opportunity recommendation synthesis
+# ---------------------------------------------------------------------------
+
+_INTERNSHIP_SYSTEM = """\
+You are an internship recruiting advisor. Given a student's planned learning pathway,
+recommend when they should apply for internships based on:
+1. When they've completed sufficient projects in a relevant area
+2. Recruiting cycles (Summer internship: apply in Fall; Spring internship: apply in late Fall)
+3. Academic level and readiness tier
+
+Return a JSON object mapping phase_index (0-based) → InternshipOpportunitySpec.
+Only recommend internship windows after Phase 1. Do not recommend if insufficient evidence.
+"""
+
+
+def synthesise_internship_opportunities(
+    ordered_items: List[Dict[str, Any]],
+    plan: CareerPlan,
+    constraints: StudentConstraints,
+    gap_report: GapReport,
+    student_model: Optional[StudentModel] = None,
+    evidence_items: Optional[List[EvidenceItem]] = None,
+) -> Dict[int, _InternshipOpportunitySpec]:
+    """
+    Generate internship application recommendations for phases that are natural milestones.
+    Returns dict mapping phase_index → InternshipOpportunitySpec.
+    """
+    if not plan.phases or len(plan.phases) < 2:
+        return {}
+
+    # Build phase summary for LLM context
+    phase_summaries = []
+    cumulative_weeks = 0
+    for i, phase in enumerate(plan.phases):
+        cumulative_weeks += phase.weeks
+        projects = [a for a in phase.learning_actions if any(
+            r.resource_type == "project" for r in a.example_resources
+        )]
+        phase_summaries.append(
+            f"Phase {i}: {phase.title} ({phase.weeks}w, cumulative {cumulative_weeks}w) — "
+            f"{len(projects)} project-based actions, addresses: {', '.join(phase.addresses_gaps[:3])}"
+        )
+
+    user_prompt = f"""\
+Student: {constraints.academic_level} level
+Target date: {constraints.target_date or "not specified"}
+Total plan duration: {plan.timeline_weeks} weeks
+
+Phase breakdown:
+{chr(10).join(phase_summaries)}
+
+Based on this pathway, recommend internship opportunities.
+For each recommended phase, provide:
+- message: Narrative explaining readiness (reference actual projects/milestones from prior phases)
+- recruiting_season: e.g. "Fall 2026 recruiting cycle (Aug–Oct 2026)"
+- suggested_internship_types: 2–3 types of internships to target (e.g. "Data Analyst Internship", "ML Research Intern")
+- resume_updates: 2–3 specific items to add to resume before applying (reference projects from prior phases)
+
+Return a JSON object: {{"phase_index": InternshipOpportunitySpec, ...}}
+Only recommend after Phase 1. Return empty object {{}} if no good windows exist.
+"""
+
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+    llm_struct = llm.with_structured_output(
+        Dict[int, _InternshipOpportunitySpec],
+        method="json_schema",
+        strict=True,
+    )
+
+    try:
+        result = llm_struct.invoke([
+            {"role": "system", "content": _INTERNSHIP_SYSTEM},
+            {"role": "user",   "content": user_prompt},
+        ])
+        return result or {}
+    except Exception:
+        return {}
