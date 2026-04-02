@@ -38,7 +38,7 @@ def _check_gap_coverage(
         for phase in plan.phases
         for g in phase.addresses_gaps
     }
-    all_gaps: Set[str] = {g.summary.lower().strip() for g in gap_report.gaps}
+    all_gaps: Set[str] = {g.summary.lower().strip() for g in gap_report.gaps if g.gap_type != "met"}
     missing = all_gaps - addressed
 
     if not missing:
