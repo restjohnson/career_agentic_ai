@@ -22,7 +22,6 @@ class EvidenceItem(BaseModel):
     summary: str
     snippet: Optional[str] = None
     confidence: float = 0.8
-    action_verbs: List[str] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 # ---------------------------------------------------------------------------
@@ -191,13 +190,14 @@ class LearningResource(BaseModel):
 
 class LearningAction(BaseModel):
     """
-    An authored learning step within a phase.
-    The LLM writes the curriculum; resources are attached as examples.
+    A concrete, buildable project within a phase.
+    Multi-gap addressing and customized tech stack/methodologies.
     """
-    title: str                                # e.g. "Build a SQL analytics dashboard on the NYC taxi dataset"
-    summary: str                              # what the student will practise / produce
-    rationale: str                            # personalised: why this closes their specific gap
-    addresses_gap: str                        # gap label this action primarily advances
+    title: str                                # e.g. "Customer Churn Prediction API" or "Analyze local housing market trends"
+    description: str                          # Detailed step-by-step spec the student can follow
+    stack: List[str] = Field(default_factory=list)  # Tools, libraries, methodologies (e.g., ["Pandas", "Matplotlib", "SQL"])
+    rationale: str                            # Personalised: why this project for this student
+    addresses_gaps: List[str] = Field(default_factory=list)  # Multiple gap labels this project covers
     bloom_level: BloomLevel = "apply"
     example_resources: List[LearningResource] = Field(default_factory=list)
 

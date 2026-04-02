@@ -231,12 +231,16 @@ def pathway_planning_node(state: Dict[str, Any], repo: SupabaseRepo) -> Dict[str
 
     for phase in s.plan.phases:
         for action in phase.learning_actions:
-            canonical = _canonical(action.addresses_gap)
-            action.addresses_gap = canonical
-            for r in action.example_resources:
-                r.addresses_gap = canonical
+            # Canonicalize each gap in the addresses_gaps list
+            action.addresses_gaps = [_canonical(g) for g in action.addresses_gaps]
+            # Set resource.addresses_gap to the first canonical gap for resource matching
+            if action.addresses_gaps:
+                for r in action.example_resources:
+                    r.addresses_gap = action.addresses_gaps[0]
         # Re-derive addresses_gaps and phase.resources from normalised actions
-        phase.addresses_gaps = list(dict.fromkeys(a.addresses_gap for a in phase.learning_actions))
+        phase.addresses_gaps = list(dict.fromkeys(
+            g for a in phase.learning_actions for g in a.addresses_gaps
+        ))
         seen: set = set()
         phase.resources = []
         for action in phase.learning_actions:

@@ -64,7 +64,7 @@ Rules:
 
 
 # ---------------------------------------------------------------------------
-# Multi-query decomposition
+# Dimensional decomposition (RAG-Fusion)
 # ---------------------------------------------------------------------------
 
 class _QueryList(BaseModel):
@@ -73,16 +73,16 @@ class _QueryList(BaseModel):
     queries: List[str]
 
 
-def decompose_role_queries(desired_role: str) -> List[str]:
+def decompose_role_into_dimensions(desired_role: str) -> List[str]:
     """
-    Generate 2-3 alternative O*NET keyword search queries from desired_role.
+    Generate 3-5 sub-queries each covering a DIFFERENT dimension of the role.
 
-    Uses a fast LLM call to produce search query variants that may surface
-    different occupation candidates than a single query. Falls back to
-    [desired_role] on any error.
+    NOT keyword variants — each sub-query probes a genuinely different facet:
+    technical skills, domain knowledge, core responsibilities, credentials,
+    collaboration/leadership expectations.
 
-    Returns a deduplicated list (cased-insensitive) with the original query
-    always included as a fallback. Returns at most 4 queries.
+    Falls back to [desired_role] on any error so the pipeline always has
+    at least one sub-query to retrieve from.
     """
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
     llm_struct = llm.with_structured_output(
@@ -90,29 +90,37 @@ def decompose_role_queries(desired_role: str) -> List[str]:
     )
 
     system = (
-        "You are an O*NET search assistant. "
-        "Given a job role, produce 2-3 short keyword queries optimised for O*NET keyword search. "
-        "Each query must be 1-4 words. Return only the queries list, no explanation."
+        "You are a role analysis assistant. "
+        "Given a job role title, decompose it into 3-5 distinct search queries "
+        "where EACH query captures a DIFFERENT dimension of the role. "
+        "Dimensions to consider: technical skills, domain knowledge, core responsibilities, "
+        "required credentials/education, and soft skills or collaboration expectations. "
+        "Each query should be a phrase (3-8 words) that would retrieve job postings "
+        "emphasising that specific dimension. "
+        "Do NOT produce keyword variants of the same idea — each must cover a "
+        "genuinely different aspect of the role."
     )
-    prompt = f'Desired role: "{desired_role}"'
 
     try:
-        result: _QueryList = llm_struct.invoke(
-            [{"role": "system", "content": system}, {"role": "user", "content": prompt}]
-        )
+        result: _QueryList = llm_struct.invoke([
+            {"role": "system", "content": system},
+            {"role": "user", "content": f'Desired role: "{desired_role}"'},
+        ])
         queries = [q.strip() for q in result.queries if q.strip()]
     except Exception:
         queries = []
 
-    # Always include the original as a guaranteed fallback; deduplicate by lowercased value
+    if not queries:
+        return [desired_role]
+
+    # Dimensions come first; original role title appended as a safety-net fallback
     seen: set[str] = set()
     deduped: List[str] = []
-    for q in [desired_role] + queries:
-        key = q.lower()
-        if key not in seen:
-            seen.add(key)
+    for q in queries + [desired_role]:
+        if q.lower() not in seen:
+            seen.add(q.lower())
             deduped.append(q)
-    return deduped[:4]  # cap at 4 to avoid runaway API calls
+    return deduped[:5]
 
 
 def _title_similarity(a: str, b: str) -> float:

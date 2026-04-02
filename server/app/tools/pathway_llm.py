@@ -24,20 +24,21 @@ from app.state import (
 # LLM output schema (internal to this module)
 # ---------------------------------------------------------------------------
 
-class _LearningActionSpec(BaseModel):
-    title: str        # verb-led, specific action e.g. "Build a SQL dashboard on the NYC taxi dataset"
-    summary: str      # what the student will practise / produce
-    rationale: str    # personalised to their background — why this closes their gap
-    addresses_gap: str
-    bloom_level: str = "apply"  # str allows LLM flexibility; validated on assembly
+class _ProjectSpec(BaseModel):
+    title: str                     # Concrete project name e.g. "Customer Churn Prediction API"
+    description: str               # Step-by-step spec, detailed enough for the student to follow
+    stack: List[str] = Field(default_factory=list)  # Tools, libraries, methodologies (from student's available skills)
+    rationale: str                 # Personalised — references student's background, explains gap closure
+    addresses_gaps: List[str] = Field(default_factory=list)  # ALL gap labels this project addresses (multi-gap)
+    bloom_level: str = "apply"     # str allows LLM flexibility; validated on assembly
 
 
 class _PhaseSpec(BaseModel):
     title: str
     rationale: str
     outcome: str
-    checkpoint: str              # "After this phase, you will be able to ..."
-    learning_actions: List[_LearningActionSpec] = Field(min_length=2, max_length=4)
+    checkpoint: str                # "After this phase, you will be able to ..."
+    projects: List[_ProjectSpec] = Field(min_length=1, max_length=3)  # 1–3 concrete projects per phase
     resume_updates: List[str]
     weeks_estimate: int = Field(ge=1, default=2)
 
@@ -59,36 +60,41 @@ class _InternshipOpportunitySpec(BaseModel):
 # ---------------------------------------------------------------------------
 
 _SYSTEM = """\
-You are an expert career pathway architect designing a personalised, action-oriented learning curriculum.
+You are an expert career pathway architect designing a personalised, concrete learning curriculum.
 
 You receive:
 - A student profile summarising their demonstrated skills, projects, and experience
+- Their ACADEMIC LEVEL (freshman → senior/grad) and AVAILABLE SKILLS
 - An ordered list of skill gaps and prerequisite concepts to address
-- Available example resources for each gap (for reference — the ACTIONS are what matter)
+- Available example resources for each gap (for reference only — projects are what matter)
 - Student constraints (academic level, hours/week, target goal, learning mode)
 - Optionally, critique fixes from a previous iteration that MUST be resolved
 
-Your task: author a personalised curriculum in 3-6 phases.
+Your task: author a personalised curriculum in 3–6 phases. Each phase contains 1–3 CONCRETE PROJECTS.
 
-For each phase, write 2–4 specific learning_actions. Each action is a step YOU author —
-not a restatement of a URL or article title.
+CONCRETE PROJECTS:
+Each project must be detailed enough for a student to follow step-by-step. Projects vary in scope:
+- Some use public datasets, APIs, or real-world data
+- Some are simpler (e.g., build a function, analyze a CSV, create a visualization, design a workflow)
+- Each project addresses MULTIPLE skill gaps simultaneously (true real-world learning)
+- Projects must match the student's cognitive level and be culturally relatable
 
-For example:
-Good action titles (verb-led, specific, outcome-oriented):
-  ✓ "Build a SQL analytics dashboard on the NYC taxi dataset to master JOINs and window functions"
-  ✓ "Implement a scikit-learn pipeline comparing Logistic Regression and XGBoost on a Kaggle dataset"
-  ✓ "Contribute a beginner-friendly bug fix to an open-source pandas or scikit-learn repository"
-Bad action titles (generic, just restates a resource):
-  ✗ "Read tutorial: How to Improve Your SQL Skills 2026"
-  ✗ "Watch Apache Spark Full Course on YouTube"
+Good project examples (varying by level):
+  ✓ Freshman: "Download the Iris dataset. Use Pandas to load it, examine shape/dtypes. Create a scatter plot of petal_length vs petal_width. Calculate mean & std of each feature by species."
+  ✓ Junior: "Build a movie recommendation system using collaborative filtering. Load MovieLens data, train matrix factorization model with surprise, evaluate RMSE, write function for top-5 recommendations."
+  ✓ Senior: "Implement end-to-end time series forecasting for stock prices or energy demand. Use your choice (ARIMA/Prophet/neural net), validate with proper time series CV, backtest strategy."
 
-Each action must have:
-  - title: concrete, specific, verb-led
-  - summary: what the student will practise, build, or demonstrate
-  - rationale: PERSONALISED — reference their actual skills/projects, explain exactly why this
-    action closes their specific gap (e.g. "You built an XGBoost model but haven't used SQL
-    directly — this project bridges that gap by querying the data you'll then model.")
-  - addresses_gap: the exact quoted gap label this action primarily advances (from the list)
+Bad projects (vague, single-gap, not followable):
+  ✗ "Complete the 'Data Science Projects with Python' course"
+  ✗ "Implement statistical analysis on a dataset"
+  ✗ "Learn machine learning frameworks"
+
+Each project must have:
+  - title: concrete project name (e.g., "Customer Churn Prediction API", "Local Housing Market Analysis")
+  - description: step-by-step breakdown the student can follow (1–2 paragraphs, numbered steps or bullet points)
+  - stack: tools, libraries, methodologies CHOSEN FROM AVAILABLE SKILLS (e.g., ["Pandas", "Matplotlib", "SQL"])
+  - rationale: PERSONALISED — reference their actual skills/projects, explain why this project closes their specific gaps
+  - addresses_gaps: LIST of ALL gap labels this project covers (multi-gap is expected)
   - bloom_level: remember | understand | apply | analyse | evaluate | create
 
 For each phase also write:
@@ -96,29 +102,35 @@ For each phase also write:
   - resume_updates: what to add to the resume before the NEXT phase
 
 Rules:
-1. PREREQUISITE ORDERING: Any gap marked [PREREQUISITE] must be addressed by actions in a phase
+1. PREREQUISITE ORDERING: Any gap marked [PREREQUISITE] must be addressed by projects in a phase
    that strictly precedes the phase handling its parent gap.
 
-3. LEARNING MODE BIAS:
-   - structured    → sequence conceptual before applied actions
-   - project_based → lead with build/create actions
-   - self_paced    → lead with documentation/tutorial actions
+2. LEARNING MODE BIAS:
+   - structured    → sequence conceptual before applied projects
+   - project_based → lead with build/create projects
+   - self_paced    → lead with documentation/tutorial projects
    - mixed         → balance conceptual and applied
 
-4. ADDRESSES_GAP: must be one of the EXACT strings from the "VALID ADDRESSES_GAP LABELS"
-   numbered list — copy the string character-for-character. NEVER use a prerequisite concept
-   label. NEVER paraphrase or shorten a gap label.
+3. ADDRESSES_GAPS: must be a LIST of EXACT strings from the "VALID GAP LABELS" list.
+   Copy the strings character-for-character. NEVER use prerequisite concept labels.
+   One project can address 2–4 gaps.
 
-5. PERSONALISATION: Always reference the student's specific background in rationale fields.
-   A student with XGBoost experience needs a different rationale than one with none.
+4. STACK: choose ONLY from the AVAILABLE SKILLS block provided. Do not invent tools
+   the student does not have access to. Stack should be 2–5 tools per project.
 
-6. WEEKS_ESTIMATE: realistic per-phase estimate. Sum should approach the target timeline.
+5. ACADEMIC LEVEL & COMPLEXITY: Projects for freshman/sophomore should be focused and scaffolded.
+   Projects for junior/senior should be more integrated and open-ended.
+   Projects for grad should be research-oriented or novel implementations.
 
-7. CRITIQUE FIXES: address every fix provided. Do not reintroduce previously flagged issues.
+6. PERSONALISATION: Always reference the student's specific background in rationale fields.
+   A student with XGBoost experience needs a different project than one with none.
 
-8. NO INTERNSHIPS: Learning actions must NOT reference internship opportunities or recommendations.
-   Internships are applied for outside the curriculum and are not learning resources.
-   Focus only on skills, projects, and knowledge building.
+7. WEEKS_ESTIMATE: realistic per-phase estimate. Sum should approach the target timeline.
+
+8. CRITIQUE FIXES: address every fix provided. Do not reintroduce previously flagged issues.
+
+9. NO INTERNSHIPS: Projects must NOT reference internship opportunities or recommendations.
+   Internships are recommended separately outside the curriculum.
 """
 
 
@@ -129,8 +141,10 @@ Rules:
 def _format_student_context(
     student_model: Optional[StudentModel],
     evidence_items: List[EvidenceItem],
+    constraints: Optional[StudentConstraints] = None,
+    prior_phases: Optional[List[PlanPhase]] = None,
 ) -> str:
-    if not student_model and not evidence_items:
+    if not student_model and not evidence_items and not constraints:
         return ""
 
     lines = ["STUDENT PROFILE (personalise rationale fields to this — be specific):"]
@@ -146,6 +160,35 @@ def _format_student_context(
     projects = [e for e in evidence_items if e.item_type == "project"]
     if projects:
         lines.append(f"  Projects             : {'; '.join(p.summary[:80] for p in projects[:4])}")
+
+    # Academic level (influences project scope and scaffolding)
+    if constraints:
+        lines.append(f"  ACADEMIC LEVEL       : {constraints.academic_level}")
+
+    # Accumulated available skills
+    available = list(student_model.skills) if student_model else []
+    if prior_phases:
+        for ph in prior_phases:
+            for g in ph.addresses_gaps:
+                if g and g not in available:
+                    available.append(g)
+
+    if available:
+        lines.append(f"  AVAILABLE SKILLS (use these for stack): {', '.join(set(available[:20]))}")
+
+    # Project guidance by academic level
+    level_guidance = {
+        "freshman": "Focus on simple, focused projects with clear scaffolding. Students need guided practice.",
+        "sophomore": "Mix of guided and slightly open-ended projects. Build confidence.",
+        "junior": "Integrated projects combining 2–3 skills. Encourage exploration.",
+        "senior": "Complex, multi-part projects with real-world data or open-ended design.",
+        "grad": "Research-oriented or novel implementations. Allow for experimentation.",
+        "bootcamp": "Practical, industry-ready projects. Fast-paced.",
+        "self_taught": "Self-directed projects with clear learning outcomes.",
+        "working_professional": "Project-based learning tied to job relevance. Efficient.",
+    }
+    if constraints and constraints.academic_level in level_guidance:
+        lines.append(f"  PROJECT GUIDANCE     : {level_guidance[constraints.academic_level]}")
 
     lines.append("")
     return "\n".join(lines)
@@ -164,7 +207,7 @@ def _format_gap_context(
     prereq_items = [it for it in ordered_items if it.get("is_prereq")]
 
     # --- Section 1: valid label reference list ---
-    lines = ["VALID ADDRESSES_GAP LABELS — copy these EXACTLY into every addresses_gap field:"]
+    lines = ["VALID GAP LABELS — copy these EXACTLY into addresses_gaps list:"]
     for i, item in enumerate(gap_items, 1):
         label       = item["label"]
         gap_type    = item.get("gap_type", "").upper()
@@ -242,11 +285,11 @@ def synthesise_phases(
     critique: Optional[CritiqueReport] = None,
 ) -> _PlanSpec:
     """
-    Ask the LLM to author a personalised curriculum (learning_actions per phase).
+    Ask the LLM to author a personalised curriculum with concrete, multi-gap projects per phase.
     Retrieved resources are passed as example references, not the plan's primary content.
     """
     role_title   = role_spec.canonical_role_title if role_spec else "the target role"
-    student_ctx  = _format_student_context(student_model, evidence_items or [])
+    student_ctx  = _format_student_context(student_model, evidence_items or [], constraints)
     fixes_block  = _format_fixes(critique)
 
     user_prompt = f"""\
@@ -261,9 +304,9 @@ GAPS TO ADDRESS (in priority order — respect this ordering):
 
 {fixes_block}
 Design a personalised learning pathway with 3–6 phases.
-For each phase, write 2–4 specific learning_actions that YOU author (see system prompt for format).
-Use the example resources as references you may attach to actions, but the action titles and
-rationale must be your own authored curriculum — not restatements of resource titles.
+For each phase, write 1–3 concrete PROJECTS that YOU author (see system prompt for format).
+Each project should address multiple gaps naturally. Use available skills from the student context
+to populate the project stack. Use example resources as inspiration, but author projects directly.
 
 """
 
@@ -287,10 +330,11 @@ def assemble_plan(
 ) -> CareerPlan:
     """
     Map the LLM _PlanSpec to a CareerPlan:
-    - Attach retrieved resources to each LearningAction as example_resources.
-    - Derive phase.addresses_gaps from the actions (no LLM double-output).
-    - Derive phase.resources from all example_resources for critique compatibility.
-    - Attach internship opportunity recommendations to phases.
+    - Convert projects to LearningAction objects with multi-gap support
+    - Attach lean resources to each project (up to 3 per project, merged from all addressed gaps)
+    - Derive phase.addresses_gaps by flattening all project addresses_gaps
+    - Derive phase.resources from all example_resources for critique compatibility
+    - Attach internship opportunity recommendations to phases
     """
     if internship_specs is None:
         internship_specs = {}
@@ -303,18 +347,24 @@ def assemble_plan(
         seen_keys: set = set()
         phase_resources: List[LearningResource] = []
 
-        for action_spec in spec.learning_actions:
-            gap_label = action_spec.addresses_gap
-            bloom     = action_spec.bloom_level if action_spec.bloom_level in _VALID_BLOOM else "apply"
+        for proj_spec in spec.projects:
+            bloom = proj_spec.bloom_level if proj_spec.bloom_level in _VALID_BLOOM else "apply"
 
-            # Attach retrieved resources that match this action's gap
-            action_resources = resources_by_gap.get(gap_label, [])
+            # Lean resource attachment: merge resources for all addressed gaps, cap at 3 per project
+            action_resources = []
+            for gap_label in proj_spec.addresses_gaps:
+                for r in resources_by_gap.get(gap_label, []):
+                    key = (r.title, r.resource_type)
+                    if key not in seen_keys and len(action_resources) < 3:
+                        seen_keys.add(key)
+                        action_resources.append(r)
 
             learning_actions.append(LearningAction(
-                title=action_spec.title,
-                summary=action_spec.summary,
-                rationale=action_spec.rationale,
-                addresses_gap=gap_label,
+                title=proj_spec.title,
+                description=proj_spec.description,
+                stack=proj_spec.stack,
+                rationale=proj_spec.rationale,
+                addresses_gaps=proj_spec.addresses_gaps,
                 bloom_level=bloom,
                 example_resources=action_resources,
             ))
@@ -326,8 +376,10 @@ def assemble_plan(
                     seen_keys.add(key)
                     phase_resources.append(r)
 
-        # Derive addresses_gaps from actions (ordered, deduplicated)
-        addresses_gaps = list(dict.fromkeys(a.addresses_gap for a in learning_actions))
+        # Derive addresses_gaps by flattening all project addresses_gaps (ordered, deduplicated)
+        addresses_gaps = list(dict.fromkeys(
+            g for action in learning_actions for g in action.addresses_gaps
+        ))
 
         # Build internship opportunity if one exists for this phase
         internship_opp = None

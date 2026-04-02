@@ -494,8 +494,21 @@ function PathwayPlanTab({ plan }) {
                                     </span>
                                   )}
                                 </div>
-                                {action.summary && (
-                                  <p className={styles.stepSummary}>{action.summary}</p>
+                                {action.description && (
+                                  <p className={styles.stepSummary}>{action.description}</p>
+                                )}
+                                {action.stack?.length > 0 && (
+                                  <div className={styles.stackBlock}>
+                                    {action.stack.map((tool, ti) => (
+                                      <span
+                                        key={ti}
+                                        className={styles.stackChip}
+                                        style={{ background: `${color}15`, color, borderColor: `${color}30` }}
+                                      >
+                                        {tool}
+                                      </span>
+                                    ))}
+                                  </div>
                                 )}
                                 {action.rationale && (
                                   <p className={styles.stepRationale} style={{ borderLeftColor: color }}>

@@ -62,10 +62,16 @@ function pathwaySectionHTML(plan) {
               ).join('')}
             </div>
           `;
+          const stackHTML = a.stack?.length ? `
+            <div class="action-stack">
+              ${a.stack.map(tool => `<span class="stack-chip">${esc(tool)}</span>`).join('')}
+            </div>
+          ` : '';
           return `
             <li class="action-li">
               <div class="action-title">${esc(a.title)}</div>
-              <div class="action-summary">${esc(a.summary)}</div>
+              <div class="action-description">${esc(a.description)}</div>
+              ${stackHTML}
               ${a.rationale ? `<div class="action-rationale">${esc(a.rationale)}</div>` : ''}
               ${resHTML}
             </li>
