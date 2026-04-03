@@ -58,7 +58,9 @@ function pathwaySectionHTML(plan) {
           const resHTML   = resources.length === 0 ? '' : `
             <div class="action-resources">
               ${resources.map(r =>
-                `<span class="res-chip">${RESOURCE_ICONS[r.resource_type] ?? '📌'} ${esc(r.title)}${r.estimated_hours ? ` · ${r.estimated_hours}h` : ''}${r.is_free ? ' · Free' : ''}</span>`
+                r.url
+                  ? `<a href="${esc(r.url)}" class="res-chip" target="_blank" rel="noopener noreferrer">${RESOURCE_ICONS[r.resource_type] ?? '📌'} ${esc(r.title)}${r.estimated_hours ? ` · ${r.estimated_hours}h` : ''}${r.is_free ? ' · Free' : ''}</a>`
+                  : `<span class="res-chip">${RESOURCE_ICONS[r.resource_type] ?? '📌'} ${esc(r.title)}${r.estimated_hours ? ` · ${r.estimated_hours}h` : ''}${r.is_free ? ' · Free' : ''}</span>`
               ).join('')}
             </div>
           `;
@@ -267,7 +269,10 @@ export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, ta
     color: #475569;
     font-size: 7.5pt;
     font-weight: 600;
+    text-decoration: none;
   }
+  a.res-chip { color: #1d4ed8; text-decoration: underline; }
+  a.res-chip:hover { background: #dbeafe; }
 
   .checkpoint {
     font-size: 8.5pt;
