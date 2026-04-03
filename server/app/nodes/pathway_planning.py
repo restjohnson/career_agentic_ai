@@ -35,8 +35,7 @@ def _extract_prereq_items(gaps: List[GapItem]) -> List[Dict[str, Any]]:
                         "parent_gap":        prereq.parent_skill_gap,
                         "final_confidence":  prereq.final_confidence,
                         "is_prereq":         True,
-                        "gap_type":          "missing",
-                        "root_cause":        "no_theory",
+                        "gap_type":          "no_evidence",
                         "proficiency":       0,
                     }
     return list(seen.values())
@@ -77,7 +76,6 @@ def _topological_sort(
             "summary":      gap.summary,
             "label":        gap.summary,
             "gap_type":     gap.gap_type,
-            "root_cause":   gap.gap_root_cause,
             "proficiency":  gap.proficiency,
             "weighted_gap": gap.weighted_gap,
             "is_prereq":    False,
@@ -114,13 +112,12 @@ def _retrieve_all_resources(
                 summary=label,
                 category="skill",
                 required_level=4.0,
-                student_score=0.0,
+                student_level=0.0,
                 raw_gap=4.0,
                 weighted_gap=item.get("weighted_gap", 4.0),
                 proficiency=proficiency,
                 confidence=0.0,
-                gap_type=item.get("gap_type", "missing"),
-                gap_root_cause=item.get("root_cause"),
+                gap_type=item.get("gap_type", "no_evidence"),
             )
             rtypes = determine_resource_types(gap_proxy, constraints)
 
@@ -159,9 +156,10 @@ def pathway_planning_node(state: Dict[str, Any], repo: SupabaseRepo) -> Dict[str
         s.errors.append("pathway_planning: student_constraints missing.")
         return s.model_dump(exclude_none=True)
 
-    # Steps 1 & 2
-    prereq_items  = _extract_prereq_items(s.gap_report.gaps)
-    ordered_items = _topological_sort(s.gap_report.gaps, prereq_items)
+    # Steps 1 & 2 — exclude met requirements; they need no plan
+    actionable_gaps = [g for g in s.gap_report.gaps if g.gap_type != "met"]
+    prereq_items    = _extract_prereq_items(actionable_gaps)
+    ordered_items   = _topological_sort(actionable_gaps, prereq_items)
 
     # Step 3 — resource retrieval
     try:

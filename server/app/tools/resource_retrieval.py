@@ -47,13 +47,13 @@ def _internship_eligible(gap: GapItem, constraints: StudentConstraints) -> bool:
     if level == "working_professional":
         return False
     if level in ("freshman", "sophomore"):
-        return gap.gap_type == "weak"
+        return gap.gap_type == "partial"
     if level in ("junior", "senior"):
         return gap.proficiency >= 2
     if level == "grad":
-        return gap.gap_type != "missing"
+        return gap.gap_type not in ("no_evidence", "met")
     if level in ("bootcamp", "self_taught"):
-        return gap.gap_type == "weak" and gap.proficiency >= 2
+        return gap.gap_type == "partial" and gap.proficiency >= 2
     return False
 
 
@@ -66,16 +66,18 @@ def determine_resource_types(gap: GapItem, constraints: StudentConstraints) -> L
     types: List[str] = []
     mode  = constraints.preferred_learning_mode
     level = constraints.academic_level
-    root  = gap.gap_root_cause
 
-    if root in ("no_theory", "missing_entirely"):
+    if gap.gap_type == "no_evidence":
         types.append("online_course" if mode == "structured" else "tutorial")
-
-    if root in ("no_practice", "missing_entirely"):
         types.append("project")
-
-    if root is None:
-        types.append("project" if mode in ("project_based", "mixed") else "tutorial")
+    elif gap.gap_type == "claimed_only":
+        types.append("project")
+    elif gap.gap_type == "partial":
+        types.append("project")
+    elif gap.gap_type == "optional_gap":
+        types.append("tutorial")
+    elif gap.gap_type == "met":
+        return []
 
     if level in ("junior", "senior", "grad") and "project" in types:
         types.append("open_source")

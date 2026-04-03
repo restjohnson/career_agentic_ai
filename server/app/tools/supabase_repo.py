@@ -2,7 +2,9 @@ from __future__ import annotations
 import os
 from typing import Any, Dict, List, Optional, Tuple
 
+import httpx
 from supabase import create_client, Client
+from supabase.lib.client_options import SyncClientOptions
 
 class SupabaseRepo:
     """
@@ -12,7 +14,14 @@ class SupabaseRepo:
     def __init__(self) -> None:
         url = os.environ["SUPABASE_PUBLIC_URL"]
         service_key = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
-        self.sb: Client = create_client(url, service_key)
+        # Force HTTP/1.1 to avoid stale HTTP/2 connection reuse errors
+        # (httpx.RemoteProtocolError: Server disconnected) when the long-lived
+        # module-level client tries to reuse an idle HTTP/2 stream.
+        self.sb: Client = create_client(
+            url,
+            service_key,
+            options=SyncClientOptions(httpx_client=httpx.Client(http2=False)),
+        )
     
     #sessions
     def create_session(self, expires_at_iso: Optional[str] = None) -> str:
@@ -216,13 +225,17 @@ class SupabaseRepo:
         return res.data[0]["id"] if res.data else None
 
     def get_evidence_items_by_document(
-            self, document_id: str
+            self, document_id: str, role_hash: str
     ) -> List[Dict[str, Any]]:
-        """Return all persisted evidence items for a document, or [] if none."""
+        """
+        Return persisted evidence items for a (document, role) pair, or [] if none.
+        role_hash ensures items extracted for one role are not reused for another.
+        """
         res = (
             self.sb.table("evidence_items")
             .select("*")
             .eq("document_id", document_id)
+            .eq("role_hash", role_hash)
             .execute()
         )
         return res.data or []

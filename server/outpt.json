@@ -1,0 +1,2043 @@
+{
+    "run_id": "4556d84d-6732-4e20-9097-a03fbdc243b8",
+    "status": "done",
+    "final_state": {
+        "session_id": "e6cbd9eb-f517-49a0-9b61-96f5998c0f93",
+        "run_id": "4556d84d-6732-4e20-9097-a03fbdc243b8",
+        "desired_role": "Computer Science Assistant Professor",
+        "evidence_documents": [
+            {
+                "id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "source_type": "resume",
+                "content_hash": "85ee92359861db2f4ef6e0e2d028f58aebca7c8e878d2f86dc7939afdf063e4e",
+                "storage_ref": "e6cbd9eb-f517-49a0-9b61-96f5998c0f93/85ee92359861db2f4ef6e0e2d028f58aebca7c8e878d2f86dc7939afdf063e4e.pdf",
+                "consent_level": "raw_ok"
+            }
+        ],
+        "evidence_items": [
+            {
+                "id": "1a423ab9-2b12-473a-97eb-070ade7bc54e",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "experience",
+                "summary": "Graduate Data Analyst at LLBurge & Associates",
+                "snippet": "Collected and analyzed mixed-methods data for ECS QEM (Exploring Computer Science, Quality Education for Minorities) initiatives, identifying emerging themes and actionable insights for broadening minority CS participation.",
+                "confidence": 0.51,
+                "action_verbs": [
+                    "collected",
+                    "analyzed"
+                ],
+                "metadata": {
+                    "matched_requirements": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.",
+                        "Strong communication skills for effective teaching and collaboration with students and faculty.",
+                        "Ability to mentor and guide students in their academic and research pursuits.",
+                        "Knowledge of current trends and advancements in computer science and technology.",
+                        "Experience in curriculum development and course design."
+                    ]
+                }
+            },
+            {
+                "id": "eee586d5-99ae-4954-8ffd-60f36d738574",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "experience",
+                "summary": "Teaching and Research Assistant at University of North Carolina",
+                "snippet": "Teaching assistant for Software Engineering, mentoring 120+ undergraduates on the development and design of sophisticated web applications, APIs, and Microservices using full-stack development frameworks such as Django and MERN.",
+                "confidence": 0.76,
+                "action_verbs": [
+                    "mentoring"
+                ],
+                "metadata": {
+                    "matched_requirements": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.",
+                        "Strong communication skills for effective teaching and collaboration with students and faculty.",
+                        "Ability to mentor and guide students in their academic and research pursuits.",
+                        "Experience in curriculum development and course design."
+                    ]
+                }
+            },
+            {
+                "id": "738e3fc9-256a-42c4-8a13-8c3d502f775c",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "experience",
+                "summary": "Jenzabar Intern at JENZABAR",
+                "snippet": "Queried and managed relational databases with SQL to generate 1000+ student performance and probation reports, to support the Newberry College registrar workflows and administrative decision-making.",
+                "confidence": 0.51,
+                "action_verbs": [
+                    "queried",
+                    "managed"
+                ],
+                "metadata": {
+                    "matched_requirements": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                    ]
+                }
+            },
+            {
+                "id": "da152e37-c948-49d0-a815-41b5214aafb5",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "project",
+                "summary": "Machine Learning for Bug Priority Analysis",
+                "snippet": "Collected and preprocessed over 24,000 Visual Studio Code bug reports using Python (Sci-kit, NLTK), for NLP model pipelines that reduced noise and enhanced accuracy.",
+                "confidence": 0.75,
+                "action_verbs": [
+                    "collected",
+                    "preprocessed"
+                ],
+                "metadata": {
+                    "matched_requirements": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                    ]
+                }
+            },
+            {
+                "id": "f6d645be-7088-4e30-93be-b184de918694",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "project",
+                "summary": "Software Design and Development for Problem-Solving",
+                "snippet": "Co-led a 4-member team through the full software development lifecycle to design PMaCT (PhD Milestone and Career Tracker), a Kanban-like PhD Milestone Tracker built on the MERN stack.",
+                "confidence": 0.76,
+                "action_verbs": [
+                    "co-led",
+                    "designed"
+                ],
+                "metadata": {
+                    "matched_requirements": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.",
+                        "Experience in curriculum development and course design."
+                    ]
+                }
+            },
+            {
+                "id": "8d4fa098-c888-4323-a74e-ab99b991b48c",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "project",
+                "summary": "Reinforcement Learning in Cognitive Development",
+                "snippet": "Designed reinforcement learning models with PyTorch and TensorFlow to test adaptive user feedback mechanisms, improving system responsiveness in experimental studies.",
+                "confidence": 0.75,
+                "action_verbs": [
+                    "designed",
+                    "improving"
+                ],
+                "metadata": {
+                    "matched_requirements": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                    ]
+                }
+            },
+            {
+                "id": "008d6390-e63e-406c-87d6-59468cd0bcc6",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "project",
+                "summary": "Accessibility, Usability & User Experience",
+                "snippet": "Built a visual accessibility interface using OpenAI's Vision API to assist visually impaired users in interpreting their surroundings.",
+                "confidence": 0.75,
+                "action_verbs": [
+                    "built"
+                ],
+                "metadata": {
+                    "matched_requirements": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                    ]
+                }
+            },
+            {
+                "id": "90d4a3c1-94f3-48c4-9e48-74319de0a438",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "PhD student in Computing and Informatics",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "2f70ce1c-7de4-4b5f-b4a7-128f40852251",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Expertise in machine learning",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                    ]
+                }
+            },
+            {
+                "id": "418e17a1-76b6-47e8-b740-7ef4fdcb5d4c",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Expertise in statistical analysis",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "f3de2c54-2a53-4599-98b9-ffd3e1e452b4",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Expertise in software development",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "cc0fb479-8048-4c3c-8fe1-8b3820b30db8",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Data Analysis: Python (Pandas, NumPy)",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": [
+                        "Experience with various programming languages such as Python, C++, and Java."
+                    ]
+                }
+            },
+            {
+                "id": "4d0db299-86f8-430c-909a-161d4d4c2f67",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Data Analysis: MATLAB",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "15cabab4-c9da-4ca0-a2b6-15fc746d8866",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: Azure AI",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "7442eea5-15d5-4524-a9fe-74f105141137",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: Sci-kit",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "56741e89-95d0-4825-bfaf-661bdccab821",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: PyTorch",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "cdeef804-42a8-4924-a7b5-dba2cbfa8012",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: TensorFlow",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "4a6366d4-26ba-427b-9b62-4b51d58390b4",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: LangChain",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "97cd7065-325a-4fdd-8a92-7a3d9f46e446",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: PyDantic",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "0247358e-2c5d-4971-be8f-8cb7adaaeb34",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: AG2",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "4438b354-9021-4080-8bbc-48e2d712f728",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: CrewAI",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "e23496aa-48fe-47d2-b4a5-7fdf01f7c258",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: OpenAI Vision API",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "8273e41b-1ab3-47f1-8fe1-d037a2ca35a3",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: MongoAI",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "749dcb2d-9bf7-44a5-abee-1d41b2336043",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "AI and Machine Learning: Prompt Engineering",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "6eea57ae-5608-4ce7-bb89-33dd29c7ec25",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Human Centered Computing: Designing Usability studies and Survey instruments",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "f4b90039-fe5e-4a36-a501-b011bddc2dc4",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Human Centered Computing: Accessible Interfaces",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "dc831005-06d1-4126-9cd0-b0b3b5e8ec28",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: JavaScript",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "4ec8818a-6346-4263-b73a-e7cf44dd2845",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: Java",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "130e344d-f097-48a2-8b0a-d529360ca4f3",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: MySQL",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "6c01ac30-54b3-43da-84a8-23fbf6afee47",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: HTML",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "4467f198-e071-4b42-8e78-fc469fd753d0",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: CSS",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "7c389099-7527-4d35-a798-c9112f30c25b",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: MERN",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "f325c789-3238-4917-b539-90b2dfd937b1",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: Django",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "ffe00ba6-145c-410a-a695-ef1bd88d2179",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: AWS",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "1d3ee455-cc38-4183-9b96-b433a2b11168",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: MongoDB",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "fe5ec6ae-e3e3-4537-8c45-fd2fab5c2106",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: Git",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "f20a4562-2eda-4c1d-9e71-68ab28cd3978",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Software Development: Postman",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "6b97d92f-793e-40e3-b43f-8c4cf96f8b29",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Technical Skills: Quantitative Analysis",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "62318f03-c2c0-420b-81b4-06342bab7d87",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Technical Skills: Problem Solving",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "bf1aae07-39d7-441a-9631-cce6e1853343",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Technical Skills: Computational Thinking",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "9d7a8780-5701-4e77-8b4d-8e53efb150b1",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Technical Skills: Predictive Analytics",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "6c1084c9-7d94-44ae-bc31-2cf20971090e",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Soft Skills: Interpersonal Communication",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "abec8b1d-2c04-406d-a564-fccb0ba54d25",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Soft Skills: Ability to explain complex ideas clearly",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "e52f4a1e-5496-41e6-aa64-1a731fa4d46d",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Research Focus: Human-Centered Intelligent Systems",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "3ec2b6b3-7b60-43d0-a6c1-94383435622b",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Research Focus: Machine Learning",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "d743addf-5c49-46ee-8bea-5c2ca5c09bb8",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Research Focus: Computing Education",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "cddb70cc-4c18-40ef-95cc-02945bad51ce",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Anticipated Graduation: May 2027",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "3b634398-38eb-480b-a022-269ba0761f07",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "IBM Agentic AI with LangChain and LangGraph",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "fb4c7dc9-3c33-4fc2-a6dc-8cc0c1b1a297",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Building AI Agents with MongoDB",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "9bdc3fdf-d645-4b90-9804-e569d1b3ac1c",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "GPA: 3.80",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "b90210dd-e267-4d3c-92ce-3132dae67182",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "GPA: 3.80",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "eb900e7e-4921-4462-a645-6021a96c95d6",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "GPA: 3.92",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "cb700d58-a32c-41ec-b579-72353f798550",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Graduated: May 2023",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "70110a6f-dc57-4c3f-8693-0af5cbd7b5ba",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "IEEE Graduate Student Member",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "1495d489-d6d3-4d34-88ad-ec0b2810fbe3",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Pi Mu Epsilon Mathematical Society",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "8edbe29e-316c-4d5c-b4dd-d0d307f4281b",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "2nd Place, Graduate Poster Competition (Tapia 2025)",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "3d4333a7-4eb2-4a90-bfcd-5a00fbccb773",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Best Paper Award, Experience Report Track (RESPECT 2025)",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "fae5ab1b-d5f9-4b53-81cc-03e41b8c1b18",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "George B. Cromer Award (Newberry College 2023)",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            },
+            {
+                "id": "180a7b84-6c14-4f59-bb78-bac91c9a5556",
+                "document_id": "69bf585a-7da1-4511-bfbe-f04fdaea9274",
+                "item_type": "claim",
+                "summary": "Outstanding Achievement in Mathematics (Newberry College 2023)",
+                "confidence": 0.1,
+                "action_verbs": [],
+                "metadata": {
+                    "matched_requirements": []
+                }
+            }
+        ],
+        "raw_user_text": "I would want to be very prepared for this postion",
+        "student_model": {
+            "skills": [
+                "PhD student in Computing and Informatics",
+                "Expertise in machine learning",
+                "Expertise in statistical analysis",
+                "Expertise in software development",
+                "Data Analysis: Python (Pandas, NumPy)",
+                "Data Analysis: MATLAB",
+                "AI and Machine Learning: Azure AI",
+                "AI and Machine Learning: Sci-kit",
+                "AI and Machine Learning: PyTorch",
+                "AI and Machine Learning: TensorFlow",
+                "AI and Machine Learning: LangChain",
+                "AI and Machine Learning: PyDantic",
+                "AI and Machine Learning: AG2",
+                "AI and Machine Learning: CrewAI",
+                "AI and Machine Learning: OpenAI Vision API",
+                "AI and Machine Learning: MongoAI",
+                "AI and Machine Learning: Prompt Engineering",
+                "Human Centered Computing: Designing Usability studies and Survey instruments",
+                "Human Centered Computing: Accessible Interfaces",
+                "Software Development: JavaScript",
+                "Software Development: Java",
+                "Software Development: MySQL",
+                "Software Development: HTML",
+                "Software Development: CSS",
+                "Software Development: MERN",
+                "Software Development: Django",
+                "Software Development: AWS",
+                "Software Development: MongoDB",
+                "Software Development: Git",
+                "Software Development: Postman",
+                "Technical Skills: Quantitative Analysis",
+                "Technical Skills: Problem Solving",
+                "Technical Skills: Computational Thinking",
+                "Technical Skills: Predictive Analytics",
+                "Soft Skills: Interpersonal Communication",
+                "Soft Skills: Ability to explain complex ideas clearly",
+                "Research Focus: Human-Centered Intelligent Systems",
+                "Research Focus: Machine Learning",
+                "Research Focus: Computing Education",
+                "Anticipated Graduation: May 2027",
+                "IBM Agentic AI with LangChain and LangGraph",
+                "Building AI Agents with MongoDB",
+                "GPA: 3.80",
+                "GPA: 3.80",
+                "GPA: 3.92",
+                "Graduated: May 2023",
+                "IEEE Graduate Student Member",
+                "Pi Mu Epsilon Mathematical Society",
+                "2nd Place, Graduate Poster Competition (Tapia 2025)",
+                "Best Paper Award, Experience Report Track (RESPECT 2025)",
+                "George B. Cromer Award (Newberry College 2023)",
+                "Outstanding Achievement in Mathematics (Newberry College 2023)"
+            ],
+            "experiences": [
+                "Graduate Data Analyst at LLBurge & Associates",
+                "Teaching and Research Assistant at University of North Carolina",
+                "Jenzabar Intern at JENZABAR"
+            ],
+            "education": [],
+            "constraints": {},
+            "evidence_map": {
+                "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.": [
+                    "1a423ab9-2b12-473a-97eb-070ade7bc54e",
+                    "eee586d5-99ae-4954-8ffd-60f36d738574",
+                    "738e3fc9-256a-42c4-8a13-8c3d502f775c",
+                    "da152e37-c948-49d0-a815-41b5214aafb5",
+                    "f6d645be-7088-4e30-93be-b184de918694",
+                    "8d4fa098-c888-4323-a74e-ab99b991b48c",
+                    "008d6390-e63e-406c-87d6-59468cd0bcc6",
+                    "2f70ce1c-7de4-4b5f-b4a7-128f40852251"
+                ],
+                "Strong communication skills for effective teaching and collaboration with students and faculty.": [
+                    "1a423ab9-2b12-473a-97eb-070ade7bc54e",
+                    "eee586d5-99ae-4954-8ffd-60f36d738574"
+                ],
+                "Ability to mentor and guide students in their academic and research pursuits.": [
+                    "1a423ab9-2b12-473a-97eb-070ade7bc54e",
+                    "eee586d5-99ae-4954-8ffd-60f36d738574"
+                ],
+                "Knowledge of current trends and advancements in computer science and technology.": [
+                    "1a423ab9-2b12-473a-97eb-070ade7bc54e"
+                ],
+                "Experience in curriculum development and course design.": [
+                    "1a423ab9-2b12-473a-97eb-070ade7bc54e",
+                    "eee586d5-99ae-4954-8ffd-60f36d738574",
+                    "f6d645be-7088-4e30-93be-b184de918694"
+                ],
+                "Experience with various programming languages such as Python, C++, and Java.": [
+                    "cc0fb479-8048-4c3c-8fe1-8b3820b30db8"
+                ]
+            }
+        },
+        "student_constraints": {
+            "academic_level": "grad",
+            "hours_per_week": 10,
+            "target_goal": "job_ready",
+            "target_date": "2027-05-16",
+            "preferred_learning_mode": "project_based",
+            "target_weeks": 59
+        },
+        "role_spec": {
+            "canonical_role_title": "Computer Science Teachers, Postsecondary",
+            "matched_onet_code": "25-1021.00",
+            "confidence_role_match": 0.9,
+            "requirements": [
+                {
+                    "req_summary": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.",
+                    "category": "knowledge",
+                    "provenance": [
+                        {
+                            "source_type": "INFERRED",
+                            "note": "A Computer Science Assistant Professor is expected to have a deep understanding of computer science fundamentals, which is critical for teaching and research."
+                        }
+                    ],
+                    "optional": false,
+                    "required_level": 4.0,
+                    "importance": 5.0
+                },
+                {
+                    "req_summary": "Ability to conduct and publish original research in computer science.",
+                    "category": "task",
+                    "provenance": [
+                        {
+                            "source_type": "INFERRED",
+                            "note": "Research output is a key component of academic roles, and professors are expected to contribute to their field through publications."
+                        }
+                    ],
+                    "optional": false,
+                    "required_level": 4.0,
+                    "importance": 5.0
+                },
+                {
+                    "req_summary": "Experience with various programming languages such as Python, C++, and Java.",
+                    "category": "skill",
+                    "provenance": [
+                        {
+                            "source_type": "ONET",
+                            "source_ids": [
+                                "25-1021.00"
+                            ],
+                            "note": "technology_skills_payload"
+                        }
+                    ],
+                    "optional": false,
+                    "required_level": 3.0,
+                    "importance": 4.0
+                },
+                {
+                    "req_summary": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle.",
+                    "category": "tech",
+                    "provenance": [
+                        {
+                            "source_type": "ONET",
+                            "source_ids": [
+                                "25-1021.00"
+                            ],
+                            "note": "technology_skills_payload"
+                        }
+                    ],
+                    "optional": false,
+                    "required_level": 3.0,
+                    "importance": 4.0
+                },
+                {
+                    "req_summary": "Strong communication skills for effective teaching and collaboration with students and faculty.",
+                    "category": "skill",
+                    "provenance": [
+                        {
+                            "source_type": "INFERRED",
+                            "note": "Effective communication is essential for teaching and collaboration in an academic environment."
+                        }
+                    ],
+                    "optional": false,
+                    "required_level": 3.0,
+                    "importance": 4.0
+                },
+                {
+                    "req_summary": "Ability to mentor and guide students in their academic and research pursuits.",
+                    "category": "task",
+                    "provenance": [
+                        {
+                            "source_type": "INFERRED",
+                            "note": "Mentorship is a critical aspect of a professor's role, helping students navigate their studies and research."
+                        }
+                    ],
+                    "optional": false,
+                    "required_level": 3.0,
+                    "importance": 4.0
+                },
+                {
+                    "req_summary": "Knowledge of current trends and advancements in computer science and technology.",
+                    "category": "knowledge",
+                    "provenance": [
+                        {
+                            "source_type": "INFERRED",
+                            "note": "Staying updated with industry trends is important for teaching relevant content."
+                        }
+                    ],
+                    "optional": true,
+                    "required_level": 2.0,
+                    "importance": 3.0
+                },
+                {
+                    "req_summary": "Experience in curriculum development and course design.",
+                    "category": "task",
+                    "provenance": [
+                        {
+                            "source_type": "INFERRED",
+                            "note": "Professors often contribute to developing course materials and curricula."
+                        }
+                    ],
+                    "optional": true,
+                    "required_level": 2.0,
+                    "importance": 3.0
+                },
+                {
+                    "req_summary": "Familiarity with academic policies and procedures, including accreditation standards.",
+                    "category": "knowledge",
+                    "provenance": [
+                        {
+                            "source_type": "INFERRED",
+                            "note": "Understanding academic policies is important for navigating the academic environment."
+                        }
+                    ],
+                    "optional": true,
+                    "required_level": 1.0,
+                    "importance": 2.0
+                }
+            ],
+            "assumptions": []
+        },
+        "gap_report": {
+            "summary": "9 requirement(s) assessed. 4 met. 3 with no evidence. 1 claimed but not demonstrated. 1 partially evidenced.",
+            "gaps": [
+                {
+                    "summary": "Ability to conduct and publish original research in computer science.",
+                    "category": "task",
+                    "required_level": 4.0,
+                    "student_level": 0.0,
+                    "raw_gap": 4.0,
+                    "weighted_gap": 20.0,
+                    "proficiency": 0,
+                    "confidence": 0.0,
+                    "gap_type": "no_evidence",
+                    "evidence_item_ids": [],
+                    "knowledge_prerequisites": [
+                        {
+                            "concept": "Research methodologies in computer science",
+                            "parent_skill_gap": "Ability to conduct and publish original research in computer science",
+                            "is_foundational": true,
+                            "inferred_confidence": 0.5,
+                            "inference_tier": "skill_implied",
+                            "inference_basis": [
+                                "Teaching and Research Assistant at University of North Carolina",
+                                "Research Focus: Computing Education"
+                            ],
+                            "final_confidence": 0.0
+                        },
+                        {
+                            "concept": "Statistical analysis techniques",
+                            "parent_skill_gap": "Ability to conduct and publish original research in computer science",
+                            "is_foundational": false,
+                            "inferred_confidence": 0.5,
+                            "inference_tier": "skill_implied",
+                            "inference_basis": [
+                                "Expertise in statistical analysis",
+                                "Research Focus: Machine Learning"
+                            ],
+                            "final_confidence": 0.0
+                        }
+                    ]
+                },
+                {
+                    "summary": "Experience with various programming languages such as Python, C++, and Java.",
+                    "category": "skill",
+                    "required_level": 3.0,
+                    "student_level": 0.0,
+                    "raw_gap": 3.0,
+                    "weighted_gap": 12.0,
+                    "proficiency": 0,
+                    "confidence": 0.1,
+                    "gap_type": "claimed_only",
+                    "evidence_item_ids": [
+                        "cc0fb479-8048-4c3c-8fe1-8b3820b30db8"
+                    ],
+                    "knowledge_prerequisites": [
+                        {
+                            "concept": "Programming paradigms and language features of Python, C++, and Java",
+                            "parent_skill_gap": "Experience with various programming languages such as Python, C++, and Java",
+                            "is_foundational": true,
+                            "inferred_confidence": 0.8,
+                            "inference_tier": "direct",
+                            "inference_basis": [
+                                "Software Development: Java",
+                                "Data Analysis: Python (Pandas, NumPy)"
+                            ],
+                            "final_confidence": 0.0
+                        }
+                    ]
+                },
+                {
+                    "summary": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle.",
+                    "category": "tech",
+                    "required_level": 3.0,
+                    "student_level": 0.0,
+                    "raw_gap": 3.0,
+                    "weighted_gap": 12.0,
+                    "proficiency": 0,
+                    "confidence": 0.0,
+                    "gap_type": "no_evidence",
+                    "evidence_item_ids": [],
+                    "knowledge_prerequisites": [
+                        {
+                            "concept": "Online learning platform functionalities and integration",
+                            "parent_skill_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle",
+                            "is_foundational": false,
+                            "inferred_confidence": 0.2,
+                            "inference_tier": "degree_baseline",
+                            "inference_basis": [
+                                "PhD student in Computing and Informatics"
+                            ],
+                            "final_confidence": 0.0
+                        }
+                    ]
+                },
+                {
+                    "summary": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.",
+                    "category": "knowledge",
+                    "required_level": 4.0,
+                    "student_level": 2.9994,
+                    "raw_gap": 1.0006,
+                    "weighted_gap": 5.003,
+                    "proficiency": 3,
+                    "confidence": 0.9998,
+                    "gap_type": "partial",
+                    "evidence_item_ids": [
+                        "1a423ab9-2b12-473a-97eb-070ade7bc54e",
+                        "eee586d5-99ae-4954-8ffd-60f36d738574",
+                        "738e3fc9-256a-42c4-8a13-8c3d502f775c",
+                        "da152e37-c948-49d0-a815-41b5214aafb5",
+                        "f6d645be-7088-4e30-93be-b184de918694",
+                        "8d4fa098-c888-4323-a74e-ab99b991b48c",
+                        "008d6390-e63e-406c-87d6-59468cd0bcc6",
+                        "2f70ce1c-7de4-4b5f-b4a7-128f40852251"
+                    ],
+                    "knowledge_prerequisites": [
+                        {
+                            "concept": "Fundamental algorithms and data structures",
+                            "parent_skill_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering",
+                            "is_foundational": true,
+                            "inferred_confidence": 0.5,
+                            "inference_tier": "skill_implied",
+                            "inference_basis": [
+                                "Expertise in software development",
+                                "Research Focus: Human-Centered Intelligent Systems"
+                            ],
+                            "final_confidence": 0.0
+                        },
+                        {
+                            "concept": "Software engineering principles and practices",
+                            "parent_skill_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering",
+                            "is_foundational": false,
+                            "inferred_confidence": 0.5,
+                            "inference_tier": "skill_implied",
+                            "inference_basis": [
+                                "Software Design and Development for Problem-Solving",
+                                "Expertise in software development"
+                            ],
+                            "final_confidence": 0.0
+                        }
+                    ]
+                },
+                {
+                    "summary": "Familiarity with academic policies and procedures, including accreditation standards.",
+                    "category": "knowledge",
+                    "required_level": 1.0,
+                    "student_level": 0.0,
+                    "raw_gap": 1.0,
+                    "weighted_gap": 2.0,
+                    "proficiency": 0,
+                    "confidence": 0.0,
+                    "gap_type": "no_evidence",
+                    "evidence_item_ids": [],
+                    "knowledge_prerequisites": [
+                        {
+                            "concept": "Understanding of academic accreditation standards",
+                            "parent_skill_gap": "Familiarity with academic policies and procedures, including accreditation standards",
+                            "is_foundational": true,
+                            "inferred_confidence": 0.0,
+                            "inference_tier": "none",
+                            "inference_basis": [],
+                            "final_confidence": 0.0
+                        },
+                        {
+                            "concept": "Educational policies and procedures in higher education",
+                            "parent_skill_gap": "Familiarity with academic policies and procedures, including accreditation standards",
+                            "is_foundational": false,
+                            "inferred_confidence": 0.0,
+                            "inference_tier": "none",
+                            "inference_basis": [],
+                            "final_confidence": 0.0
+                        }
+                    ]
+                },
+                {
+                    "summary": "Strong communication skills for effective teaching and collaboration with students and faculty.",
+                    "category": "skill",
+                    "required_level": 3.0,
+                    "student_level": 2.6472,
+                    "raw_gap": 0.3528,
+                    "weighted_gap": 1.4112,
+                    "proficiency": 3,
+                    "confidence": 0.8824,
+                    "gap_type": "met",
+                    "evidence_item_ids": [
+                        "1a423ab9-2b12-473a-97eb-070ade7bc54e",
+                        "eee586d5-99ae-4954-8ffd-60f36d738574"
+                    ],
+                    "knowledge_prerequisites": []
+                },
+                {
+                    "summary": "Ability to mentor and guide students in their academic and research pursuits.",
+                    "category": "task",
+                    "required_level": 3.0,
+                    "student_level": 2.6472,
+                    "raw_gap": 0.3528,
+                    "weighted_gap": 1.4112,
+                    "proficiency": 3,
+                    "confidence": 0.8824,
+                    "gap_type": "met",
+                    "evidence_item_ids": [
+                        "1a423ab9-2b12-473a-97eb-070ade7bc54e",
+                        "eee586d5-99ae-4954-8ffd-60f36d738574"
+                    ],
+                    "knowledge_prerequisites": []
+                },
+                {
+                    "summary": "Knowledge of current trends and advancements in computer science and technology.",
+                    "category": "knowledge",
+                    "required_level": 2.0,
+                    "student_level": 1.53,
+                    "raw_gap": 0.47,
+                    "weighted_gap": 1.41,
+                    "proficiency": 3,
+                    "confidence": 0.51,
+                    "gap_type": "met",
+                    "evidence_item_ids": [
+                        "1a423ab9-2b12-473a-97eb-070ade7bc54e"
+                    ],
+                    "knowledge_prerequisites": []
+                },
+                {
+                    "summary": "Experience in curriculum development and course design.",
+                    "category": "task",
+                    "required_level": 2.0,
+                    "student_level": 2.9154,
+                    "raw_gap": 0.0,
+                    "weighted_gap": 0.0,
+                    "proficiency": 3,
+                    "confidence": 0.9718,
+                    "gap_type": "met",
+                    "evidence_item_ids": [
+                        "1a423ab9-2b12-473a-97eb-070ade7bc54e",
+                        "eee586d5-99ae-4954-8ffd-60f36d738574",
+                        "f6d645be-7088-4e30-93be-b184de918694"
+                    ],
+                    "knowledge_prerequisites": []
+                }
+            ]
+        },
+        "plan": {
+            "timeline_weeks": 38,
+            "phases": [
+                {
+                    "title": "Foundation in Research and Programming Languages",
+                    "rationale": "This phase establishes a solid foundation in research methodologies and programming languages, which are critical for a career in academia. Given your background as a PhD student, this phase will help you gain the necessary skills to conduct original research and familiarize yourself with programming languages that are essential for teaching computer science.",
+                    "outcome": "You will be able to articulate research methodologies and demonstrate basic programming skills in Python and Java.",
+                    "checkpoint": "After completing this phase, you will be able to conduct basic research and write a research proposal in computer science.",
+                    "weeks": 8,
+                    "learning_actions": [
+                        {
+                            "title": "Complete the Research Methods in Computer Science course to understand research design and methodologies",
+                            "summary": "You will learn about various research methods, data collection techniques, and how to structure a research paper, which are essential for publishing original research.",
+                            "rationale": "As a PhD student, understanding research methodologies is crucial for your academic career. This course will equip you with the skills needed to conduct and publish original research, addressing your gap in this area.",
+                            "addresses_gap": "Ability to conduct and publish original research in computer science.",
+                            "bloom_level": "understand",
+                            "example_resources": [
+                                {
+                                    "title": "How to Write a Great Research Paper",
+                                    "provider": "YouTube",
+                                    "url": "https://www.youtube.com/watch?v=2c8g0g0g0g0",
+                                    "resource_type": "tutorial",
+                                    "estimated_hours": 2,
+                                    "is_free": true,
+                                    "addresses_gap": "Ability to conduct and publish original research in computer science."
+                                },
+                                {
+                                    "title": "Research Methods in Computer Science",
+                                    "provider": "Coursera",
+                                    "url": "https://www.coursera.org/learn/research-methods-in-computer-science",
+                                    "resource_type": "project",
+                                    "estimated_hours": 20,
+                                    "is_free": false,
+                                    "addresses_gap": "Ability to conduct and publish original research in computer science."
+                                },
+                                {
+                                    "title": "Research Methods in Computer Science",
+                                    "provider": "GitHub",
+                                    "url": "https://github.com/Research-Methods-in-Computer-Science/Research-Methods-in-Computer-Science",
+                                    "resource_type": "open_source",
+                                    "estimated_hours": 40,
+                                    "is_free": true,
+                                    "addresses_gap": "Ability to conduct and publish original research in computer science."
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Build a basic project using Python and Java to demonstrate programming proficiency",
+                            "summary": "You will create a simple application that showcases your understanding of programming concepts in both Python and Java, such as variables, control structures, and functions.",
+                            "rationale": "You have claimed experience in Python but lack evidence in Java. This project will help you solidify your programming skills and provide tangible evidence of your capabilities, addressing your gap in programming languages.",
+                            "addresses_gap": "Experience with various programming languages such as Python, C++, and Java.",
+                            "bloom_level": "apply",
+                            "example_resources": [
+                                {
+                                    "title": "The Odin Project - Full Stack JavaScript",
+                                    "provider": "The Odin Project",
+                                    "url": "https://www.theodinproject.com/paths/full-stack-javascript",
+                                    "resource_type": "project",
+                                    "is_free": true,
+                                    "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                                },
+                                {
+                                    "title": "The Odin Project",
+                                    "provider": "The Odin Project",
+                                    "url": "https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/intro-to-programming",
+                                    "resource_type": "open_source",
+                                    "is_free": true,
+                                    "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                                },
+                                {
+                                    "title": "Software Development Internship",
+                                    "provider": "IBM",
+                                    "url": "https://www.ibm.com/employment/internships/",
+                                    "resource_type": "internship",
+                                    "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                                }
+                            ]
+                        }
+                    ],
+                    "resources": [
+                        {
+                            "title": "How to Write a Great Research Paper",
+                            "provider": "YouTube",
+                            "url": "https://www.youtube.com/watch?v=2c8g0g0g0g0",
+                            "resource_type": "tutorial",
+                            "estimated_hours": 2,
+                            "is_free": true,
+                            "addresses_gap": "Ability to conduct and publish original research in computer science."
+                        },
+                        {
+                            "title": "Research Methods in Computer Science",
+                            "provider": "Coursera",
+                            "url": "https://www.coursera.org/learn/research-methods-in-computer-science",
+                            "resource_type": "project",
+                            "estimated_hours": 20,
+                            "is_free": false,
+                            "addresses_gap": "Ability to conduct and publish original research in computer science."
+                        },
+                        {
+                            "title": "Research Methods in Computer Science",
+                            "provider": "GitHub",
+                            "url": "https://github.com/Research-Methods-in-Computer-Science/Research-Methods-in-Computer-Science",
+                            "resource_type": "open_source",
+                            "estimated_hours": 40,
+                            "is_free": true,
+                            "addresses_gap": "Ability to conduct and publish original research in computer science."
+                        },
+                        {
+                            "title": "The Odin Project - Full Stack JavaScript",
+                            "provider": "The Odin Project",
+                            "url": "https://www.theodinproject.com/paths/full-stack-javascript",
+                            "resource_type": "project",
+                            "is_free": true,
+                            "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                        },
+                        {
+                            "title": "The Odin Project",
+                            "provider": "The Odin Project",
+                            "url": "https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/intro-to-programming",
+                            "resource_type": "open_source",
+                            "is_free": true,
+                            "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                        },
+                        {
+                            "title": "Software Development Internship",
+                            "provider": "IBM",
+                            "url": "https://www.ibm.com/employment/internships/",
+                            "resource_type": "internship",
+                            "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                        }
+                    ],
+                    "addresses_gaps": [
+                        "Ability to conduct and publish original research in computer science.",
+                        "Experience with various programming languages such as Python, C++, and Java."
+                    ],
+                    "resume_updates": [
+                        "Completed Research Methods in Computer Science course",
+                        "Developed a basic application using Python and Java"
+                    ]
+                },
+                {
+                    "title": "Educational Technology and Curriculum Development",
+                    "rationale": "This phase focuses on familiarizing yourself with educational technology and curriculum development, which are essential for a postsecondary teaching role. Given your teaching assistant experience, these skills will enhance your ability to design effective learning experiences.",
+                    "outcome": "You will be able to design a course outline and utilize educational technology platforms for teaching.",
+                    "checkpoint": "After completing this phase, you will be able to create a course syllabus and effectively use an online learning platform.",
+                    "weeks": 10,
+                    "learning_actions": [
+                        {
+                            "title": "Create a course outline using Moodle to understand course design principles",
+                            "summary": "You will design a course syllabus and structure it within the Moodle platform, focusing on learning objectives, assessments, and instructional strategies.",
+                            "rationale": "Your experience as a teaching assistant will benefit from a structured approach to course design. This action will help you gain familiarity with online learning platforms, addressing your gap in educational technology.",
+                            "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle.",
+                            "bloom_level": "create",
+                            "example_resources": [
+                                {
+                                    "title": "Moodle for Beginners: A Complete Guide",
+                                    "provider": "YouTube",
+                                    "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                                    "resource_type": "tutorial",
+                                    "estimated_hours": 2,
+                                    "is_free": true,
+                                    "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                                },
+                                {
+                                    "title": "Creating an Online Course with Moodle",
+                                    "provider": "YouTube",
+                                    "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                                    "resource_type": "project",
+                                    "estimated_hours": 5,
+                                    "is_free": true,
+                                    "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                                },
+                                {
+                                    "title": "Moodle Teaching Basics",
+                                    "provider": "Moodle",
+                                    "url": "https://learn.moodle.org/course/view.php?id=28",
+                                    "resource_type": "open_source",
+                                    "estimated_hours": 10,
+                                    "is_free": true,
+                                    "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Research current trends in computer science education and summarize findings",
+                            "summary": "You will investigate recent advancements in computer science and compile a report that outlines key trends and their implications for teaching.",
+                            "rationale": "Staying updated on trends is vital for effective teaching. This action will help you understand the landscape of computer science education, addressing your gap in knowledge of current trends and advancements.",
+                            "addresses_gap": "Knowledge of current trends and advancements in computer science and technology.",
+                            "bloom_level": "apply",
+                            "example_resources": []
+                        }
+                    ],
+                    "resources": [
+                        {
+                            "title": "Moodle for Beginners: A Complete Guide",
+                            "provider": "YouTube",
+                            "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                            "resource_type": "tutorial",
+                            "estimated_hours": 2,
+                            "is_free": true,
+                            "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                        },
+                        {
+                            "title": "Creating an Online Course with Moodle",
+                            "provider": "YouTube",
+                            "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                            "resource_type": "project",
+                            "estimated_hours": 5,
+                            "is_free": true,
+                            "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                        },
+                        {
+                            "title": "Moodle Teaching Basics",
+                            "provider": "Moodle",
+                            "url": "https://learn.moodle.org/course/view.php?id=28",
+                            "resource_type": "open_source",
+                            "estimated_hours": 10,
+                            "is_free": true,
+                            "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                        }
+                    ],
+                    "addresses_gaps": [
+                        "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle.",
+                        "Knowledge of current trends and advancements in computer science and technology."
+                    ],
+                    "resume_updates": [
+                        "Designed a course outline using Moodle",
+                        "Conducted research on current trends in computer science education"
+                    ]
+                },
+                {
+                    "title": "Advanced Computer Science Principles and Mentorship Skills",
+                    "rationale": "This phase deepens your understanding of computer science principles and develops your mentorship abilities, both of which are crucial for a teaching role. Your background in machine learning and software development will be complemented by these advanced skills.",
+                    "outcome": "You will be able to apply advanced computer science principles and mentor students effectively.",
+                    "checkpoint": "After completing this phase, you will be able to teach advanced computer science concepts and provide guidance to students in their academic pursuits.",
+                    "weeks": 10,
+                    "learning_actions": [
+                        {
+                            "title": "Complete the Data Structures and Algorithms Specialization Capstone Project",
+                            "summary": "You will apply your knowledge of data structures and algorithms in a comprehensive project that demonstrates your expertise in computer science principles.",
+                            "rationale": "You have partial expertise in computer science principles. This capstone project will solidify your understanding and provide evidence of your capabilities, addressing your gap in expertise in computer science principles and theories.",
+                            "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.",
+                            "bloom_level": "create",
+                            "example_resources": [
+                                {
+                                    "title": "Data Structures and Algorithms Specialization Capstone Project",
+                                    "provider": "Coursera",
+                                    "url": "https://www.coursera.org/learn/data-structures-algorithms-specialization",
+                                    "resource_type": "project",
+                                    "estimated_hours": 40,
+                                    "is_free": false,
+                                    "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                                },
+                                {
+                                    "title": "CS50's Introduction to Computer Science",
+                                    "provider": "edX",
+                                    "url": "https://www.edx.org/course/cs50s-introduction-to-computer-science",
+                                    "resource_type": "open_source",
+                                    "estimated_hours": 300,
+                                    "is_free": true,
+                                    "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                                },
+                                {
+                                    "title": "Software Engineering Internship",
+                                    "provider": "Google",
+                                    "url": "https://careers.google.com/jobs/results/123456789/software-engineering-internship-summer-2024/?hl=en",
+                                    "resource_type": "internship",
+                                    "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Develop a mentorship plan for guiding students in research",
+                            "summary": "You will create a structured plan for mentoring students, including strategies for academic support and research guidance.",
+                            "rationale": "As a teaching assistant, you likely interacted with students. This action will formalize your approach to mentorship, addressing your gap in the ability to mentor and guide students in their academic and research pursuits.",
+                            "addresses_gap": "Ability to mentor and guide students in their academic and research pursuits.",
+                            "bloom_level": "create",
+                            "example_resources": []
+                        }
+                    ],
+                    "resources": [
+                        {
+                            "title": "Data Structures and Algorithms Specialization Capstone Project",
+                            "provider": "Coursera",
+                            "url": "https://www.coursera.org/learn/data-structures-algorithms-specialization",
+                            "resource_type": "project",
+                            "estimated_hours": 40,
+                            "is_free": false,
+                            "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                        },
+                        {
+                            "title": "CS50's Introduction to Computer Science",
+                            "provider": "edX",
+                            "url": "https://www.edx.org/course/cs50s-introduction-to-computer-science",
+                            "resource_type": "open_source",
+                            "estimated_hours": 300,
+                            "is_free": true,
+                            "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                        },
+                        {
+                            "title": "Software Engineering Internship",
+                            "provider": "Google",
+                            "url": "https://careers.google.com/jobs/results/123456789/software-engineering-internship-summer-2024/?hl=en",
+                            "resource_type": "internship",
+                            "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                        }
+                    ],
+                    "addresses_gaps": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.",
+                        "Ability to mentor and guide students in their academic and research pursuits."
+                    ],
+                    "resume_updates": [
+                        "Completed the Data Structures and Algorithms Specialization Capstone Project",
+                        "Developed a mentorship plan for guiding students in research"
+                    ]
+                },
+                {
+                    "title": "Communication Skills and Academic Policies",
+                    "rationale": "This phase focuses on enhancing your communication skills and understanding academic policies, both of which are essential for effective teaching and collaboration in academia. Your experience as a teaching assistant will be complemented by these skills.",
+                    "outcome": "You will be able to communicate effectively in academic settings and understand the policies governing higher education.",
+                    "checkpoint": "After completing this phase, you will be able to navigate academic policies and communicate effectively with students and faculty.",
+                    "weeks": 10,
+                    "learning_actions": [
+                        {
+                            "title": "Participate in a workshop on effective communication in academic settings",
+                            "summary": "You will learn techniques for effective communication, including presentation skills and student engagement strategies.",
+                            "rationale": "Strong communication skills are vital for teaching. This workshop will enhance your ability to engage with students and faculty, addressing your gap in communication skills for effective teaching and collaboration.",
+                            "addresses_gap": "Strong communication skills for effective teaching and collaboration with students and faculty.",
+                            "bloom_level": "apply",
+                            "example_resources": []
+                        },
+                        {
+                            "title": "Complete the Understanding Accreditation course to grasp academic policies",
+                            "summary": "You will learn about accreditation standards and academic policies that govern higher education institutions.",
+                            "rationale": "Understanding academic policies is crucial for a teaching role. This course will provide you with the knowledge needed to navigate these policies, addressing your gap in familiarity with academic policies and procedures.",
+                            "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards.",
+                            "bloom_level": "understand",
+                            "example_resources": [
+                                {
+                                    "title": "Understanding Accreditation: A Guide for Higher Education Professionals",
+                                    "provider": "Coursera",
+                                    "url": "https://www.coursera.org/learn/understanding-accreditation",
+                                    "resource_type": "tutorial",
+                                    "estimated_hours": 10,
+                                    "is_free": false,
+                                    "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                                },
+                                {
+                                    "title": "Understanding Accreditation: A Guide for Higher Education Professionals",
+                                    "provider": "Coursera",
+                                    "url": "https://www.coursera.org/learn/understanding-accreditation",
+                                    "resource_type": "project",
+                                    "estimated_hours": 10,
+                                    "is_free": false,
+                                    "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                                },
+                                {
+                                    "title": "Understanding Accreditation: A Guide for Higher Education Institutions",
+                                    "provider": "YouTube",
+                                    "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                                    "resource_type": "open_source",
+                                    "estimated_hours": 2,
+                                    "is_free": true,
+                                    "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                                }
+                            ]
+                        }
+                    ],
+                    "resources": [
+                        {
+                            "title": "Understanding Accreditation: A Guide for Higher Education Professionals",
+                            "provider": "Coursera",
+                            "url": "https://www.coursera.org/learn/understanding-accreditation",
+                            "resource_type": "tutorial",
+                            "estimated_hours": 10,
+                            "is_free": false,
+                            "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                        },
+                        {
+                            "title": "Understanding Accreditation: A Guide for Higher Education Professionals",
+                            "provider": "Coursera",
+                            "url": "https://www.coursera.org/learn/understanding-accreditation",
+                            "resource_type": "project",
+                            "estimated_hours": 10,
+                            "is_free": false,
+                            "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                        },
+                        {
+                            "title": "Understanding Accreditation: A Guide for Higher Education Institutions",
+                            "provider": "YouTube",
+                            "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                            "resource_type": "open_source",
+                            "estimated_hours": 2,
+                            "is_free": true,
+                            "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                        }
+                    ],
+                    "addresses_gaps": [
+                        "Strong communication skills for effective teaching and collaboration with students and faculty.",
+                        "Familiarity with academic policies and procedures, including accreditation standards."
+                    ],
+                    "resume_updates": [
+                        "Participated in a workshop on effective communication in academic settings",
+                        "Completed the Understanding Accreditation course"
+                    ]
+                }
+            ]
+        },
+        "critique": {
+            "rubric_scores": {
+                "gap_coverage": 3,
+                "prerequisite_ordering": 5,
+                "feasibility": 5,
+                "level_appropriateness": 5,
+                "internship_readiness": 1
+            },
+            "issues": [
+                "Gap not addressed by any phase: 'experience in curriculum development and course design.'",
+                "Gap not addressed by any phase: 'knowledge of current trends and advancements in computer science and technology.'",
+                "Gap not addressed by any phase: 'ability to mentor and guide students in their academic and research pursuits.'",
+                "Gap not addressed by any phase: 'strong communication skills for effective teaching and collaboration with students and faculty.'",
+                "Internship 'Software Development Internship' (Phase 1) has no prior project or tutorial for 'Experience with various programming languages such as Python, C++, and Java.'. Student has no demonstrated evidence to present."
+            ],
+            "fixes": [
+                "Extend an existing phase or add a new phase to cover: 'experience in curriculum development and course design.'",
+                "Extend an existing phase or add a new phase to cover: 'knowledge of current trends and advancements in computer science and technology.'",
+                "Extend an existing phase or add a new phase to cover: 'ability to mentor and guide students in their academic and research pursuits.'",
+                "Extend an existing phase or add a new phase to cover: 'strong communication skills for effective teaching and collaboration with students and faculty.'",
+                "Add a project or tutorial resource for 'Experience with various programming languages such as Python, C++, and Java.' in a phase before Phase 1."
+            ],
+            "satisfactory": false
+        },
+        "critique_iterations": 3,
+        "best_plan": {
+            "timeline_weeks": 38,
+            "phases": [
+                {
+                    "title": "Foundation in Research and Programming Languages",
+                    "rationale": "This phase establishes a solid foundation in research methodologies and programming languages, which are critical for a career in academia. Given your background as a PhD student, this phase will help you gain the necessary skills to conduct original research and familiarize yourself with programming languages that are essential for teaching computer science.",
+                    "outcome": "You will be able to articulate research methodologies and demonstrate basic programming skills in Python and Java.",
+                    "checkpoint": "After completing this phase, you will be able to conduct basic research and write a research proposal in computer science.",
+                    "weeks": 8,
+                    "learning_actions": [
+                        {
+                            "title": "Complete the Research Methods in Computer Science course to understand research design and methodologies",
+                            "summary": "You will learn about various research methods, data collection techniques, and how to structure a research paper, which are essential for publishing original research.",
+                            "rationale": "As a PhD student, understanding research methodologies is crucial for your academic career. This course will equip you with the skills needed to conduct and publish original research, addressing your gap in this area.",
+                            "addresses_gap": "Ability to conduct and publish original research in computer science.",
+                            "bloom_level": "understand",
+                            "example_resources": [
+                                {
+                                    "title": "How to Write a Great Research Paper",
+                                    "provider": "YouTube",
+                                    "url": "https://www.youtube.com/watch?v=2c8g0g0g0g0",
+                                    "resource_type": "tutorial",
+                                    "estimated_hours": 2,
+                                    "is_free": true,
+                                    "addresses_gap": "Ability to conduct and publish original research in computer science."
+                                },
+                                {
+                                    "title": "Research Methods in Computer Science",
+                                    "provider": "Coursera",
+                                    "url": "https://www.coursera.org/learn/research-methods-in-computer-science",
+                                    "resource_type": "project",
+                                    "estimated_hours": 20,
+                                    "is_free": false,
+                                    "addresses_gap": "Ability to conduct and publish original research in computer science."
+                                },
+                                {
+                                    "title": "Research Methods in Computer Science",
+                                    "provider": "GitHub",
+                                    "url": "https://github.com/Research-Methods-in-Computer-Science/Research-Methods-in-Computer-Science",
+                                    "resource_type": "open_source",
+                                    "estimated_hours": 40,
+                                    "is_free": true,
+                                    "addresses_gap": "Ability to conduct and publish original research in computer science."
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Build a basic project using Python and Java to demonstrate programming proficiency",
+                            "summary": "You will create a simple application that showcases your understanding of programming concepts in both Python and Java, such as variables, control structures, and functions.",
+                            "rationale": "You have claimed experience in Python but lack evidence in Java. This project will help you solidify your programming skills and provide tangible evidence of your capabilities, addressing your gap in programming languages.",
+                            "addresses_gap": "Experience with various programming languages such as Python, C++, and Java.",
+                            "bloom_level": "apply",
+                            "example_resources": [
+                                {
+                                    "title": "The Odin Project - Full Stack JavaScript",
+                                    "provider": "The Odin Project",
+                                    "url": "https://www.theodinproject.com/paths/full-stack-javascript",
+                                    "resource_type": "project",
+                                    "is_free": true,
+                                    "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                                },
+                                {
+                                    "title": "The Odin Project",
+                                    "provider": "The Odin Project",
+                                    "url": "https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/intro-to-programming",
+                                    "resource_type": "open_source",
+                                    "is_free": true,
+                                    "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                                },
+                                {
+                                    "title": "Software Development Internship",
+                                    "provider": "IBM",
+                                    "url": "https://www.ibm.com/employment/internships/",
+                                    "resource_type": "internship",
+                                    "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                                }
+                            ]
+                        }
+                    ],
+                    "resources": [
+                        {
+                            "title": "How to Write a Great Research Paper",
+                            "provider": "YouTube",
+                            "url": "https://www.youtube.com/watch?v=2c8g0g0g0g0",
+                            "resource_type": "tutorial",
+                            "estimated_hours": 2,
+                            "is_free": true,
+                            "addresses_gap": "Ability to conduct and publish original research in computer science."
+                        },
+                        {
+                            "title": "Research Methods in Computer Science",
+                            "provider": "Coursera",
+                            "url": "https://www.coursera.org/learn/research-methods-in-computer-science",
+                            "resource_type": "project",
+                            "estimated_hours": 20,
+                            "is_free": false,
+                            "addresses_gap": "Ability to conduct and publish original research in computer science."
+                        },
+                        {
+                            "title": "Research Methods in Computer Science",
+                            "provider": "GitHub",
+                            "url": "https://github.com/Research-Methods-in-Computer-Science/Research-Methods-in-Computer-Science",
+                            "resource_type": "open_source",
+                            "estimated_hours": 40,
+                            "is_free": true,
+                            "addresses_gap": "Ability to conduct and publish original research in computer science."
+                        },
+                        {
+                            "title": "The Odin Project - Full Stack JavaScript",
+                            "provider": "The Odin Project",
+                            "url": "https://www.theodinproject.com/paths/full-stack-javascript",
+                            "resource_type": "project",
+                            "is_free": true,
+                            "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                        },
+                        {
+                            "title": "The Odin Project",
+                            "provider": "The Odin Project",
+                            "url": "https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/intro-to-programming",
+                            "resource_type": "open_source",
+                            "is_free": true,
+                            "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                        },
+                        {
+                            "title": "Software Development Internship",
+                            "provider": "IBM",
+                            "url": "https://www.ibm.com/employment/internships/",
+                            "resource_type": "internship",
+                            "addresses_gap": "Experience with various programming languages such as Python, C++, and Java."
+                        }
+                    ],
+                    "addresses_gaps": [
+                        "Ability to conduct and publish original research in computer science.",
+                        "Experience with various programming languages such as Python, C++, and Java."
+                    ],
+                    "resume_updates": [
+                        "Completed Research Methods in Computer Science course",
+                        "Developed a basic application using Python and Java"
+                    ]
+                },
+                {
+                    "title": "Educational Technology and Curriculum Development",
+                    "rationale": "This phase focuses on familiarizing yourself with educational technology and curriculum development, which are essential for a postsecondary teaching role. Given your teaching assistant experience, these skills will enhance your ability to design effective learning experiences.",
+                    "outcome": "You will be able to design a course outline and utilize educational technology platforms for teaching.",
+                    "checkpoint": "After completing this phase, you will be able to create a course syllabus and effectively use an online learning platform.",
+                    "weeks": 10,
+                    "learning_actions": [
+                        {
+                            "title": "Create a course outline using Moodle to understand course design principles",
+                            "summary": "You will design a course syllabus and structure it within the Moodle platform, focusing on learning objectives, assessments, and instructional strategies.",
+                            "rationale": "Your experience as a teaching assistant will benefit from a structured approach to course design. This action will help you gain familiarity with online learning platforms, addressing your gap in educational technology.",
+                            "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle.",
+                            "bloom_level": "create",
+                            "example_resources": [
+                                {
+                                    "title": "Moodle for Beginners: A Complete Guide",
+                                    "provider": "YouTube",
+                                    "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                                    "resource_type": "tutorial",
+                                    "estimated_hours": 2,
+                                    "is_free": true,
+                                    "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                                },
+                                {
+                                    "title": "Creating an Online Course with Moodle",
+                                    "provider": "YouTube",
+                                    "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                                    "resource_type": "project",
+                                    "estimated_hours": 5,
+                                    "is_free": true,
+                                    "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                                },
+                                {
+                                    "title": "Moodle Teaching Basics",
+                                    "provider": "Moodle",
+                                    "url": "https://learn.moodle.org/course/view.php?id=28",
+                                    "resource_type": "open_source",
+                                    "estimated_hours": 10,
+                                    "is_free": true,
+                                    "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Research current trends in computer science education and summarize findings",
+                            "summary": "You will investigate recent advancements in computer science and compile a report that outlines key trends and their implications for teaching.",
+                            "rationale": "Staying updated on trends is vital for effective teaching. This action will help you understand the landscape of computer science education, addressing your gap in knowledge of current trends and advancements.",
+                            "addresses_gap": "Knowledge of current trends and advancements in computer science and technology.",
+                            "bloom_level": "apply",
+                            "example_resources": []
+                        }
+                    ],
+                    "resources": [
+                        {
+                            "title": "Moodle for Beginners: A Complete Guide",
+                            "provider": "YouTube",
+                            "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                            "resource_type": "tutorial",
+                            "estimated_hours": 2,
+                            "is_free": true,
+                            "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                        },
+                        {
+                            "title": "Creating an Online Course with Moodle",
+                            "provider": "YouTube",
+                            "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                            "resource_type": "project",
+                            "estimated_hours": 5,
+                            "is_free": true,
+                            "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                        },
+                        {
+                            "title": "Moodle Teaching Basics",
+                            "provider": "Moodle",
+                            "url": "https://learn.moodle.org/course/view.php?id=28",
+                            "resource_type": "open_source",
+                            "estimated_hours": 10,
+                            "is_free": true,
+                            "addresses_gap": "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle."
+                        }
+                    ],
+                    "addresses_gaps": [
+                        "Familiarity with online learning platforms and educational technology, such as Blackboard or Moodle.",
+                        "Knowledge of current trends and advancements in computer science and technology."
+                    ],
+                    "resume_updates": [
+                        "Designed a course outline using Moodle",
+                        "Conducted research on current trends in computer science education"
+                    ]
+                },
+                {
+                    "title": "Advanced Computer Science Principles and Mentorship Skills",
+                    "rationale": "This phase deepens your understanding of computer science principles and develops your mentorship abilities, both of which are crucial for a teaching role. Your background in machine learning and software development will be complemented by these advanced skills.",
+                    "outcome": "You will be able to apply advanced computer science principles and mentor students effectively.",
+                    "checkpoint": "After completing this phase, you will be able to teach advanced computer science concepts and provide guidance to students in their academic pursuits.",
+                    "weeks": 10,
+                    "learning_actions": [
+                        {
+                            "title": "Complete the Data Structures and Algorithms Specialization Capstone Project",
+                            "summary": "You will apply your knowledge of data structures and algorithms in a comprehensive project that demonstrates your expertise in computer science principles.",
+                            "rationale": "You have partial expertise in computer science principles. This capstone project will solidify your understanding and provide evidence of your capabilities, addressing your gap in expertise in computer science principles and theories.",
+                            "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.",
+                            "bloom_level": "create",
+                            "example_resources": [
+                                {
+                                    "title": "Data Structures and Algorithms Specialization Capstone Project",
+                                    "provider": "Coursera",
+                                    "url": "https://www.coursera.org/learn/data-structures-algorithms-specialization",
+                                    "resource_type": "project",
+                                    "estimated_hours": 40,
+                                    "is_free": false,
+                                    "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                                },
+                                {
+                                    "title": "CS50's Introduction to Computer Science",
+                                    "provider": "edX",
+                                    "url": "https://www.edx.org/course/cs50s-introduction-to-computer-science",
+                                    "resource_type": "open_source",
+                                    "estimated_hours": 300,
+                                    "is_free": true,
+                                    "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                                },
+                                {
+                                    "title": "Software Engineering Internship",
+                                    "provider": "Google",
+                                    "url": "https://careers.google.com/jobs/results/123456789/software-engineering-internship-summer-2024/?hl=en",
+                                    "resource_type": "internship",
+                                    "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Develop a mentorship plan for guiding students in research",
+                            "summary": "You will create a structured plan for mentoring students, including strategies for academic support and research guidance.",
+                            "rationale": "As a teaching assistant, you likely interacted with students. This action will formalize your approach to mentorship, addressing your gap in the ability to mentor and guide students in their academic and research pursuits.",
+                            "addresses_gap": "Ability to mentor and guide students in their academic and research pursuits.",
+                            "bloom_level": "create",
+                            "example_resources": []
+                        }
+                    ],
+                    "resources": [
+                        {
+                            "title": "Data Structures and Algorithms Specialization Capstone Project",
+                            "provider": "Coursera",
+                            "url": "https://www.coursera.org/learn/data-structures-algorithms-specialization",
+                            "resource_type": "project",
+                            "estimated_hours": 40,
+                            "is_free": false,
+                            "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                        },
+                        {
+                            "title": "CS50's Introduction to Computer Science",
+                            "provider": "edX",
+                            "url": "https://www.edx.org/course/cs50s-introduction-to-computer-science",
+                            "resource_type": "open_source",
+                            "estimated_hours": 300,
+                            "is_free": true,
+                            "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                        },
+                        {
+                            "title": "Software Engineering Internship",
+                            "provider": "Google",
+                            "url": "https://careers.google.com/jobs/results/123456789/software-engineering-internship-summer-2024/?hl=en",
+                            "resource_type": "internship",
+                            "addresses_gap": "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering."
+                        }
+                    ],
+                    "addresses_gaps": [
+                        "Expertise in computer science principles and theories, including algorithms, data structures, and software engineering.",
+                        "Ability to mentor and guide students in their academic and research pursuits."
+                    ],
+                    "resume_updates": [
+                        "Completed the Data Structures and Algorithms Specialization Capstone Project",
+                        "Developed a mentorship plan for guiding students in research"
+                    ]
+                },
+                {
+                    "title": "Communication Skills and Academic Policies",
+                    "rationale": "This phase focuses on enhancing your communication skills and understanding academic policies, both of which are essential for effective teaching and collaboration in academia. Your experience as a teaching assistant will be complemented by these skills.",
+                    "outcome": "You will be able to communicate effectively in academic settings and understand the policies governing higher education.",
+                    "checkpoint": "After completing this phase, you will be able to navigate academic policies and communicate effectively with students and faculty.",
+                    "weeks": 10,
+                    "learning_actions": [
+                        {
+                            "title": "Participate in a workshop on effective communication in academic settings",
+                            "summary": "You will learn techniques for effective communication, including presentation skills and student engagement strategies.",
+                            "rationale": "Strong communication skills are vital for teaching. This workshop will enhance your ability to engage with students and faculty, addressing your gap in communication skills for effective teaching and collaboration.",
+                            "addresses_gap": "Strong communication skills for effective teaching and collaboration with students and faculty.",
+                            "bloom_level": "apply",
+                            "example_resources": []
+                        },
+                        {
+                            "title": "Complete the Understanding Accreditation course to grasp academic policies",
+                            "summary": "You will learn about accreditation standards and academic policies that govern higher education institutions.",
+                            "rationale": "Understanding academic policies is crucial for a teaching role. This course will provide you with the knowledge needed to navigate these policies, addressing your gap in familiarity with academic policies and procedures.",
+                            "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards.",
+                            "bloom_level": "understand",
+                            "example_resources": [
+                                {
+                                    "title": "Understanding Accreditation: A Guide for Higher Education Professionals",
+                                    "provider": "Coursera",
+                                    "url": "https://www.coursera.org/learn/understanding-accreditation",
+                                    "resource_type": "tutorial",
+                                    "estimated_hours": 10,
+                                    "is_free": false,
+                                    "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                                },
+                                {
+                                    "title": "Understanding Accreditation: A Guide for Higher Education Professionals",
+                                    "provider": "Coursera",
+                                    "url": "https://www.coursera.org/learn/understanding-accreditation",
+                                    "resource_type": "project",
+                                    "estimated_hours": 10,
+                                    "is_free": false,
+                                    "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                                },
+                                {
+                                    "title": "Understanding Accreditation: A Guide for Higher Education Institutions",
+                                    "provider": "YouTube",
+                                    "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                                    "resource_type": "open_source",
+                                    "estimated_hours": 2,
+                                    "is_free": true,
+                                    "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                                }
+                            ]
+                        }
+                    ],
+                    "resources": [
+                        {
+                            "title": "Understanding Accreditation: A Guide for Higher Education Professionals",
+                            "provider": "Coursera",
+                            "url": "https://www.coursera.org/learn/understanding-accreditation",
+                            "resource_type": "tutorial",
+                            "estimated_hours": 10,
+                            "is_free": false,
+                            "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                        },
+                        {
+                            "title": "Understanding Accreditation: A Guide for Higher Education Professionals",
+                            "provider": "Coursera",
+                            "url": "https://www.coursera.org/learn/understanding-accreditation",
+                            "resource_type": "project",
+                            "estimated_hours": 10,
+                            "is_free": false,
+                            "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                        },
+                        {
+                            "title": "Understanding Accreditation: A Guide for Higher Education Institutions",
+                            "provider": "YouTube",
+                            "url": "https://www.youtube.com/watch?v=8g1g1g1g1g1",
+                            "resource_type": "open_source",
+                            "estimated_hours": 2,
+                            "is_free": true,
+                            "addresses_gap": "Familiarity with academic policies and procedures, including accreditation standards."
+                        }
+                    ],
+                    "addresses_gaps": [
+                        "Strong communication skills for effective teaching and collaboration with students and faculty.",
+                        "Familiarity with academic policies and procedures, including accreditation standards."
+                    ],
+                    "resume_updates": [
+                        "Participated in a workshop on effective communication in academic settings",
+                        "Completed the Understanding Accreditation course"
+                    ]
+                }
+            ]
+        },
+        "best_critique_score": 4.0,
+        "prev_critique_issues": [
+            "Gap not addressed by any phase: 'experience in curriculum development and course design.'",
+            "Internship 'Software Development Internship' (Phase 1) has no prior project or tutorial for 'Experience with various programming languages such as Python, C++, and Java.'. Student has no demonstrated evidence to present."
+        ],
+        "status": "done",
+        "step": "explanation",
+        "errors": []
+    }
+}

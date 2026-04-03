@@ -286,8 +286,8 @@ function GapAnalysisTab({ gapReport }) {
                   </div>
                   <div className={styles.gapLevelRow}>
                     <span className={styles.gapLevelLabel}>Current</span>
-                    {levelBar(gap.student_score)}
-                    <span className={styles.levelNum}>{gap.student_score.toFixed(1)}</span>
+                    {levelBar(gap.student_level)}
+                    <span className={styles.levelNum}>{gap.student_level.toFixed(1)}</span>
                   </div>
                 </div>
                 {gap.knowledge_prerequisites?.length > 0 && (

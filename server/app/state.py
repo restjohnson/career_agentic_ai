@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, Field, computed_field
 
 EvidenceSourceType = Literal["resume", "transcript", "portfolio", "job_posting", "other"]
-EvidenceItemType = Literal["skill", "experience", "project", "coursework", "claim"]
+EvidenceItemType = Literal["experience", "project", "coursework", "claim"]
 
 #student evidence such as resume and others
 
@@ -22,7 +22,6 @@ class EvidenceItem(BaseModel):
     summary: str
     snippet: Optional[str] = None
     confidence: float = 0.8
-    proficiency_score: Optional[int] = None   # 0–4, LLM-assessed per rubric
     action_verbs: List[str] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
@@ -137,13 +136,12 @@ class GapItem(BaseModel):
     summary: str
     category: RoleReqType
     required_level: float
-    student_score: float
+    student_level: float
     raw_gap: float
     weighted_gap: float
     proficiency: int                      #0–4, aggregated from evidence collection
     confidence: float                     #0–1, Bayesian-combined from evidence
-    gap_type: Literal["missing", "weak", "not_evidenced", "irrelevant"] = "missing"
-    gap_root_cause: Optional[Literal["missing_entirely", "no_theory", "no_practice"]] = None
+    gap_type: Literal["no_evidence", "claimed_only", "partial", "optional_gap", "met"] = "no_evidence"
     evidence_item_ids: List[str] = Field(default_factory=list)
     knowledge_prerequisites: List[KnowledgePrerequisite] = Field(default_factory=list)
 
