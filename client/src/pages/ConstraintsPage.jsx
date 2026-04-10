@@ -286,7 +286,7 @@ const targetWeeks = targetDate
 </div>
 
           {/* Hours per week — Calendar */}
-         <div className={styles.card}>
+          <div className={`${styles.card} ${styles.cardFull}`}>
             <div className={styles.sliderHeader}>
               <h2 className={styles.cardTitle}>Hours per Week</h2>
               <span className={styles.sliderValue}>{hoursPerWeek} hrs</span>
