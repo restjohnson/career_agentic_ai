@@ -32,6 +32,24 @@ const TARGET_ROLES = [
   'Other',
 ];
 
+const TARGET_GOALS = [
+  { id: 'first_internship', label: 'First Internship',          desc: 'Land your first internship' },
+  { id: 'graduation',       label: 'Job-Ready by Graduation',   desc: 'Be prepared before you graduate' },
+  { id: 'job_ready',        label: 'Job Ready',                 desc: 'Ready for full-time roles' },
+  { id: 'career_change',    label: 'Career Change',             desc: 'Transition from another field' },
+];
+
+const ACADEMIC_LEVEL_TO_GOAL = {
+  freshman:             'first_internship',
+  sophomore:            'first_internship',
+  junior:               'graduation',
+  senior:               'graduation',
+  grad:                 'job_ready',
+  bootcamp:             'job_ready',
+  self_taught:          'job_ready',
+  working_professional: 'career_change',
+};
+
 const LEARNING_MODES = [
   { id: 'structured',    label: 'Structured',    desc: 'Guided courses with set schedules' },
   { id: 'project_based', label: 'Project-Based', desc: 'Learning through building real projects' },
@@ -39,13 +57,44 @@ const LEARNING_MODES = [
   { id: 'mixed',         label: 'Mixed',         desc: 'Combination of all approaches' },
 ];
 
+/**
+ * Returns an error string if the custom role looks like jargon or gibberish,
+ * or null if it appears to be a valid role title.
+ */
+function validateCustomRole(role) {
+  const trimmed = role.trim();
+  if (trimmed.length < 3) return 'Role title must be at least 3 characters.';
+  if (trimmed.length > 80) return 'Role title is too long.';
+  if (/^\d+$/.test(trimmed)) return 'Please enter a real job title, not a number.';
+  // Excessive special characters / symbols
+  if (/[^a-zA-Z0-9\s\-\/&,.'()]+/.test(trimmed))
+    return 'Role title contains invalid characters. Please enter a real job title.';
+  // Gibberish detection: consecutive consonants (5+) unlikely in English
+  if (/[^aeiou\s]{5,}/i.test(trimmed.replace(/[^a-zA-Z\s]/g, '')))
+    return 'That doesn\u2019t look like a valid role. Please enter a recognizable job title.';
+  // Must contain at least one word with 2+ alphabetic chars
+  if (!/[a-zA-Z]{2,}/.test(trimmed))
+    return 'Please enter a real job title.';
+  // Single repeated character (e.g. "aaaa")
+  if (/^(.)\1+$/.test(trimmed.replace(/\s/g, '')))
+    return 'That doesn\u2019t look like a valid role. Please enter a recognizable job title.';
+  return null;
+}
+
 export default function ConstraintsPage() {
   const [academicLevel, setAcademicLevel] = useState('freshman');
+  const [targetGoal,    setTargetGoal]    = useState('first_internship');
   const [targetRole,    setTargetRole]    = useState('');
   const [customRole,    setCustomRole]    = useState('');
+  const [customRoleError, setCustomRoleError] = useState(null);
   const [targetWeeks,   setTargetWeeks]   = useState(26);
   const [hoursPerWeek,  setHoursPerWeek]  = useState(10);
   const [learningMode,  setLearningMode]  = useState('mixed');
+
+  // Auto-update targetGoal when academicLevel changes
+  useEffect(() => {
+    setTargetGoal(ACADEMIC_LEVEL_TO_GOAL[academicLevel] ?? 'job_ready');
+  }, [academicLevel]);
 
   const navigate  = useNavigate();
   const location  = useLocation();
@@ -59,24 +108,20 @@ export default function ConstraintsPage() {
   })();
 
   const evidenceDocIds = location.state?.evidenceDocIds ?? storedEvidenceDocIds;
-  const canSubmit = targetRole === 'Other' ? customRole.trim() !== '' : targetRole.trim() !== '';
+  const canSubmit =
+    targetRole === 'Other'
+      ? customRole.trim() !== '' && !validateCustomRole(customRole)
+      : targetRole.trim() !== '';
 
   useEffect(() => {
+    // Guard: if results already generated, redirect forward.
+    const existingFinal = sessionStorage.getItem('career_flow_final_state');
+    if (existingFinal) { navigate('/results', { replace: true }); return; }
+
     if (!evidenceDocIds.length) {
       navigate('/upload', { replace: true });
     }
   }, [evidenceDocIds.length, navigate]);
-
-  const ACADEMIC_LEVEL_MAP = {
-    Undergraduate: 'junior',
-    Graduate: 'grad',
-    Professional: 'working_professional',
-  };
-  const TARGET_GOAL_MAP = {
-    Undergraduate: 'first_internship',
-    Graduate: 'job_ready',
-    Professional: 'career_change',
-  };
 
   const handleSubmit = () => {
     if (!canSubmit) return;
@@ -85,6 +130,7 @@ export default function ConstraintsPage() {
 
     const rawUserText = [
       `Academic level: ${academicLevel}`,
+      `Target goal: ${targetGoal}`,
       `Hours per week: ${hoursPerWeek}`,
       `Target weeks: ${targetWeeks}`,
       `Learning mode: ${learningMode}`,
@@ -93,9 +139,9 @@ export default function ConstraintsPage() {
     const targetDate = new Date();
     targetDate.setDate(targetDate.getDate() + targetWeeks * 7);
     const studentConstraints = {
-      academic_level: ACADEMIC_LEVEL_MAP[academicLevel] ?? 'junior',
+      academic_level: academicLevel,
       hours_per_week: hoursPerWeek,
-      target_goal: TARGET_GOAL_MAP[academicLevel] ?? 'job_ready',
+      target_goal: targetGoal,
       target_date: targetDate.toISOString().split('T')[0],
       preferred_learning_mode: learningMode,
     };
@@ -106,6 +152,7 @@ export default function ConstraintsPage() {
     );
 
     navigate('/loading', {
+      replace: true,
       state: {
         targetRole: finalTargetRole,
         evidenceDocIds,
@@ -172,15 +219,41 @@ export default function ConstraintsPage() {
               ))}
             </select>
             {targetRole === 'Other' && (
-              <input
-                type="text"
-                placeholder="Enter your target role"
-                value={customRole}
-                onChange={(e) => setCustomRole(e.target.value)}
-                className={styles.textInput}
-                style={{ marginTop: '12px' }}
-              />
+              <>
+                <input
+                  type="text"
+                  placeholder="Enter your target role"
+                  value={customRole}
+                  onChange={(e) => {
+                    setCustomRole(e.target.value);
+                    setCustomRoleError(validateCustomRole(e.target.value));
+                  }}
+                  onBlur={() => setCustomRoleError(validateCustomRole(customRole))}
+                  className={`${styles.textInput} ${customRoleError ? styles.textInputError : ''}`}
+                  style={{ marginTop: '12px' }}
+                />
+                {customRoleError && (
+                  <p className={styles.fieldError}>{customRoleError}</p>
+                )}
+              </>
             )}
+          </div>
+
+          {/* Target Goal */}
+          <div className={styles.card}>
+            <h2 className={styles.cardTitle}>Target Goal</h2>
+            <div className={styles.modesGrid}>
+              {TARGET_GOALS.map((goal) => (
+                <button
+                  key={goal.id}
+                  className={`${styles.modeCard} ${targetGoal === goal.id ? styles.modeCardActive : ''}`}
+                  onClick={() => setTargetGoal(goal.id)}
+                >
+                  <span className={styles.modeName}>{goal.label}</span>
+                  <span className={styles.modeDesc}>{goal.desc}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Estimated time to goal */}
@@ -248,7 +321,7 @@ export default function ConstraintsPage() {
             </p>
           )}
           <div className={styles.actionBtns}>
-            <Link to="/upload" className={styles.backBtn}>← Back</Link>
+            <Link to="/upload" className={styles.startOverBtn}>Start Over</Link>
             <button
               className={`${styles.submitBtn} ${!canSubmit ? styles.submitBtnDisabled : ''}`}
               disabled={!canSubmit}

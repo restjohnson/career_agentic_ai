@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles from './LoadingPage.module.css';
 import { createRun, streamRun } from '../api';
 
@@ -16,10 +16,52 @@ export default function LoadingPage() {
   const [completedSteps, setCompletedSteps] = useState(new Set());
   const [activeStep,     setActiveStep]     = useState(AGENT_STEPS[0].key);
   const [runError,       setRunError]       = useState(null);
+  const runStarted = useRef(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+    // Guard: if results already exist, skip straight to results.
+    const existingFinal = sessionStorage.getItem('career_flow_final_state');
+    if (existingFinal) {
+      navigate('/results', { replace: true }); return;
+    }
+
+    const sessionToken = localStorage.getItem('session_token');
+    let closeStream = null;
+
+    const handleStreamEvent = (event) => {
+      if (event.type === 'step') {
+        setCompletedSteps((prev) => new Set([...prev, event.step]));
+        const idx = AGENT_STEPS.findIndex((s) => s.key === event.step);
+        if (idx >= 0 && idx < AGENT_STEPS.length - 1) {
+          setActiveStep(AGENT_STEPS[idx + 1].key);
+        }
+      } else if (event.type === 'done') {
+        setCompletedSteps(new Set(AGENT_STEPS.map((s) => s.key)));
+        sessionStorage.setItem('career_flow_final_state', JSON.stringify(event.final_state));
+        setTimeout(() => {
+          navigate('/results', { replace: true, state: { finalState: event.final_state } });
+        }, 600);
+      } else if (event.type === 'error') {
+        setRunError(event.detail);
+      }
+    };
+
+    // If a run already exists (page was reloaded), reconnect to its stream.
+    const existingRunId = sessionStorage.getItem('career_flow_run_id');
+    if (existingRunId) {
+      if (!runStarted.current) {
+        runStarted.current = true;
+        closeStream = streamRun(sessionToken, existingRunId, handleStreamEvent);
+      }
+      return () => { if (closeStream) closeStream(); };
+    }
+
+    // Prevent creating more than one run per mount.
+    if (runStarted.current) return;
+    runStarted.current = true;
+
     const storedConstraints = (() => {
       try {
         return JSON.parse(sessionStorage.getItem('career_flow_constraints') ?? 'null');
@@ -35,30 +77,10 @@ export default function LoadingPage() {
       return;
     }
 
-    const sessionToken = localStorage.getItem('session_token');
-    let closeStream = null;
-
     createRun(sessionToken, targetRole, evidenceDocIds, rawUserText, studentConstraints)
       .then(({ run_id }) => {
-        closeStream = streamRun(sessionToken, run_id, (event) => {
-          if (event.type === 'step') {
-            // Mark step complete, advance active to the next one
-            setCompletedSteps((prev) => new Set([...prev, event.step]));
-            const idx = AGENT_STEPS.findIndex((s) => s.key === event.step);
-            if (idx >= 0 && idx < AGENT_STEPS.length - 1) {
-              setActiveStep(AGENT_STEPS[idx + 1].key);
-            }
-          } else if (event.type === 'done') {
-            // All steps done — mark remaining and navigate
-            setCompletedSteps(new Set(AGENT_STEPS.map((s) => s.key)));
-            sessionStorage.setItem('career_flow_final_state', JSON.stringify(event.final_state));
-            setTimeout(() => {
-              navigate('/results', { state: { finalState: event.final_state } });
-            }, 600);
-          } else if (event.type === 'error') {
-            setRunError(event.detail);
-          }
-        });
+        sessionStorage.setItem('career_flow_run_id', run_id);
+        closeStream = streamRun(sessionToken, run_id, handleStreamEvent);
       })
       .catch((err) => setRunError(err.message));
 
@@ -97,6 +119,10 @@ export default function LoadingPage() {
             This usually takes under 120 seconds.
           </p>
         )}
+
+        <p className={styles.noReload}>
+          ⚠️ Please do not reload or leave this page while your plan is being generated.
+        </p>
 
         {/* ── Agent step list — driven by real SSE events ────────── */}
         <div className={styles.steps}>

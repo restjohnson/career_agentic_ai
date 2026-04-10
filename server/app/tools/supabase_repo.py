@@ -43,6 +43,16 @@ class SupabaseRepo:
         return res.data[0]["id"]
     
 
+    def get_runs_for_session(self, session_id: str) -> List[Dict[str, Any]]:
+        """Return all runs belonging to a session."""
+        res = (
+            self.sb.table("runs")
+            .select("id, status, desired_role")
+            .eq("session_id", session_id)
+            .execute()
+        )
+        return res.data or []
+
     def set_run_status(self, session_id: str, run_id: str, status: str) -> None:
         self.sb.table("runs").update({"status": status}).eq("id", run_id).eq("session_id", session_id).execute()
     
