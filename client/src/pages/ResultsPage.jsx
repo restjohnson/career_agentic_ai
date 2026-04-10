@@ -208,7 +208,7 @@ function CareerPlanTab({ studentModel, roleSpec }) {
             <div className={styles.reqHeader}>
               <span className={styles.reqColName}>Requirement</span>
               <span className={styles.reqColCat}>Category</span>
-              <span className={styles.reqColLevel}>Level</span>
+              <span className={styles.reqColLevel}>Required Level</span>
             </div>
             {[...roleSpec.requirements]
               .sort((a, b) => b.importance - a.importance)

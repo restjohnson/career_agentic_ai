@@ -43,8 +43,12 @@ export default function ConstraintsPage() {
   const [academicLevel, setAcademicLevel] = useState('freshman');
   const [targetRole,    setTargetRole]    = useState('');
   const [customRole,    setCustomRole]    = useState('');
-  const [targetWeeks,   setTargetWeeks]   = useState(26);
   const [hoursPerWeek,  setHoursPerWeek]  = useState(10);
+const [targetDate,    setTargetDate]    = useState('');
+const today = new Date().toISOString().split('T')[0];
+const targetWeeks = targetDate
+  ? Math.max(1, Math.round((new Date(targetDate) - new Date()) / (7 * 24 * 60 * 60 * 1000)))
+  : 26;
   const [learningMode,  setLearningMode]  = useState('mixed');
 
   const navigate  = useNavigate();
@@ -86,17 +90,17 @@ export default function ConstraintsPage() {
     const rawUserText = [
       `Academic level: ${academicLevel}`,
       `Hours per week: ${hoursPerWeek}`,
-      `Target weeks: ${targetWeeks}`,
+      `Target date: ${targetDate || 'not set'}`,
       `Learning mode: ${learningMode}`,
     ].join('. ');
 
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + targetWeeks * 7);
+    //const targetDate = new Date();
+    //targetDate.setDate(targetDate.getDate() + targetWeeks * 7);
     const studentConstraints = {
       academic_level: ACADEMIC_LEVEL_MAP[academicLevel] ?? 'junior',
       hours_per_week: hoursPerWeek,
       target_goal: TARGET_GOAL_MAP[academicLevel] ?? 'job_ready',
-      target_date: targetDate.toISOString().split('T')[0],
+      target_date: targetDate || null,       //.toISOString().split('T')[0],
       preferred_learning_mode: learningMode,
     };
 
@@ -185,25 +189,31 @@ export default function ConstraintsPage() {
 
           {/* Estimated time to goal */}
           <div className={styles.card}>
-            <div className={styles.sliderHeader}>
-              <h2 className={styles.cardTitle}>Estimated Time to Goal</h2>
-              <span className={styles.sliderValue}>{targetWeeks} weeks</span>
-            </div>
-            <input
-              type="range"
-              min={4} max={104} step={2}
-              value={targetWeeks}
-              onChange={(e) => setTargetWeeks(Number(e.target.value))}
-              className={styles.slider}
-            />
-            <div className={styles.sliderLabels}>
-              <span>4 weeks</span>
-              <span>~2 years</span>
-            </div>
-          </div>
+  <div className={styles.sliderHeader}>
+    <h2 className={styles.cardTitle}>Estimated Time to Goal</h2>
+    {targetDate && (
+      <span className={styles.sliderValue}>{targetWeeks} weeks</span>
+    )}
+  </div>
+  <input
+    type="date"
+    min={today}
+    value={targetDate}
+    onChange={e => setTargetDate(e.target.value)}
+    className={styles.textInput}
+  />
+  {targetDate && (
+    <p className={styles.calHint}>
+      Starting today · {targetWeeks} weeks until{' '}
+      {new Date(targetDate).toLocaleDateString('en-US', {
+        month: 'long', day: 'numeric', year: 'numeric'
+      })}
+    </p>
+  )}
+</div>
 
-          {/* Hours per week */}
-          <div className={styles.card}>
+          {/* Hours per week — Calendar */}
+         <div className={styles.card}>
             <div className={styles.sliderHeader}>
               <h2 className={styles.cardTitle}>Hours per Week</h2>
               <span className={styles.sliderValue}>{hoursPerWeek} hrs</span>
