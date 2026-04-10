@@ -210,6 +210,17 @@ def print_plan(final_state: dict) -> None:
                 free = "free" if r.get("is_free") else ("paid" if r.get("is_free") is False else "?")
                 hrs  = f"{r.get('estimated_hours')}h" if r.get("estimated_hours") else "?h"
                 print(f"    └ [{r.get('resource_type','?'):<12}] {r.get('title','')[:55]:<56} ({free}, {hrs})")
+
+        # Show internship opportunity recommendation if present
+        internship = phase.get("internship_opportunity")
+        if internship:
+            print(f"\n  💼 INTERNSHIP OPPORTUNITY")
+            print(f"    Season     : {internship.get('recruiting_season', '')}")
+            print(f"    Types      : {', '.join(internship.get('suggested_internship_types', []))}")
+            print(f"    Message    : {internship.get('message', '')[:120]}")
+            updates = internship.get("resume_updates", [])
+            if updates:
+                print(f"    Resume add : {', '.join(updates)[:120]}")
         print()
 
 
@@ -226,7 +237,7 @@ def print_critique(final_state: dict) -> None:
     scores = critique.get("rubric_scores", {})
     thresholds = {
         "gap_coverage": 3, "prerequisite_ordering": 4,
-        "feasibility": 3, "level_appropriateness": 3, "internship_readiness": 4,
+        "feasibility": 3, "level_appropriateness": 3,
     }
     for dim, score in scores.items():
         threshold = thresholds.get(dim, 3)

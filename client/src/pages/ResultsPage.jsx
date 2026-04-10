@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './ResultsPage.module.css';
 import { downloadReport } from '../reportTemplate';
 
@@ -11,8 +11,15 @@ const CATEGORY_LABELS = {
 };
 
 const GAP_TYPE_LABELS = {
-  missing: 'Missing', weak: 'Weak',
-  not_evidenced: 'Not Evidenced', irrelevant: 'Irrelevant',
+  no_evidence: 'No Evidence',
+  claimed_only: 'Claimed Only',
+  partial: 'Partial',
+  optional_gap: 'Optional Gap',
+  met: 'Met',
+  missing: 'Missing',
+  weak: 'Weak',
+  not_evidenced: 'Not Evidenced',
+  irrelevant: 'Irrelevant',
 };
 
 const ROOT_CAUSE_LABELS = {
@@ -45,6 +52,8 @@ const RESOURCE_ICONS = {
   documentation: '📖',
 };
 
+const EVIDENCE_CONFIDENCE_HELP = 'Confidence estimates how strongly each evidence item demonstrates the skill: higher values indicate clearer, more direct proof; lower values indicate weaker or indirect proof.';
+
 /* ── Helpers ─────────────────────────────────────────────────────────── */
 
 function levelBar(value, max = 4) {
@@ -62,6 +71,7 @@ function extractData(finalState) {
     roleSpec:     finalState?.role_spec     ?? null,
     gapReport:    finalState?.gap_report    ?? null,
     plan:         finalState?.plan          ?? null,
+    evidenceItems: finalState?.evidence_items ?? [],
     targetRole:   finalState?.desired_role  ?? 'Unknown Role',
   };
 }
@@ -77,7 +87,7 @@ export default function ResultsPage() {
     catch { return null; }
   })();
   const finalState = location.state?.finalState ?? storedFinalState;
-  const { studentModel, roleSpec, gapReport, plan, targetRole } = extractData(finalState);
+  const { studentModel, roleSpec, gapReport, plan, evidenceItems, targetRole } = extractData(finalState);
 
   const [activeTab, setActiveTab] = useState('career');
 
@@ -109,7 +119,7 @@ export default function ResultsPage() {
               <h1 className={styles.pageTitle}>Your Career Report</h1>
               <p className={styles.pageMeta}>
                 Target Role: <strong>{targetRole}</strong>
-                {roleSpec?.matched_onet_code && (
+                {roleSpec?.matched_onet_code && roleSpec.confidence_role_match >= 0.95 && (
                   <span className={styles.onetCode}> · O*NET {roleSpec.matched_onet_code}</span>
                 )}
               </p>
@@ -118,7 +128,15 @@ export default function ResultsPage() {
               <button type="button" onClick={handleDownload} className={styles.downloadBtn}>
                 ↓ Download PDF
               </button>
-              <Link to="/upload" className={styles.restartBtn}>Start Over</Link>
+              <button type="button" onClick={() => {
+                sessionStorage.removeItem('career_flow_evidence_ids');
+                sessionStorage.removeItem('career_flow_constraints');
+                sessionStorage.removeItem('career_flow_final_state');
+                sessionStorage.removeItem('career_flow_run_id');
+                localStorage.removeItem('session_token');
+                localStorage.removeItem('session_id');
+                navigate('/upload', { replace: true });
+              }} className={styles.restartBtn}>Start Over</button>
             </div>
           </div>
 
@@ -144,7 +162,7 @@ export default function ResultsPage() {
       {/* ── Content ────────────────────────────────────────────────── */}
       <div className={styles.container}>
         {activeTab === 'career'  && <CareerPlanTab studentModel={studentModel} roleSpec={roleSpec} />}
-        {activeTab === 'gaps'    && <GapAnalysisTab gapReport={gapReport} />}
+        {activeTab === 'gaps'    && <GapAnalysisTab gapReport={gapReport} evidenceItems={evidenceItems} />}
         {activeTab === 'pathway' && <PathwayPlanTab plan={plan} />}
       </div>
     </div>
@@ -208,7 +226,7 @@ function CareerPlanTab({ studentModel, roleSpec }) {
             <div className={styles.reqHeader}>
               <span className={styles.reqColName}>Requirement</span>
               <span className={styles.reqColCat}>Category</span>
-              <span className={styles.reqColLevel}>Level</span>
+              <span className={styles.reqColLevel}>Required Level</span>
             </div>
             {[...roleSpec.requirements]
               .sort((a, b) => b.importance - a.importance)
@@ -247,7 +265,13 @@ function CareerPlanTab({ studentModel, roleSpec }) {
 /* ══════════════════════════════════════════════════════════════════════
    Gap Analysis Tab
    ══════════════════════════════════════════════════════════════════════ */
-function GapAnalysisTab({ gapReport }) {
+function GapAnalysisTab({ gapReport, evidenceItems }) {
+  const evidenceById = new Map(
+    (evidenceItems ?? [])
+      .filter((item) => item?.id)
+      .map((item) => [item.id, item])
+  );
+
   return (
     <div className={styles.gapTabWrap}>
       <div className={styles.gapTabHeader}>
@@ -265,6 +289,13 @@ function GapAnalysisTab({ gapReport }) {
           {[...gapReport.gaps]
             .sort((a, b) => b.weighted_gap - a.weighted_gap)
             .map((gap, i) => (
+              (() => {
+                const evidenceIds = gap.evidence_item_ids ?? [];
+                const matchedEvidence = evidenceIds
+                  .map((id) => evidenceById.get(id))
+                  .filter(Boolean);
+
+                return (
               <div key={i} className={styles.gapCard}>
                 <div className={styles.gapCardHeader}>
                   <h3 className={styles.gapCardTitle}>{gap.summary}</h3>
@@ -290,6 +321,56 @@ function GapAnalysisTab({ gapReport }) {
                     <span className={styles.levelNum}>{gap.student_level.toFixed(1)}</span>
                   </div>
                 </div>
+                <div className={styles.evidenceBlock}>
+                  <div className={styles.evidenceLabelRow}>
+                    <span className={styles.evidenceLabel}>Supporting Evidence</span>
+                    <span
+                      className={styles.infoHint}
+                      role="img"
+                      aria-label={EVIDENCE_CONFIDENCE_HELP}
+                      title={EVIDENCE_CONFIDENCE_HELP}
+                    >
+                      <svg
+                        className={styles.infoHintIcon}
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="9" />
+                        <line x1="12" y1="10" x2="12" y2="16" />
+                        <circle cx="12" cy="7" r="1" />
+                      </svg>
+                    </span>
+                  </div>
+                  {matchedEvidence.length > 0 ? (
+                    <ul className={styles.evidenceList}>
+                      {matchedEvidence.map((item, evIdx) => (
+                        <li
+                          key={item.id ?? `${i}-${evIdx}`}
+                          className={styles.evidenceItem}
+                        >
+                          <div className={styles.evidenceItemHeader}>
+                            <span className={styles.evidenceType}>{item.item_type ?? 'claim'}</span>
+                            {typeof item.confidence === 'number' && (
+                              <span className={styles.evidenceConfidence}>
+                                {Math.round(item.confidence * 100)}% confidence
+                              </span>
+                            )}
+                          </div>
+                          <p className={styles.evidenceText}>{item.summary}</p>
+                          {item.snippet && (
+                            <p className={styles.evidenceSnippet}>{item.snippet}</p>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : evidenceIds.length > 0 ? (
+                    <p className={styles.evidenceMissing}>
+                      Evidence is linked for this gap, but details were not available in the final state.
+                    </p>
+                  ) : (
+                    <p className={styles.evidenceMissing}>No direct evidence linked to this gap.</p>
+                  )}
+                </div>
                 {gap.knowledge_prerequisites?.length > 0 && (
                   <div className={styles.prereqs}>
                     <span className={styles.prereqLabel}>Prerequisites:</span>
@@ -306,6 +387,8 @@ function GapAnalysisTab({ gapReport }) {
                   </div>
                 )}
               </div>
+                );
+              })()
             ))}
         </div>
       ) : (
@@ -494,8 +577,21 @@ function PathwayPlanTab({ plan }) {
                                     </span>
                                   )}
                                 </div>
-                                {action.summary && (
-                                  <p className={styles.stepSummary}>{action.summary}</p>
+                                {action.description && (
+                                  <p className={styles.stepSummary}>{action.description}</p>
+                                )}
+                                {action.stack?.length > 0 && (
+                                  <div className={styles.stackBlock}>
+                                    {action.stack.map((tool, ti) => (
+                                      <span
+                                        key={ti}
+                                        className={styles.stackChip}
+                                        style={{ background: `${color}15`, color, borderColor: `${color}30` }}
+                                      >
+                                        {tool}
+                                      </span>
+                                    ))}
+                                  </div>
                                 )}
                                 {action.rationale && (
                                   <p className={styles.stepRationale} style={{ borderLeftColor: color }}>

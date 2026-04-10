@@ -43,6 +43,16 @@ class SupabaseRepo:
         return res.data[0]["id"]
     
 
+    def get_runs_for_session(self, session_id: str) -> List[Dict[str, Any]]:
+        """Return all runs belonging to a session."""
+        res = (
+            self.sb.table("runs")
+            .select("id, status, desired_role")
+            .eq("session_id", session_id)
+            .execute()
+        )
+        return res.data or []
+
     def set_run_status(self, session_id: str, run_id: str, status: str) -> None:
         self.sb.table("runs").update({"status": status}).eq("id", run_id).eq("session_id", session_id).execute()
     
@@ -270,3 +280,17 @@ class SupabaseRepo:
             },
             on_conflict="cache_key",
         ).execute()
+
+    # Job examples vector DB ---------------------------------------------------
+
+    def insert_job_examples(self, rows: List[Dict[str, Any]]) -> int:
+        """
+        Bulk insert job examples with embeddings into the job_examples table.
+        Returns the count of rows inserted.
+        """
+        if not rows:
+            return 0
+        res = self.sb.table("job_examples").insert(rows).execute()
+        if not res.data:
+            raise RuntimeError(f"Failed to insert job examples: {res}")
+        return len(res.data)

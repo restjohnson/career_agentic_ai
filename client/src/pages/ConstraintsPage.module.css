@@ -196,6 +196,21 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
+.textInputError {
+  border-color: var(--color-danger, #ef4444);
+}
+
+.textInputError:focus {
+  border-color: var(--color-danger, #ef4444);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.fieldError {
+  font-size: 0.8125rem;
+  color: var(--color-danger, #ef4444);
+  margin-top: 0.25rem;
+}
+
 /* ── Select input ─────────────────────────────────────────────────── */
 .selectInput {
   width: 100%;
@@ -388,6 +403,30 @@
 .submitBtnDisabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.startOverBtn {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  text-decoration: none;
+  transition: all 250ms ease;
+}
+
+.startOverBtn:hover {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+.calHint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: -0.25rem;
 }
 
 /* ── Responsive ──────────────────────────────────────────────────── */

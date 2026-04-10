@@ -1,9 +1,13 @@
 from __future__ import annotations
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from app.state import AgentState, ProvenanceRef, RoleSpecModel, RoleSpecRequirement
 from app.tools.onet_client import OnetClient
-from app.tools.role_spec_llm import build_role_spec_from_onet_raw, llm_refactor_role_spec_from_onet_raw
+from app.tools.role_spec_llm import (
+    build_role_spec_from_onet_raw,
+    llm_refactor_role_spec_from_onet_raw,
+)
+from app.tools.role_few_shot_examples import hybrid_retrieve_fused
 from app.tools.supabase_repo import SupabaseRepo
 
 
@@ -37,17 +41,23 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     client = OnetClient()
     repo = SupabaseRepo()
-    candidates = client.search_occupations(s.desired_role, limit=5)
-    if not candidates:
-        s.errors.append("No O*NET occupation candidates found for your keywords.")
+
+    # --- Hybrid RAG-Fusion: dimensional retrieval + RRF + deduplication ---
+    # Returns calibration examples for the LLM AND the best ONET code to anchor the spec.
+    try:
+        fused_examples, best_onet_code, best_onet_title = hybrid_retrieve_fused(
+            s.desired_role, client, k_examples=3
+        )
+    except Exception as e:
+        s.errors.append(f"RAG-Fusion pipeline failed: {type(e).__name__}: {e}")
+        fused_examples, best_onet_code, best_onet_title = [], None, None
+
+    if not best_onet_code:
+        s.errors.append("No O*NET match found via RAG-Fusion.")
         return s.model_dump(exclude_none=True)
 
-    top = candidates[0]
-    onet_code = top.get("code") or top.get("onet_code") or top.get("id")
-    role_title = top.get("title") or top.get("name") or s.desired_role
-    if not onet_code:
-        s.errors.append(f"Could not extract onet code from the candidate: {top}")
-        return s.model_dump(exclude_none=True)
+    onet_code = best_onet_code
+    role_title = best_onet_title or s.desired_role
 
     # Check cache first — reuse existing role_spec to keep required_level and
     # importance stable across runs for the same ONET code.
@@ -78,6 +88,7 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
         role_id = None
         s.errors.append(f"Baseline role cache write failed: {type(e).__name__}: {e}")
 
+    # --- Fused examples already computed above via RAG-Fusion ---
     try:
         s.role_spec = llm_refactor_role_spec_from_onet_raw(
             desired_role=s.desired_role,
@@ -88,6 +99,7 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
             tech_payload=tech,
             hot_tech_payload=hot_tech,
             raw_user_text=s.raw_user_text,
+            few_shot_examples=fused_examples,
         )
     except Exception as e:
         s.errors.append(

@@ -21,7 +21,6 @@ _THRESHOLDS: Dict[str, int] = {
     "prerequisite_ordering": 4,   # high bar — KST compliance
     "feasibility":           3,
     "level_appropriateness": 3,
-    "internship_readiness":  4,   # high bar — structural gate
 }
 
 # ---------------------------------------------------------------------------
@@ -38,7 +37,7 @@ def _check_gap_coverage(
         for phase in plan.phases
         for g in phase.addresses_gaps
     }
-    all_gaps: Set[str] = {g.summary.lower().strip() for g in gap_report.gaps}
+    all_gaps: Set[str] = {g.summary.lower().strip() for g in gap_report.gaps if g.gap_type != "met"}
     missing = all_gaps - addressed
 
     if not missing:
@@ -133,7 +132,7 @@ def _check_feasibility(
         r.estimated_hours
         for phase in plan.phases
         for r in phase.resources
-        if r.estimated_hours is not None and r.resource_type != "internship"
+        if r.estimated_hours is not None
     )
 
     if total_hours == 0:
@@ -170,7 +169,7 @@ def _check_feasibility(
 
 # ---------------------------------------------------------------------------
 # Dimension 4: Level appropriateness
-# Resources must suit the student's academic level; internships not in Phase 1–2.
+# Resources must suit the student's academic level.
 # ---------------------------------------------------------------------------
 
 def _check_level_appropriateness(
@@ -198,123 +197,6 @@ def _check_level_appropriateness(
 
 
 # ---------------------------------------------------------------------------
-# Dimension 5: Internship readiness
-# Three structural checks: evidence gate, resume update, level-tier alignment.
-# ---------------------------------------------------------------------------
-
-def _projected_proficiency(
-    gap_summary: str,
-    phases_before: List[PlanPhase],
-    base_proficiency: int,
-) -> int:
-    """Estimate proficiency after completing prior phases: +1 per project resource."""
-    project_count = sum(
-        1
-        for phase in phases_before
-        for r in phase.resources
-        if r.resource_type == "project"
-        and r.addresses_gap.lower().strip() == gap_summary.lower().strip()
-    )
-    return min(4, base_proficiency + project_count)
-
-
-def _tier_aligned(level: str, projected_proficiency: int) -> bool:
-    """True if the internship difficulty tier is within the student's ZPD."""
-    if level in ("freshman", "sophomore"):
-        return projected_proficiency >= 1
-    if level in ("junior", "senior"):
-        return projected_proficiency >= 2
-    if level == "grad":
-        return True
-    if level in ("bootcamp", "self_taught"):
-        return projected_proficiency >= 2
-    return False
-
-
-def _check_internship_readiness(
-    plan: CareerPlan,
-    gap_report: GapReport,
-    constraints: StudentConstraints,
-) -> Tuple[int, List[str], List[str]]:
-    issues: List[str] = []
-    fixes:  List[str] = []
-
-    base_proficiency: Dict[str, int] = {
-        g.summary.lower().strip(): g.proficiency for g in gap_report.gaps
-    }
-
-    internship_found = False
-
-    for i, phase in enumerate(plan.phases):
-        for resource in phase.resources:
-            if resource.resource_type != "internship":
-                continue
-            internship_found = True
-            gap_key          = resource.addresses_gap.lower().strip()
-            phases_before    = plan.phases[:i]
-
-            # Check 1 — Evidence gate: prior project or tutorial for this gap
-            prior_practice = any(
-                r.resource_type in ("project", "tutorial")
-                and r.addresses_gap.lower().strip() == gap_key
-                for pb in phases_before
-                for r in pb.resources
-            )
-            if not prior_practice:
-                issues.append(
-                    f"Internship '{resource.title}' (Phase {i + 1}) has no prior project or tutorial "
-                    f"for '{resource.addresses_gap}'. Student has no demonstrated evidence to present."
-                )
-                fixes.append(
-                    f"Add a project or tutorial resource for '{resource.addresses_gap}' "
-                    f"in a phase before Phase {i + 1}."
-                )
-                # Hard violation — return immediately with score 1
-                return 1, issues, fixes
-
-            # Check 2 — Resume update declared in the immediately preceding phase
-            if i > 0:
-                preceding = plan.phases[i - 1]
-                declared  = any(
-                    gap_key in ru.lower() or resource.addresses_gap.lower() in ru.lower()
-                    for ru in preceding.resume_updates
-                )
-                if not preceding.resume_updates or not declared:
-                    issues.append(
-                        f"Phase {i} ('{preceding.title}') has no resume_updates for "
-                        f"'{resource.addresses_gap}' before the internship in Phase {i + 1}."
-                    )
-                    fixes.append(
-                        f"Add resume_updates to Phase {i} specifying that the student should add "
-                        f"'{resource.addresses_gap}' skills/projects to their resume before applying."
-                    )
-
-            # Check 3 — Level-tier alignment (ZPD)
-            base  = base_proficiency.get(gap_key, 0)
-            proj  = _projected_proficiency(resource.addresses_gap, phases_before, base)
-            level = constraints.academic_level
-
-            if not _tier_aligned(level, proj):
-                issues.append(
-                    f"Internship '{resource.title}' may exceed the ZPD for a {level} student "
-                    f"with projected proficiency {proj}/4 in '{resource.addresses_gap}'."
-                )
-                fixes.append(
-                    f"Add more project resources for '{resource.addresses_gap}' before this internship, "
-                    f"or replace with an entry-level/accommodating opportunity."
-                )
-
-    if not internship_found:
-        return 5, [], []
-
-    if not issues:
-        return 5, [], []
-
-    score = max(1, 5 - len(issues) * 2)
-    return score, issues, fixes
-
-
-# ---------------------------------------------------------------------------
 # Main critique node
 # ---------------------------------------------------------------------------
 
@@ -322,7 +204,7 @@ def critique_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     Critique:
     1. Capture previous critique issues at the start (for stall detection by the router).
-    2. Run all five rubric dimensions independently.
+    2. Run all four rubric dimensions independently.
     3. Apply conjunctive satisficing: all dimensions must meet their threshold.
     4. Track best_plan across iterations (best mean rubric score).
     5. Increment critique_iterations.
@@ -346,11 +228,8 @@ def critique_node(state: Dict[str, Any]) -> Dict[str, Any]:
         (_check_prereq_ordering,       "prerequisite_ordering"),
         (_check_feasibility,           "feasibility"),
         (_check_level_appropriateness, "level_appropriateness"),
-        (_check_internship_readiness,  "internship_readiness"),
     ]:
-        if dim_key == "internship_readiness":
-            score, dim_issues, dim_fixes = dim_fn(s.plan, s.gap_report, s.student_constraints)
-        elif dim_key in ("feasibility", "level_appropriateness"):
+        if dim_key in ("feasibility", "level_appropriateness"):
             score, dim_issues, dim_fixes = dim_fn(s.plan, s.student_constraints)
         else:
             score, dim_issues, dim_fixes = dim_fn(s.plan, s.gap_report)

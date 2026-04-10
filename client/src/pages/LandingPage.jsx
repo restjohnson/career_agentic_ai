@@ -115,6 +115,13 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+        {/* ── Scroll Arrow ──────────────────────────────────────────────────── */}
+<a href="#features" className={styles.scrollArrow} aria-label="Scroll to features">
+  <span>Scroll</span>
+  <div className={styles.scrollArrowCircle}>
+    <Icon path="M12 5v14M5 12l7 7 7-7" size={20} color="#6366f1" />
+  </div>
+</a>
       </section>
 
       {/* ── Stats bar (temporarily disabled) ────────────────────────────── */}

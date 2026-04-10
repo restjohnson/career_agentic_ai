@@ -164,6 +164,16 @@
   margin-top: -0.5rem;
 }
 
+.noReload {
+  font-size: 0.85rem;
+  color: #b45309;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-top: -1rem;
+}
+
 /* ── Agent steps ─────────────────────────────────────────────────── */
 .steps {
   width: 100%;
@@ -220,4 +230,21 @@
 
 @keyframes stepSpin {
   to { transform: rotate(360deg); }
+}
+
+.startOverBtn {
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.625rem;
+  background: transparent;
+  text-decoration: none;
+  transition: all 250ms ease;
+}
+
+.startOverBtn:hover {
+  background: #f1f5f9;
+  color: #1e293b;
 }

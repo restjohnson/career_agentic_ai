@@ -22,7 +22,6 @@ class _ExtractedItem(BaseModel):
     summary: str
     snippet: Optional[str] = None
     confidence: float = Field(ge=0.0, le=1.0, default=0.8)
-    action_verbs: List[str] = Field(default_factory=list)
     matched_requirement_indices: List[int] = Field(default_factory=list)
 
 
@@ -56,10 +55,9 @@ Rules:
    - 0.26–0.50: Used in coursework, guided, or tutorial setting.
    - 0.10–0.25: Only mentioned or listed without any demonstration context (typical for claim items).
    - 0.00–0.09: Completely unsupported — vague or unverifiable assertion.
-5. Extract action_verbs: key verbs from the item text signalling engagement level (e.g. ["built", "deployed"]). Return empty list for claim items where no verbs are present.
-6. snippet: Include the most relevant quoted text ONLY if consent_level is "excerpt_ok" or "raw_ok". Otherwise set to null.
-7. Do not invent capabilities the document does not support.
-8. Produce items in order of relevance to the target role (most relevant first), with claim items last.
+5. snippet: Include the most relevant quoted text ONLY if consent_level is "excerpt_ok" or "raw_ok". Otherwise set to null.
+6. Do not invent capabilities the document does not support.
+7. Produce items in order of relevance to the target role (most relevant first), with claim items last.
 """
 
 
@@ -129,7 +127,6 @@ Extract ALL evidence items from this document. For skill list or competency sect
             summary=item.summary,
             snippet=item.snippet,
             confidence=item.confidence,
-            action_verbs=item.action_verbs,
             metadata={
                 "matched_requirements": [
                     req_index[i] for i in item.matched_requirement_indices

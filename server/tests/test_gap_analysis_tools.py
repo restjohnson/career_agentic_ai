@@ -434,7 +434,6 @@ class TestStateSchema:
     def test_evidence_item_has_no_proficiency_score(self):
         item = EvidenceItem(item_type="claim", summary="Python", confidence=0.2)
         assert not hasattr(item, "proficiency_score")
-        assert item.action_verbs == []
 
     def test_evidence_item_types_are_valid(self):
         for itype in ("experience", "project", "coursework", "claim"):

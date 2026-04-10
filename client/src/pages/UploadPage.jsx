@@ -9,15 +9,28 @@ export default function UploadPage() {
   const [consentLevel, setConsentLevel] = useState('derived_only');
   const [isUploading, setIsUploading]   = useState(false);
   const [uploadError, setUploadError]   = useState(null);
+  const [alreadyUploaded, setAlreadyUploaded] = useState(false);
   const fileInputRef = useRef(null);
   const navigate     = useNavigate();
 
   useEffect(() => {
-    // Starting upload step resets downstream flow state.
-    sessionStorage.removeItem('career_flow_evidence_ids');
-    sessionStorage.removeItem('career_flow_constraints');
-    sessionStorage.removeItem('career_flow_final_state');
+    // Guard: if a later step is already done, redirect forward.
+    const existingFinal = sessionStorage.getItem('career_flow_final_state');
+    if (existingFinal) { navigate('/results', { replace: true }); return; }
+    const existingConstraints = sessionStorage.getItem('career_flow_constraints');
+    if (existingConstraints) { navigate('/loading', { replace: true }); return; }
 
+    // Restore previously uploaded resume if the user navigated back.
+    const savedMeta = sessionStorage.getItem('career_flow_resume_meta');
+    const savedIds  = sessionStorage.getItem('career_flow_evidence_ids');
+    if (savedMeta && savedIds) {
+      const meta = JSON.parse(savedMeta);
+      // Create a placeholder so the UI shows the previously uploaded file.
+      setUploadedFile({ name: meta.name, size: meta.size, _restored: true });
+      setAlreadyUploaded(true);
+    }
+
+    // Always start a fresh session — tokens in localStorage may be expired.
     startSession()
       .then(({ session_token, session_id }) => {
         localStorage.setItem('session_token', session_token);
@@ -41,13 +54,22 @@ export default function UploadPage() {
 
   const handleContinue = async () => {
     if (!canContinue) return;
+
+    // If the resume was already uploaded and the user didn't replace it, skip re-upload.
+    if (alreadyUploaded && uploadedFile._restored) {
+      const evidenceDocIds = JSON.parse(sessionStorage.getItem('career_flow_evidence_ids'));
+      navigate('/constraints', { replace: true, state: { evidenceDocIds } });
+      return;
+    }
+
     setUploadError(null);
     setIsUploading(true);
     try {
       const token = localStorage.getItem('session_token');
       const { document_id } = await uploadEvidence(token, uploadedFile, 'resume', consentLevel);
       sessionStorage.setItem('career_flow_evidence_ids', JSON.stringify([document_id]));
-      navigate('/constraints', { state: { evidenceDocIds: [document_id] } });
+      sessionStorage.setItem('career_flow_resume_meta', JSON.stringify({ name: uploadedFile.name, size: uploadedFile.size }));
+      navigate('/constraints', { replace: true, state: { evidenceDocIds: [document_id] } });
     } catch (err) {
       setUploadError(err.message);
       setIsUploading(false);
@@ -114,7 +136,7 @@ export default function UploadPage() {
                 </p>
                 <button
                   className={styles.removeFileBtn}
-                  onClick={(e) => { e.stopPropagation(); setUploadedFile(null); }}
+                  onClick={(e) => { e.stopPropagation(); setUploadedFile(null); setAlreadyUploaded(false); }}
                 >
                   Remove
                 </button>

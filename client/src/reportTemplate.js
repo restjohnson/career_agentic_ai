@@ -57,15 +57,24 @@ function pathwaySectionHTML(plan) {
           const resources = (a.example_resources ?? []).slice(0, 3);
           const resHTML   = resources.length === 0 ? '' : `
             <div class="action-resources">
-              ${resources.map(r =>
-                `<span class="res-chip">${RESOURCE_ICONS[r.resource_type] ?? '📌'} ${esc(r.title)}${r.estimated_hours ? ` · ${r.estimated_hours}h` : ''}${r.is_free ? ' · Free' : ''}</span>`
-              ).join('')}
+              ${resources.map(r => {
+                const label = `${RESOURCE_ICONS[r.resource_type] ?? '📌'} ${esc(r.title)}${r.estimated_hours ? ` · ${r.estimated_hours}h` : ''}${r.is_free ? ' · Free' : ''}`;
+                return r.url
+                  ? `<a class="res-chip" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">${label}</a>`
+                  : `<span class="res-chip">${label}</span>`;
+              }).join('')}
             </div>
           `;
+          const stackHTML = a.stack?.length ? `
+            <div class="action-stack">
+              ${a.stack.map(tool => `<span class="stack-chip">${esc(tool)}</span>`).join('')}
+            </div>
+          ` : '';
           return `
             <li class="action-li">
               <div class="action-title">${esc(a.title)}</div>
-              <div class="action-summary">${esc(a.summary)}</div>
+              <div class="action-description">${esc(a.description)}</div>
+              ${stackHTML}
               ${a.rationale ? `<div class="action-rationale">${esc(a.rationale)}</div>` : ''}
               ${resHTML}
             </li>
@@ -267,6 +276,14 @@ export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, ta
     color: #475569;
     font-size: 7.5pt;
     font-weight: 600;
+    text-decoration: none;
+  }
+  a.res-chip {
+    color: #2563eb;
+    cursor: pointer;
+  }
+  a.res-chip:hover {
+    text-decoration: underline;
   }
 
   .checkpoint {

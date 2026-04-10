@@ -66,7 +66,6 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                         summary=row["summary"],
                         snippet=row.get("snippet"),
                         confidence=row.get("confidence", 0.8),
-                        action_verbs=row.get("action_verbs") or [],
                         metadata=row.get("metadata") or {},
                     )
                     for row in cached_rows
@@ -119,7 +118,6 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                         "summary": item.summary,
                         "snippet": item.snippet,
                         "confidence": item.confidence,
-                        "action_verbs": item.action_verbs,
                         "metadata": item.metadata,
                         "role_hash": role_hash,
                         "onet_code": onet_code,

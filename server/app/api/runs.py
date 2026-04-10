@@ -41,6 +41,14 @@ class RunCreateResponse(BaseModel):
 
 @router.post("", response_model=RunCreateResponse)
 def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_id)):
+    # Guard: prevent running a session more than once
+    existing_runs = repo.get_runs_for_session(session_id)
+    if existing_runs:
+        raise HTTPException(
+            status_code=409,
+            detail="A run already exists for this session. Each session can only be processed once.",
+        )
+
     run_id = repo.create_run(session_id=session_id, desired_role=payload.desired_role, status="running")
 
     evidence_documents: List[EvidenceDocument] = []
