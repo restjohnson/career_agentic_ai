@@ -514,6 +514,54 @@
   color: #cbd5e1;
 }
 
+.scrollArrow {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  animation: bounceDown 2s ease-in-out infinite;
+}
+
+.scrollArrow span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6366f1;
+}
+
+.scrollArrowCircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid rgba(99, 102, 241, 0.35);
+  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 250ms ease;
+}
+
+.scrollArrow:hover .scrollArrowCircle {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-color: transparent;
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+}
+
+.scrollArrow:hover .scrollArrowCircle svg {
+  stroke: white;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(7px); }
+}
 /* ════════════════════════════════════════════════════════════════════
    Responsive
    ════════════════════════════════════════════════════════════════════ */
