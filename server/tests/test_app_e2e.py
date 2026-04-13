@@ -169,15 +169,6 @@ def print_gap_report(final_state: dict) -> None:
             f"{g.get('gap_type', '')}"
         )
 
-    print("\n--- Knowledge Prerequisites ---")
-    for g in gaps:
-        prereqs = g.get("knowledge_prerequisites", [])
-        if prereqs:
-            print(f"\n  [{g.get('summary', '')[:65]}]")
-            for p in prereqs:
-                tag = "FOUND" if p.get("is_foundational") else "supp."
-                print(f"    [{tag}] {p.get('concept', '')[:55]}")
-
 
 def print_plan(final_state: dict) -> None:
     plan = final_state.get("plan")
@@ -233,7 +224,7 @@ def print_critique(final_state: dict) -> None:
     print("=" * 70)
     scores = critique.get("rubric_scores", {})
     thresholds = {
-        "gap_coverage": 3, "prerequisite_ordering": 4,
+        "gap_coverage": 3,
         "feasibility": 3, "level_appropriateness": 3,
     }
     for dim, score in scores.items():

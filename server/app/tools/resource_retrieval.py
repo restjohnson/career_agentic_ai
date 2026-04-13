@@ -69,11 +69,6 @@ def determine_resource_types(gap: GapItem, constraints: StudentConstraints) -> L
     return types
 
 
-def determine_prereq_resource_types(constraints: StudentConstraints) -> List[str]:
-    """Foundational prerequisites are always concept-focused."""
-    return ["online_course" if constraints.preferred_learning_mode == "structured" else "tutorial"]
-
-
 # ---------------------------------------------------------------------------
 # LLM-based resource generation
 # ---------------------------------------------------------------------------

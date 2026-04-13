@@ -1,16 +1,11 @@
 from __future__ import annotations
 
-import math
-from typing import Any, Dict, List, Optional
-
-from langchain_openai import ChatOpenAI
-from pydantic import BaseModel
+from typing import Any, Dict, List
 
 from app.state import (
     EvidenceItem,
     GapItem,
     GapReport,
-    KnowledgePrerequisite,
     RoleSpecModel,
     StudentModel,
 )
@@ -145,113 +140,6 @@ def compute_gaps(
 
     gap_items.sort(key=lambda g: g.weighted_gap, reverse=True)
     return gap_items
-
-
-# ---------------------------------------------------------------------------
-# Phase 1 — knowledge decomposition (LLM call)
-# ---------------------------------------------------------------------------
-
-class _KnowledgePrereqRaw(BaseModel):
-    concept: str
-    parent_skill_gap: str
-    is_foundational: bool
-
-
-class _DecompositionResult(BaseModel):
-    prerequisites: List[_KnowledgePrereqRaw]
-
-
-_DECOMP_SYSTEM = """You are an expert in career skills and conceptual knowledge requirements.
-
-You are given a list of skill gaps for a student targeting a specific role, and a list of evidence items the student has submitted.
-
-For each skill gap, identify the specific conceptual/theoretical knowledge concepts that underpin it.
-Then assess whether the student's evidence implies any understanding of each concept.
-
-Rules:
-1. Produce specific, role-grounded knowledge concepts — not generic categories.
-   Good: "Backpropagation and gradient descent", "CAP theorem", "SQL query optimisation"
-   Bad: "Mathematics", "Computer Science", "Databases"
-2. is_foundational = true if the concept is a hard prerequisite (the skill cannot be
-   learned without it). is_foundational = false if it is supporting or deepening knowledge.
-3. Deduplicate: if the same concept underpins multiple skill gaps, produce it once under
-   the most relevant parent.
-4. Limit to at most 4 prerequisites per skill gap. Focus on the most impactful ones.
-"""
-
-
-def decompose_knowledge_prerequisites(
-    gap_items: List[GapItem],
-    evidence_items: List[EvidenceItem],
-    role_title: str,
-    top_n: int = 8,
-) -> List[KnowledgePrerequisite]:
-    """
-    For the top-N gaps by weighted_gap, call the LLM to decompose each into
-    knowledge prerequisites. Returns deduplicated KnowledgePrerequisite list
-    with needs_self_assessment flagged.
-    """
-    qualifying = [g for g in gap_items if g.raw_gap > 0.5 and g.gap_type not in ("optional_gap", "met")]
-    qualifying = qualifying[:top_n]
-
-    if not qualifying:
-        return []
-
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.1)
-    llm_struct = llm.with_structured_output(_DecompositionResult, method="json_schema", strict=True)
-
-    evidence_summaries = [item.summary for item in evidence_items]
-
-    gap_lines = "\n".join(
-        f"- [{g.category}] {g.summary} (raw_gap={g.raw_gap}, weighted_gap={g.weighted_gap})"
-        for g in qualifying
-    )
-
-    prompt = f"""\
-Role: {role_title}
-
-Skill gaps to decompose:
-{gap_lines}
-
-Student evidence (summaries):
-{chr(10).join(f"- {s}" for s in evidence_summaries)}
-
-Identify the knowledge prerequisites for each gap and assess evidence-based confidence.
-"""
-
-    result: _DecompositionResult = llm_struct.invoke(
-        [{"role": "system", "content": _DECOMP_SYSTEM}, {"role": "user", "content": prompt}]
-    )
-
-    # deduplicate by concept (case-insensitive), keep highest-weighted-gap parent
-    # Use normalised keys so trailing punctuation drift from the LLM doesn't break lookup.
-    def _norm(s: str) -> str:
-        return s.lower().strip().rstrip(".,;:")
-
-    gap_weight: Dict[str, float] = {_norm(g.summary): g.weighted_gap for g in qualifying}
-    seen: Dict[str, _KnowledgePrereqRaw] = {}
-    for p in result.prerequisites:
-        key = p.concept.lower().strip()
-        if key not in seen:
-            seen[key] = p
-        else:
-            # keep the one whose parent has higher weighted_gap
-            existing_weight = gap_weight.get(_norm(seen[key].parent_skill_gap), 0)
-            new_weight = gap_weight.get(_norm(p.parent_skill_gap), 0)
-            if new_weight > existing_weight:
-                seen[key] = p
-
-    deduped = list(seen.values())
-
-    prerequisites: List[KnowledgePrerequisite] = []
-    for p in deduped:
-        prerequisites.append(KnowledgePrerequisite(
-            concept=p.concept,
-            parent_skill_gap=p.parent_skill_gap,
-            is_foundational=p.is_foundational,
-        ))
-
-    return prerequisites
 
 
 def build_gap_report(gap_items: List[GapItem]) -> GapReport:

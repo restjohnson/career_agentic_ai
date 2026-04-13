@@ -18,7 +18,6 @@ from app.state import (
 
 _THRESHOLDS: Dict[str, int] = {
     "gap_coverage":          3,
-    "prerequisite_ordering": 4,   # high bar — KST compliance
     "feasibility":           3,
     "level_appropriateness": 3,
 }
@@ -50,77 +49,7 @@ def _check_gap_coverage(
 
 
 # ---------------------------------------------------------------------------
-# Dimension 2: Prerequisite ordering
-# Foundational prerequisites must appear in an earlier phase than their parent gap.
-# ---------------------------------------------------------------------------
-
-def _check_prereq_ordering(
-    plan: CareerPlan,
-    gap_report: GapReport,
-) -> Tuple[int, List[str], List[str]]:
-    # Map normalised gap label → first phase index (0-based) where it appears.
-    # Using first occurrence so multi-phase gaps (e.g. SQL in Phase 1 and Phase 3)
-    # don't get their parent_idx pushed to the last phase by dict overwriting.
-    phase_index: Dict[str, int] = {}
-    for i, phase in enumerate(plan.phases):
-        for g in phase.addresses_gaps:
-            key = g.lower().strip()
-            if key not in phase_index:
-                phase_index[key] = i
-
-    violations: List[Tuple[str, str, int, int]] = []
-
-    for gap in gap_report.gaps:
-        parent_idx = phase_index.get(gap.summary.lower().strip())
-        if parent_idx is None:
-            continue  # gap_coverage handles missing gaps
-
-        for prereq in gap.knowledge_prerequisites:
-            if not prereq.is_foundational:
-                continue  # only enforce ordering for hard prerequisites
-
-            prereq_idx = phase_index.get(prereq.concept.lower().strip())
-
-            if prereq_idx is None:
-                # Prerequisite concept not explicitly labeled in any phase.
-                # The system prompt forbids using prereq concept labels as addresses_gap,
-                # so absence from phase_index means implicit coverage within the parent
-                # gap's phase — not a plan defect. Skip; only flag explicit misordering.
-                pass
-            elif prereq_idx >= parent_idx:
-                violations.append((prereq.concept, gap.summary, prereq_idx, parent_idx))
-
-    if not violations:
-        return 5, [], []
-
-    issues: List[str] = []
-    fixes:  List[str] = []
-    for prereq, parent, pi, parent_i in violations:
-        if pi == -1:
-            issues.append(
-                f"Foundational prerequisite '{prereq}' for '{parent}' "
-                f"is not addressed anywhere in the plan."
-            )
-            fixes.append(
-                f"Add resources for '{prereq}' in a phase before the phase that covers '{parent}'."
-            )
-        else:
-            issues.append(
-                f"Prerequisite '{prereq}' (Phase {pi + 1}) must precede "
-                f"its parent gap '{parent}' (Phase {parent_i + 1})."
-            )
-            fixes.append(
-                f"Move '{prereq}' resources to a phase earlier than Phase {parent_i + 1}."
-            )
-
-    n_absent   = sum(1 for v in violations if v[2] == -1)
-    n_ordering = len(violations) - n_absent
-    score = max(1, 5 - n_absent * 2 - n_ordering)
-    return score, issues, fixes
-
-
-# ---------------------------------------------------------------------------
-# Dimension 3: Feasibility
+# Dimension 2: Feasibility
 # Does the plan's total hour demand fit within the student's timeline?
 # ---------------------------------------------------------------------------
 
@@ -168,7 +97,7 @@ def _check_feasibility(
 
 
 # ---------------------------------------------------------------------------
-# Dimension 4: Level appropriateness
+# Dimension 3: Level appropriateness
 # Resources must suit the student's academic level.
 # ---------------------------------------------------------------------------
 
@@ -204,7 +133,7 @@ def critique_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     Critique:
     1. Capture previous critique issues at the start (for stall detection by the router).
-    2. Run all four rubric dimensions independently.
+    2. Run all three rubric dimensions independently.
     3. Apply conjunctive satisficing: all dimensions must meet their threshold.
     4. Track best_plan across iterations (best mean rubric score).
     5. Increment critique_iterations.
@@ -225,7 +154,6 @@ def critique_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     for dim_fn, dim_key in [
         (_check_gap_coverage,          "gap_coverage"),
-        (_check_prereq_ordering,       "prerequisite_ordering"),
         (_check_feasibility,           "feasibility"),
         (_check_level_appropriateness, "level_appropriateness"),
     ]:

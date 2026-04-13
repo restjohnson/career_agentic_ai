@@ -20,7 +20,6 @@ from app.state import (
     AgentState,
     EvidenceItem,
     GapItem,
-    KnowledgePrerequisite,
     RoleSpecModel,
     RoleSpecRequirement,
     StudentModel,
@@ -453,7 +452,6 @@ class TestStateSchema:
             gap_type="partial",
         )
         assert gap.student_level == 1.2
-        assert gap.knowledge_prerequisites == []
 
     def test_gap_item_has_no_gap_root_cause(self):
         gap = make_gap("Test")

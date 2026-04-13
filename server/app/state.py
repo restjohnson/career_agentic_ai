@@ -121,12 +121,6 @@ class RoleSpecModel(BaseModel):
     assumptions: List[str] = Field(default_factory=list)
 
 # Gap Analysis, Planning, and critique
-class KnowledgePrerequisite(BaseModel):
-    concept: str                          # specific knowledge concept, role-grounded
-    parent_skill_gap: str                 # req_summary of the parent GapItem
-    is_foundational: bool                 # hard prerequisite vs supporting knowledge
-
-
 class GapItem(BaseModel):
     summary: str
     category: RoleReqType
@@ -138,7 +132,6 @@ class GapItem(BaseModel):
     confidence: float                     #0–1, Bayesian-combined from evidence
     gap_type: Literal["no_evidence", "claimed_only", "partial", "optional_gap", "met"] = "no_evidence"
     evidence_item_ids: List[str] = Field(default_factory=list)
-    knowledge_prerequisites: List[KnowledgePrerequisite] = Field(default_factory=list)
 
 class GapReport(BaseModel):
     summary: str = ""
@@ -222,7 +215,6 @@ class CritiqueReport(BaseModel):
     rubric_scores: Dict[str, int] = Field(default_factory=dict)
     '''Dimensions and minimum passing thresholds (out of 5)
     gap_coverage           >= 3
-    prerequisite_ordering  >= 4
     feasibility            >= 3
     level_appropriateness  >= 3'''
     issues: List[str] = Field(default_factory=list)

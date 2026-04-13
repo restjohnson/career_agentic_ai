@@ -200,26 +200,16 @@ def _format_gap_context(
 ) -> str:
     """
     Renders gap context in two sections:
-    1. Numbered reference list of VALID ADDRESSES_GAP labels (gaps only).
-    2. Full gap detail with prerequisite context and example resources.
+    1. Numbered reference list of VALID ADDRESSES_GAP labels.
+    2. Full gap detail with example resources.
     """
-    gap_items    = [it for it in ordered_items if not it.get("is_prereq")]
-    prereq_items = [it for it in ordered_items if it.get("is_prereq")]
-
     # --- Section 1: valid label reference list ---
     lines = ["VALID GAP LABELS — copy these EXACTLY into addresses_gaps list:"]
-    for i, item in enumerate(gap_items, 1):
+    for i, item in enumerate(ordered_items, 1):
         label       = item["label"]
         gap_type    = item.get("gap_type", "").upper()
         proficiency = item.get("proficiency", 0)
         lines.append(f'  {i}. "{label}"  [{gap_type}]  proficiency={proficiency}/4')
-
-    if prereq_items:
-        lines.append("")
-        lines.append("PREREQUISITE CONCEPTS (context only — NEVER use as addresses_gap):")
-        for p in prereq_items:
-            parent = p.get("parent_gap", "?")
-            lines.append(f'  - "{p["label"]}"  →  sub-component of: "{parent}"')
 
     # --- Section 2: full detail with example resources ---
     lines.append("")
@@ -229,9 +219,8 @@ def _format_gap_context(
         gap_type    = item.get("gap_type", "")
         root        = item.get("root_cause", "")
         proficiency = item.get("proficiency", 0)
-        is_prereq   = item.get("is_prereq", False)
 
-        tag = "PREREQUISITE" if is_prereq else gap_type.upper()
+        tag = gap_type.upper()
         lines.append(f'  "{label}"  [{tag}]  proficiency={proficiency}/4')
         if root:
             lines.append(f"    root_cause: {root}")
