@@ -161,7 +161,7 @@ export default function ResultsPage() {
 
       {/* ── Content ────────────────────────────────────────────────── */}
       <div className={styles.container}>
-        {activeTab === 'career'  && <CareerPlanTab studentModel={studentModel} roleSpec={roleSpec} />}
+        {activeTab === 'career'  && <CareerPlanTab studentModel={studentModel} roleSpec={roleSpec} targetRole={targetRole} />}
         {activeTab === 'gaps'    && <GapAnalysisTab gapReport={gapReport} evidenceItems={evidenceItems} />}
         {activeTab === 'pathway' && <PathwayPlanTab plan={plan} />}
       </div>
@@ -172,7 +172,7 @@ export default function ResultsPage() {
 /* ══════════════════════════════════════════════════════════════════════
    Career Profile Tab — Student Model + Role Requirements
    ══════════════════════════════════════════════════════════════════════ */
-function CareerPlanTab({ studentModel, roleSpec }) {
+function CareerPlanTab({ studentModel, roleSpec, targetRole }) {
   return (
     <div className={styles.careerGrid}>
       {/* Student Profile */}
@@ -218,7 +218,7 @@ function CareerPlanTab({ studentModel, roleSpec }) {
         <h2 className={styles.cardTitle}><span className={styles.dotPurple} />Role Requirements</h2>
         <p className={styles.cardSubtitle}>
           {roleSpec
-            ? `${roleSpec.requirements?.length ?? 0} requirements for ${roleSpec.canonical_role_title}`
+            ? `${roleSpec.requirements?.length ?? 0} requirements for ${targetRole}`
             : 'From the role intake agent'}
         </p>
         {roleSpec?.requirements?.length > 0 ? (
