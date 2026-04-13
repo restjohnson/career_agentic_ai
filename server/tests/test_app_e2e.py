@@ -175,11 +175,8 @@ def print_gap_report(final_state: dict) -> None:
         if prereqs:
             print(f"\n  [{g.get('summary', '')[:65]}]")
             for p in prereqs:
-                fc   = p.get("final_confidence", 0)
-                ic   = p.get("inferred_confidence", 0)
-                tier = p.get("inference_tier", "none")
-                tag  = "FOUND" if p.get("is_foundational") else "supp."
-                print(f"    [{tag}] {p.get('concept', '')[:55]:<56} fc={fc:.2f}  ic={ic:.2f}  ({tier})")
+                tag = "FOUND" if p.get("is_foundational") else "supp."
+                print(f"    [{tag}] {p.get('concept', '')[:55]}")
 
 
 def print_plan(final_state: dict) -> None:

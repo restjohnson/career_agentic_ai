@@ -34,7 +34,7 @@ const TARGET_ROLES = [
 
 const TARGET_GOALS = [
   { id: 'first_internship', label: 'First Internship',          desc: 'Land your first internship' },
-  { id: 'graduation',       label: 'Job-Ready by Graduation',   desc: 'Be prepared before you graduate' },
+  { id: 'graduation',       label: 'Graduation',                desc: 'Be prepared before you graduate' },
   { id: 'job_ready',        label: 'Job Ready',                 desc: 'Ready for full-time roles' },
   { id: 'career_change',    label: 'Career Change',             desc: 'Transition from another field' },
 ];

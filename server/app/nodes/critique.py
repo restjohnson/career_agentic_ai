@@ -76,8 +76,8 @@ def _check_prereq_ordering(
             continue  # gap_coverage handles missing gaps
 
         for prereq in gap.knowledge_prerequisites:
-            if not prereq.is_foundational or prereq.final_confidence >= 0.5:
-                continue  # student likely has it; skip ordering check
+            if not prereq.is_foundational:
+                continue  # only enforce ordering for hard prerequisites
 
             prereq_idx = phase_index.get(prereq.concept.lower().strip())
 

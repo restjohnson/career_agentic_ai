@@ -4,7 +4,7 @@ import math
 from typing import Any, Dict, List, Optional
 
 from langchain_openai import ChatOpenAI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from app.state import (
     EvidenceItem,
@@ -155,9 +155,6 @@ class _KnowledgePrereqRaw(BaseModel):
     concept: str
     parent_skill_gap: str
     is_foundational: bool
-    inferred_confidence: float = Field(ge=0.0, le=1.0)
-    inference_tier: str   # "direct" | "skill_implied" | "degree_baseline" | "none"
-    inference_basis: List[str] = Field(default_factory=list)
 
 
 class _DecompositionResult(BaseModel):
@@ -175,23 +172,11 @@ Rules:
 1. Produce specific, role-grounded knowledge concepts — not generic categories.
    Good: "Backpropagation and gradient descent", "CAP theorem", "SQL query optimisation"
    Bad: "Mathematics", "Computer Science", "Databases"
-2. is_foundational = true if the concept is a hard prerequisite (the skill cannot be learned without it).
-   is_foundational = false if it is supporting or deepening knowledge.
-3. inferred_confidence (0.0–1.0): how confident are you that the student already understands this concept,
-   based solely on the evidence provided?
-   - 0.8–1.0: Directly evidenced (explicit mention of course, cert, or clear demonstration)
-   - 0.5–0.79: Strongly implied by a project or experience that requires this knowledge
-   - 0.2–0.49: Weakly implied — could be a degree baseline or tangential mention
-   - 0.0–0.19: No evidence basis — concept is not supported by any submitted evidence
-4. inference_tier:
-   - "direct": explicitly mentioned in evidence (course name, certification, explicit statement)
-   - "skill_implied": inferred from a demonstrated skill or project that requires this knowledge
-   - "degree_baseline": only basis is the student's degree title suggesting exposure
-   - "none": no evidence basis at all
-5. inference_basis: list the exact evidence item summaries (from the provided list) that support your inference.
-   Empty list if inference_tier is "none".
-6. Deduplicate: if the same concept underpins multiple skill gaps, produce it once under the most relevant parent.
-7. Limit to at most 4 prerequisites per skill gap. Focus on the most impactful ones.
+2. is_foundational = true if the concept is a hard prerequisite (the skill cannot be
+   learned without it). is_foundational = false if it is supporting or deepening knowledge.
+3. Deduplicate: if the same concept underpins multiple skill gaps, produce it once under
+   the most relevant parent.
+4. Limit to at most 4 prerequisites per skill gap. Focus on the most impactful ones.
 """
 
 
@@ -258,18 +243,12 @@ Identify the knowledge prerequisites for each gap and assess evidence-based conf
 
     deduped = list(seen.values())
 
-    valid_tiers = {"direct", "skill_implied", "degree_baseline", "none"}
-
     prerequisites: List[KnowledgePrerequisite] = []
     for p in deduped:
-        tier = p.inference_tier if p.inference_tier in valid_tiers else "none"
         prerequisites.append(KnowledgePrerequisite(
             concept=p.concept,
             parent_skill_gap=p.parent_skill_gap,
             is_foundational=p.is_foundational,
-            inferred_confidence=p.inferred_confidence,
-            inference_tier=tier,
-            inference_basis=p.inference_basis,
         ))
 
     return prerequisites

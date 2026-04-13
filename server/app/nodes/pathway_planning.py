@@ -18,25 +18,23 @@ from app.tools.supabase_repo import SupabaseRepo
 
 def _extract_prereq_items(gaps: List[GapItem]) -> List[Dict[str, Any]]:
     """
-    Collect KnowledgePrerequisite items across all gaps where:
-      is_foundational=True AND final_confidence < 0.5
+    Collect KnowledgePrerequisite items across all gaps where is_foundational=True.
     These need their own learning resources and must precede their parent gap.
     Deduplicated by concept (case-insensitive).
     """
     seen: Dict[str, Dict[str, Any]] = {}
     for gap in gaps:
         for prereq in gap.knowledge_prerequisites:
-            if prereq.is_foundational and prereq.final_confidence < 0.5:
+            if prereq.is_foundational:
                 key = prereq.concept.lower().strip()
                 if key not in seen:
                     seen[key] = {
-                        "summary":           prereq.concept,
-                        "label":             prereq.concept,
-                        "parent_gap":        prereq.parent_skill_gap,
-                        "final_confidence":  prereq.final_confidence,
-                        "is_prereq":         True,
-                        "gap_type":          "no_evidence",
-                        "proficiency":       0,
+                        "summary":    prereq.concept,
+                        "label":      prereq.concept,
+                        "parent_gap": prereq.parent_skill_gap,
+                        "is_prereq":  True,
+                        "gap_type":   "no_evidence",
+                        "proficiency": 0,
                     }
     return list(seen.values())
 

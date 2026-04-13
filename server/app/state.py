@@ -123,12 +123,8 @@ class RoleSpecModel(BaseModel):
 # Gap Analysis, Planning, and critique
 class KnowledgePrerequisite(BaseModel):
     concept: str                          # specific knowledge concept, role-grounded
-    parent_skill_gap: str                 #req_summary of the parent GapItem
+    parent_skill_gap: str                 # req_summary of the parent GapItem
     is_foundational: bool                 # hard prerequisite vs supporting knowledge
-    inferred_confidence: float            #0–1, LLM-estimated from evidence
-    inference_tier: Literal["direct", "skill_implied", "degree_baseline", "none"]
-    inference_basis: List[str] = Field(default_factory=list)  # evidence summaries
-    final_confidence: float = 0.0
 
 
 class GapItem(BaseModel):
