@@ -28,6 +28,7 @@ def _ordered_gaps(gaps: List[GapItem]) -> List[Dict[str, Any]]:
             "gap_type":     gap.gap_type,
             "proficiency":  gap.proficiency,
             "weighted_gap": gap.weighted_gap,
+            "reasoning":    gap.reasoning,
         }
         for gap in gaps
     ]

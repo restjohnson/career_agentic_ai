@@ -226,6 +226,9 @@ def _format_gap_context(
         lines.append(f'  "{label}"  [{tag}]  proficiency={proficiency}/4')
         if root:
             lines.append(f"    root_cause: {root}")
+        reasoning = item.get("reasoning")
+        if reasoning:
+            lines.append(f"    Reasoning: {reasoning}")
 
         resources = resources_by_gap.get(label, [])
         if resources:

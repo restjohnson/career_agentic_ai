@@ -132,6 +132,8 @@ class GapItem(BaseModel):
     confidence: float                     #0–1, Bayesian-combined from evidence
     gap_type: Literal["no_evidence", "claimed_only", "partial", "optional_gap", "met"] = "no_evidence"
     evidence_item_ids: List[str] = Field(default_factory=list)
+    reasoning: Optional[str] = None
+    # ^ LLM annotation explaining why the student's level is what it is, based on evidence content
 
 class GapReport(BaseModel):
     summary: str = ""

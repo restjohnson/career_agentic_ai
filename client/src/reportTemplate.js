@@ -204,6 +204,7 @@ export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, ta
   .gap-type-weak         { background: #fef3c7; color: #92400e; }
   .gap-type-not_evidenced { background: #f1f5f9; color: #475569; }
   .gap-levels { display: flex; gap: 10pt; font-size: 8pt; color: #64748b; margin-top: 2pt; }
+  .gap-reasoning { font-size: 7.5pt; color: #475569; font-style: italic; margin-top: 4pt; padding-top: 4pt; border-top: 1px solid #e2e8f0; }
 
   .summary-text { font-size: 9pt; color: #475569; font-style: italic; margin-bottom: 6pt; }
   .footer { margin-top: 12pt; text-align: center; font-size: 7.5pt; color: #94a3b8; }
@@ -412,6 +413,7 @@ export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, ta
               <span>Required: ${levelDots(g.required_level)}</span>
               <span>Current: ${levelDots(g.student_score)}</span>
             </div>
+            ${g.reasoning ? `<p class="gap-reasoning">${esc(g.reasoning)}</p>` : ''}
           </div>
         `;
       }).join('')}
