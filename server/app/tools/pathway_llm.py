@@ -125,7 +125,9 @@ Rules:
 6. PERSONALISATION: Always reference the student's specific background in rationale fields.
    A student with XGBoost experience needs a different project than one with none.
 
-7. WEEKS_ESTIMATE: realistic per-phase estimate. Sum should approach the target timeline.
+7. WEEKS_ESTIMATE: the sum of all phase weeks_estimate values MUST NOT exceed the target
+   timeline. If the full gap list cannot fit, prioritise the highest-weighted gaps and
+   scope projects to fit. Undershooting is acceptable; overshooting is not.
 
 8. CRITIQUE FIXES: address every fix provided. Do not reintroduce previously flagged issues.
 
@@ -245,7 +247,7 @@ def _format_constraints(c: StudentConstraints) -> str:
     return (
         f"Academic level:        {c.academic_level}\n"
         f"Hours available/week:  {c.hours_per_week}\n"
-        f"Target goal:           {c.target_goal} ({c.target_weeks} weeks)\n"
+        f"Target timeline:       {c.target_weeks} weeks HARD LIMIT — total phase weeks must not exceed this\n"
         f"Preferred learning:    {c.preferred_learning_mode}"
     )
 

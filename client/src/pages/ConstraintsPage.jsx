@@ -57,6 +57,13 @@ const LEARNING_MODES = [
   { id: 'mixed',         label: 'Mixed',         desc: 'Combination of all approaches' },
 ];
 
+const GOAL_DEFAULT_WEEKS = {
+  first_internship: 16,
+  graduation:       52,
+  job_ready:        26,
+  career_change:    39,
+};
+
 /**
  * Returns an error string if the custom role looks like jargon or gibberish,
  * or null if it appears to be a valid role title.
@@ -92,7 +99,7 @@ const [targetDate,    setTargetDate]    = useState('');
 const today = new Date().toISOString().split('T')[0];
 const targetWeeks = targetDate
   ? Math.max(1, Math.round((new Date(targetDate) - new Date()) / (7 * 24 * 60 * 60 * 1000)))
-  : 26;
+  : (GOAL_DEFAULT_WEEKS[targetGoal] ?? 26);
   const [learningMode,  setLearningMode]  = useState('mixed');
 
   // Auto-update targetGoal when academicLevel changes
@@ -275,12 +282,16 @@ const targetWeeks = targetDate
     onChange={e => setTargetDate(e.target.value)}
     className={styles.textInput}
   />
-  {targetDate && (
+  {targetDate ? (
     <p className={styles.calHint}>
       Starting today · {targetWeeks} weeks until{' '}
       {new Date(targetDate).toLocaleDateString('en-US', {
         month: 'long', day: 'numeric', year: 'numeric'
       })}
+    </p>
+  ) : (
+    <p className={styles.calHint}>
+      No date set · goal default: {GOAL_DEFAULT_WEEKS[targetGoal] ?? 26} weeks
     </p>
   )}
 </div>

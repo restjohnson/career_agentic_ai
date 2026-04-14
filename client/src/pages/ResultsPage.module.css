@@ -528,6 +528,20 @@
 
 .pathwaySummaryMeta { font-size: 0.875rem; color: var(--color-text-muted); }
 
+.timelineBudgetOk {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #16a34a;
+  margin-top: 0.125rem;
+}
+
+.timelineBudgetOver {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #dc2626;
+  margin-top: 0.125rem;
+}
+
 /* Phase pill nav */
 .phasePills {
   display: flex;

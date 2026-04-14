@@ -67,12 +67,13 @@ function levelBar(value, max = 4) {
 
 function extractData(finalState) {
   return {
-    studentModel: finalState?.student_model ?? null,
-    roleSpec:     finalState?.role_spec     ?? null,
-    gapReport:    finalState?.gap_report    ?? null,
-    plan:         finalState?.plan          ?? null,
-    evidenceItems: finalState?.evidence_items ?? [],
-    targetRole:   finalState?.desired_role  ?? 'Unknown Role',
+    studentModel:       finalState?.student_model       ?? null,
+    roleSpec:           finalState?.role_spec           ?? null,
+    gapReport:          finalState?.gap_report          ?? null,
+    plan:               finalState?.plan                ?? null,
+    evidenceItems:      finalState?.evidence_items      ?? [],
+    targetRole:         finalState?.desired_role        ?? 'Unknown Role',
+    studentConstraints: finalState?.student_constraints ?? null,
   };
 }
 
@@ -87,7 +88,7 @@ export default function ResultsPage() {
     catch { return null; }
   })();
   const finalState = location.state?.finalState ?? storedFinalState;
-  const { studentModel, roleSpec, gapReport, plan, evidenceItems, targetRole } = extractData(finalState);
+  const { studentModel, roleSpec, gapReport, plan, evidenceItems, targetRole, studentConstraints } = extractData(finalState);
 
   const [activeTab, setActiveTab] = useState('career');
 
@@ -163,7 +164,7 @@ export default function ResultsPage() {
       <div className={styles.container}>
         {activeTab === 'career'  && <CareerPlanTab studentModel={studentModel} roleSpec={roleSpec} targetRole={targetRole} />}
         {activeTab === 'gaps'    && <GapAnalysisTab gapReport={gapReport} evidenceItems={evidenceItems} />}
-        {activeTab === 'pathway' && <PathwayPlanTab plan={plan} />}
+        {activeTab === 'pathway' && <PathwayPlanTab plan={plan} targetWeeks={studentConstraints?.target_weeks ?? null} />}
       </div>
     </div>
   );
@@ -401,7 +402,7 @@ function GapAnalysisTab({ gapReport, evidenceItems }) {
 /* ══════════════════════════════════════════════════════════════════════
    Pathway Plan Tab — Visual step-by-step roadmap
    ══════════════════════════════════════════════════════════════════════ */
-function PathwayPlanTab({ plan }) {
+function PathwayPlanTab({ plan, targetWeeks }) {
   const phases = plan?.phases ?? [];
 
   const [openPhases, setOpenPhases] = useState(() => new Set(phases.map((_, i) => i)));
@@ -436,6 +437,7 @@ function PathwayPlanTab({ plan }) {
 
   const totalActions  = phases.reduce((s, p) => s + (p.learning_actions?.length ?? 0), 0);
   const totalWeeks    = plan.timeline_weeks ?? phases.reduce((s, p) => s + (p.weeks ?? 0), 0);
+  const overBudget    = targetWeeks !== null && totalWeeks > targetWeeks;
 
   return (
     <div className={styles.pathwayWrap}>
@@ -448,6 +450,13 @@ function PathwayPlanTab({ plan }) {
           <p className={styles.pathwaySummaryMeta}>
             {phases.length} phases · {totalActions} learning actions
           </p>
+          {targetWeeks !== null && (
+            <div className={overBudget ? styles.timelineBudgetOver : styles.timelineBudgetOk}>
+              {overBudget
+                ? `${totalWeeks}w plan · ${totalWeeks - targetWeeks}w over your ${targetWeeks}w goal`
+                : `${totalWeeks}w plan · fits your ${targetWeeks}w goal`}
+            </div>
+          )}
         </div>
 
         {/* Phase pill nav */}

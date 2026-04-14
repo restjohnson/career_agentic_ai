@@ -57,26 +57,17 @@ def _check_feasibility(
     plan: CareerPlan,
     constraints: StudentConstraints,
 ) -> Tuple[int, List[str], List[str]]:
-    total_hours = sum(
-        r.estimated_hours
-        for phase in plan.phases
-        for r in phase.resources
-        if r.estimated_hours is not None
-    )
-
-    if total_hours == 0:
-        return 3, ["Resource hour estimates are missing; feasibility cannot be fully assessed."], []
-
-    required_weeks   = total_hours / constraints.hours_per_week
-    delta            = required_weeks - constraints.target_weeks
-    overshoot_pct    = delta / constraints.target_weeks if constraints.target_weeks > 0 else 0
+    target = constraints.target_weeks
+    actual = plan.timeline_weeks
+    delta  = actual - target
+    overshoot_pct = delta / target if target > 0 else 0
 
     if delta <= 0:
         return 5, [], []
 
     issues = [
-        f"Plan requires ~{round(required_weeks)}w but target is {constraints.target_weeks}w "
-        f"({round(overshoot_pct * 100)}% over budget — ~{round(delta)}w excess)."
+        f"Plan runs {actual}w but target is {target}w "
+        f"({round(overshoot_pct * 100)}% over budget — {delta}w excess)."
     ]
     fixes: List[str] = []
     if plan.phases:
