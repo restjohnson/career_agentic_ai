@@ -22,6 +22,7 @@ class EvidenceItem(BaseModel):
     summary: str
     snippet: Optional[str] = None
     confidence: float = 0.8
+    confidence_reason: Optional[str] = None
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 # ---------------------------------------------------------------------------

@@ -22,6 +22,7 @@ class _ExtractedItem(BaseModel):
     summary: str
     snippet: Optional[str] = None
     confidence: float = Field(ge=0.0, le=1.0, default=0.8)
+    confidence_reason: Optional[str] = None
     matched_requirement_indices: List[int] = Field(default_factory=list)
 
 
@@ -49,15 +50,17 @@ Rules:
 1. Extract EVERY item in the document regardless of relevance to the target role. Do not filter.
 2. For COMPETENCIES, Technical Skills, or any skill list section: extract each distinct tool, technology, or skill as a SEPARATE claim item with its own entry. Do not group or summarise them into one item. For example, "Python, PyTorch, TensorFlow" should become three separate claim items.
 3. For matched_requirement_indices: list the INDEX NUMBERS (0-based integers) of role requirements this item supports. Be generous — a project typically supports multiple requirements. Return an empty list if the item does not map to any requirement (this is fine).
-4. Set confidence (0.00–1.00) based on strength of evidence:
+4. Set confidence (0.00–1.00) based on the belief that the student truly possesses the requirement, given this evidence item:
    - 0.76–1.00: Production/deployed usage with measurable outcomes at professional level.
    - 0.51–0.75: Used independently in a self-directed project with clear outcomes.
    - 0.26–0.50: Used in coursework, guided, or tutorial setting.
    - 0.10–0.25: Only mentioned or listed without any demonstration context (typical for claim items).
    - 0.00–0.09: Completely unsupported — vague or unverifiable assertion.
-5. snippet: Include the most relevant quoted text ONLY if consent_level is "excerpt_ok" or "raw_ok". Otherwise set to null.
-6. Do not invent capabilities the document does not support.
-7. Produce items in order of relevance to the target role (most relevant first), with claim items last.
+5. For each assigned confidence level, include a reason why that evidence item deserves that confidence score.
+   For example, "This project involved building a web scraper using Python and BeautifulSoup, which demonstrates independent use of Python with a clear outcome, so I assigned it a confidence of 0.65."
+6. snippet: Include the most relevant quoted text ONLY if consent_level is "excerpt_ok" or "raw_ok". Otherwise set to null.
+7. Do not invent capabilities the document does not support.
+8. Produce items in order of relevance to the target role (most relevant first), with claim items last.
 """
 
 
@@ -127,6 +130,7 @@ Extract ALL evidence items from this document. For skill list or competency sect
             summary=item.summary,
             snippet=item.snippet,
             confidence=item.confidence,
+            confidence_reason = item.confidence_reason,
             metadata={
                 "matched_requirements": [
                     req_index[i] for i in item.matched_requirement_indices

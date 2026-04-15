@@ -148,7 +148,7 @@ def compute_gaps(
 
 
 # ---------------------------------------------------------------------------
-# Phase 1 — knowledge decomposition (LLM call)
+# knowledge decomposition (LLM call)
 # ---------------------------------------------------------------------------
 
 class _KnowledgePrereqRaw(BaseModel):
