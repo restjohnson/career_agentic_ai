@@ -357,9 +357,6 @@ function GapAnalysisTab({ gapReport, evidenceItems }) {
                             )}
                           </div>
                           <p className={styles.evidenceText}>{item.summary}</p>
-                          {item.snippet && (
-                            <p className={styles.evidenceSnippet}>{item.snippet}</p>
-                          )}
                           {item.confidence_reason && (
                             <p className={styles.evidenceReason}>{item.confidence_reason}</p>
                           )}
