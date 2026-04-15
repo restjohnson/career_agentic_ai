@@ -254,6 +254,73 @@ Identify the knowledge prerequisites for each gap and assess evidence-based conf
     return prerequisites
 
 
+# ---------------------------------------------------------------------------
+# Phase 2 — student level reasoning (LLM call, batched)
+# ---------------------------------------------------------------------------
+
+class _GapReasoning(BaseModel):
+    req_summary: str
+    reasoning: str
+
+
+class _ReasoningResult(BaseModel):
+    gaps: List[_GapReasoning]
+
+
+_REASONING_SYSTEM = """\
+You are a career skills analyst. For each student skill gap you are given:
+- The requirement being assessed
+- The student's proficiency level (0=claim only, 1=coursework, 2=project, 3=experience) and Bayesian-combined confidence
+- The resulting student_level and gap_type classification
+- Each evidence item the student submitted for this requirement, with the LLM's reason for its individual confidence score
+
+Write a concise 2–3 sentence reasoning explaining WHY the student_level is what it is for this requirement.
+Reference the actual evidence — what it shows, what is missing or weak. Do not restate the numbers. Explain what the evidence reveals about the student's real capability."""
+
+
+def generate_student_level_reasoning(
+    gap_items: List[GapItem],
+    evidence_items: List[EvidenceItem],
+    role_title: str,
+) -> Dict[str, str]:
+    """
+    Batched LLM call: for each gap item with evidence, synthesise a human-readable
+    reasoning string explaining why the student_level is what it is.
+
+    Uses confidence_reason strings from EvidenceItems as context signals alongside
+    proficiency, gap_type, and student_level. Returns dict of req_summary -> reasoning.
+    """
+    item_by_id: Dict[str, EvidenceItem] = {item.id: item for item in evidence_items if item.id}
+
+    qualifying = [g for g in gap_items if g.evidence_item_ids or g.gap_type != "no_evidence"]
+    if not qualifying:
+        return {}
+
+    gap_blocks: List[str] = []
+    for g in qualifying:
+        matching = [item_by_id[i] for i in g.evidence_item_ids if i in item_by_id]
+        evidence_lines = "\n".join(
+            f"  - [{item.item_type}] {item.summary}"
+            + (f": {item.confidence_reason}" if item.confidence_reason else "")
+            for item in matching
+        ) or "  (no evidence items)"
+        gap_blocks.append(
+            f"Requirement: {g.summary}\n"
+            f"Proficiency: {g.proficiency} | Confidence: {g.confidence} | "
+            f"Student level: {g.student_level} | Gap type: {g.gap_type}\n"
+            f"Evidence:\n{evidence_lines}"
+        )
+
+    prompt = f"Role: {role_title}\n\n" + "\n---\n".join(gap_blocks)
+
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.1)
+    llm_struct = llm.with_structured_output(_ReasoningResult, method="json_schema", strict=True)
+    result: _ReasoningResult = llm_struct.invoke(
+        [{"role": "system", "content": _REASONING_SYSTEM}, {"role": "user", "content": prompt}]
+    )
+    return {r.req_summary: r.reasoning for r in result.gaps}
+
+
 def build_gap_report(gap_items: List[GapItem]) -> GapReport:
     """Assemble the final GapReport from finalised GapItems."""
     n_total        = len(gap_items)
