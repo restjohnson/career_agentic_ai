@@ -22,3 +22,5 @@ websockets>=13,<16
 
 docling
 python-multipart
+
+torch>=2.4
