@@ -71,12 +71,13 @@ def _topological_sort(
 
         # Emit the gap itself
         ordered.append({
-            "summary":      gap.summary,
-            "label":        gap.summary,
-            "gap_type":     gap.gap_type,
-            "proficiency":  gap.proficiency,
-            "weighted_gap": gap.weighted_gap,
-            "is_prereq":    False,
+            "summary":                gap.summary,
+            "label":                  gap.summary,
+            "gap_type":               gap.gap_type,
+            "proficiency":            gap.proficiency,
+            "weighted_gap":           gap.weighted_gap,
+            "is_prereq":              False,
+            "student_level_reasoning": gap.student_level_reasoning,
         })
 
     return ordered

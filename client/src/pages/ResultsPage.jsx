@@ -357,8 +357,8 @@ function GapAnalysisTab({ gapReport, evidenceItems }) {
                             )}
                           </div>
                           <p className={styles.evidenceText}>{item.summary}</p>
-                          {item.snippet && (
-                            <p className={styles.evidenceSnippet}>{item.snippet}</p>
+                          {item.confidence_reason && (
+                            <p className={styles.evidenceReason}>{item.confidence_reason}</p>
                           )}
                         </li>
                       ))}
@@ -369,6 +369,12 @@ function GapAnalysisTab({ gapReport, evidenceItems }) {
                     </p>
                   ) : (
                     <p className={styles.evidenceMissing}>No direct evidence linked to this gap.</p>
+                  )}
+                  {gap.student_level_reasoning && (
+                    <div className={styles.studentLevelReasoning}>
+                      <span className={styles.reasoningLabel}>Assessment reasoning</span>
+                      <p className={styles.reasoningText}>{gap.student_level_reasoning}</p>
+                    </div>
                   )}
                 </div>
                 {gap.knowledge_prerequisites?.length > 0 && (

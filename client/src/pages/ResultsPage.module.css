@@ -469,6 +469,41 @@
   line-height: 1.5;
 }
 
+.evidenceReason {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  font-style: italic;
+  border-left: 2px solid var(--color-border);
+  padding-left: 0.5rem;
+  margin-top: 0.125rem;
+}
+
+.studentLevelReasoning {
+  margin-top: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  background: var(--color-surface-3, var(--color-surface-2));
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--color-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.reasoningLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+}
+
+.reasoningText {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
 .evidenceMissing {
   font-size: 0.8125rem;
   color: var(--color-text-muted);

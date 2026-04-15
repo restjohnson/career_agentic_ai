@@ -22,6 +22,7 @@ class EvidenceItem(BaseModel):
     summary: str
     snippet: Optional[str] = None
     confidence: float = 0.8
+    confidence_reason: Optional[str] = None
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 # ---------------------------------------------------------------------------
@@ -136,6 +137,7 @@ class GapItem(BaseModel):
     weighted_gap: float
     proficiency: int                      #0–4, aggregated from evidence collection
     confidence: float                     #0–1, Bayesian-combined from evidence
+    student_level_reasoning: Optional[str] = None  #LLM-generated explanation of why student_level is what it is
     gap_type: Literal["no_evidence", "claimed_only", "partial", "optional_gap", "met"] = "no_evidence"
     evidence_item_ids: List[str] = Field(default_factory=list)
     knowledge_prerequisites: List[KnowledgePrerequisite] = Field(default_factory=list)
