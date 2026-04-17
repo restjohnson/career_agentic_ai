@@ -120,7 +120,7 @@ def step_upload_evidence(token: str, file_path: Path | None) -> str:
     return data["document_id"]
 
 
-def step_create_run(token: str, document_id: str, role: str, constraints: dict) -> dict:
+def step_create_run(token: str, document_id: str, role: str, constraints: dict) -> str:
     payload = {
         "desired_role": role,
         "evidence_document_ids": [document_id],
@@ -134,7 +134,35 @@ def step_create_run(token: str, document_id: str, role: str, constraints: dict) 
     data = _check(resp, f"POST /runs  (role={role!r})")
     print(f"       run_id        = {data['run_id']}")
     print(f"       status        = {data['status']}")
-    return data
+    return data["run_id"]
+
+
+def step_stream_run(run_id: str, token: str) -> dict:
+    """Connect to the SSE stream and block until the done event arrives."""
+    import json as _json
+    url = f"{BASE_URL}/runs/{run_id}/stream?token={token}"
+    print(f"\n[...] Streaming run results (this may take a minute)...")
+    with requests.get(url, stream=True, timeout=600) as resp:
+        if not resp.ok:
+            print(f"\n[FAIL] SSE stream — HTTP {resp.status_code}")
+            sys.exit(1)
+        for raw_line in resp.iter_lines():
+            if not raw_line:
+                continue
+            line = raw_line.decode("utf-8") if isinstance(raw_line, bytes) else raw_line
+            if not line.startswith("data:"):
+                continue
+            event = _json.loads(line[5:].strip())
+            etype = event.get("type")
+            if etype == "step":
+                print(f"       step: {event.get('step')} — {event.get('status')}")
+            elif etype == "done":
+                print(f"[OK]   Run complete")
+                return event.get("final_state", {})
+            elif etype == "error":
+                print(f"\n[FAIL] Run error: {event.get('detail')}")
+                sys.exit(1)
+    return {}
 
 
 # ---------------------------------------------------------------------------
@@ -252,6 +280,10 @@ def print_critique(final_state: dict) -> None:
     else:
         print("\n  No issues.")
 
+    narrative = critique.get("narrative_feedback")
+    if narrative:
+        print(f"\n  Narrative Feedback:\n    {narrative[:600]}")
+
 
 # ---------------------------------------------------------------------------
 # Main
@@ -289,9 +321,8 @@ def main() -> None:
     step_health()
     token, _ = step_start_session()
     doc_id   = step_upload_evidence(token, args.file)
-    run_data = step_create_run(token, doc_id, args.role, constraints)
-
-    final = run_data.get("final_state", {})
+    run_id   = step_create_run(token, doc_id, args.role, constraints)
+    final    = step_stream_run(run_id, token)
 
     errors = final.get("errors", [])
     if errors:

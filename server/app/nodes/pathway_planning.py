@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from app.state import AgentState, GapItem, LearningResource, StudentConstraints
 from app.tools.resource_retrieval import (
@@ -179,6 +179,7 @@ def pathway_planning_node(state: Dict[str, Any], repo: SupabaseRepo) -> Dict[str
             student_model=s.student_model,
             evidence_items=s.evidence_items,
             critique=active_critique,
+            prev_plan=s.prev_plan,
         )
     except Exception as e:
         s.errors.append(f"pathway_planning: phase synthesis failed: {type(e).__name__}: {e}")
@@ -201,7 +202,10 @@ def pathway_planning_node(state: Dict[str, Any], repo: SupabaseRepo) -> Dict[str
         s.errors.append(f"pathway_planning: internship synthesis failed: {type(e).__name__}: {e}")
         internship_specs = {}
 
-    # Step 5 — assemble final plan with internship recommendations
+    # Step 5 — snapshot current plan before overwriting (used by _reflect() for Reflexion comparison)
+    s.prev_plan = s.plan
+
+    # Assemble final plan with internship recommendations
     s.plan = assemble_plan(plan_spec, resources_by_gap, internship_specs)
     print(f"[PATHWAY_PLANNING] Plan created: {len(s.plan.phases)} phases, {s.plan.timeline_weeks} weeks total", flush=True)
     if s.plan.phases:

@@ -127,10 +127,18 @@ Rules:
 
 7. WEEKS_ESTIMATE: realistic per-phase estimate. Sum should approach the target timeline.
 
-8. CRITIQUE FIXES: address every fix provided. Do not reintroduce previously flagged issues.
+8. CRITIQUE REFLECTION: when a CRITIQUE REFLECTION block is provided, use it to guide
+   structural decisions in this revision. It explains why previous scores were low and
+   what to change strategically. Reason about the guidance — do not follow it mechanically.
+   Do not reintroduce issues that were resolved in prior iterations.
 
-9. NO INTERNSHIPS: Projects must NOT reference internship opportunities or recommendations.
-   Internships are recommended separately outside the curriculum.
+9. PREVIOUS PLAN: when a PREVIOUS PLAN block is provided alongside a CRITIQUE REFLECTION,
+   use them together. The reflection explains why the previous plan failed; the previous
+   plan shows exactly what was built. Keep phases and projects that were not flagged as
+   problematic. Make targeted structural changes rather than rebuilding from scratch.
+
+10. NO INTERNSHIPS: Projects must NOT reference internship opportunities or recommendations.
+    Internships are recommended separately outside the curriculum.
 """
 
 
@@ -264,11 +272,27 @@ def _format_constraints(c: StudentConstraints) -> str:
     )
 
 
-def _format_fixes(critique: Optional[CritiqueReport]) -> str:
-    if not critique or not critique.fixes:
+def _format_reflection(critique: Optional[CritiqueReport]) -> str:
+    if not critique or not critique.narrative_feedback:
         return ""
-    block = "\n".join(f"  - {f}" for f in critique.fixes)
-    return f"CRITIQUE FIXES TO ADDRESS IN THIS REVISION:\n{block}"
+    return (
+        "CRITIQUE REFLECTION — STRATEGIC GUIDANCE FOR THIS REVISION:\n"
+        f"{critique.narrative_feedback}"
+    )
+
+
+def _format_prev_plan(prev_plan: Optional[CareerPlan]) -> str:
+    if not prev_plan or not prev_plan.phases:
+        return ""
+    lines = [f"PREVIOUS PLAN ({prev_plan.timeline_weeks}w total — your last iteration):"]
+    for i, phase in enumerate(prev_plan.phases, 1):
+        gaps     = ", ".join(phase.addresses_gaps[:6]) or "none"
+        projects = "; ".join(a.title for a in phase.learning_actions[:3])
+        lines.append(
+            f"  Phase {i}: '{phase.title}' ({phase.weeks}w) | "
+            f"projects: [{projects}] | gaps: [{gaps}]"
+        )
+    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------------------
@@ -286,14 +310,16 @@ def synthesise_phases(
     student_model: Optional[StudentModel] = None,
     evidence_items: Optional[List[EvidenceItem]] = None,
     critique: Optional[CritiqueReport] = None,
+    prev_plan: Optional[CareerPlan] = None,
 ) -> _PlanSpec:
     """
     Ask the LLM to author a personalised curriculum with concrete, multi-gap projects per phase.
     Retrieved resources are passed as example references, not the plan's primary content.
     """
-    role_title   = role_spec.canonical_role_title if role_spec else "the target role"
-    student_ctx  = _format_student_context(student_model, evidence_items or [], constraints)
-    fixes_block  = _format_fixes(critique)
+    role_title       = role_spec.canonical_role_title if role_spec else "the target role"
+    student_ctx      = _format_student_context(student_model, evidence_items or [], constraints)
+    reflection_block = _format_reflection(critique)
+    prev_plan_block  = _format_prev_plan(prev_plan)
 
     user_prompt = f"""\
 Target role: {role_title}
@@ -305,7 +331,8 @@ STUDENT CONSTRAINTS:
 GAPS TO ADDRESS (in priority order — respect this ordering):
 {_format_gap_context(ordered_items, resources_by_gap)}
 
-{fixes_block}
+{reflection_block}
+{prev_plan_block}
 Design a personalised learning pathway with 3–6 phases.
 For each phase, write 1–3 concrete PROJECTS that YOU author (see system prompt for format).
 Each project should address multiple gaps naturally. Use available skills from the student context
