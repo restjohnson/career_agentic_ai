@@ -129,7 +129,10 @@ Rules:
    timeline. If the full gap list cannot fit, prioritise the highest-weighted gaps and
    scope projects to fit. Undershooting is acceptable; overshooting is not.
 
-8. CRITIQUE FIXES: address every fix provided. Do not reintroduce previously flagged issues.
+8. CRITIQUE REFLECTION: when a CRITIQUE REFLECTION block is provided, use it to guide
+   structural decisions in this revision. It explains why previous scores were low and
+   what to change strategically. Reason about the guidance — do not follow it mechanically.
+   Do not reintroduce issues that were resolved in prior iterations.
 
 9. NO INTERNSHIPS: Projects must NOT reference internship opportunities or recommendations.
    Internships are recommended separately outside the curriculum.
@@ -252,11 +255,13 @@ def _format_constraints(c: StudentConstraints) -> str:
     )
 
 
-def _format_fixes(critique: Optional[CritiqueReport]) -> str:
-    if not critique or not critique.fixes:
+def _format_reflection(critique: Optional[CritiqueReport]) -> str:
+    if not critique or not critique.narrative_feedback:
         return ""
-    block = "\n".join(f"  - {f}" for f in critique.fixes)
-    return f"CRITIQUE FIXES TO ADDRESS IN THIS REVISION:\n{block}"
+    return (
+        "CRITIQUE REFLECTION — STRATEGIC GUIDANCE FOR THIS REVISION:\n"
+        f"{critique.narrative_feedback}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -279,9 +284,9 @@ def synthesise_phases(
     Ask the LLM to author a personalised curriculum with concrete, multi-gap projects per phase.
     Retrieved resources are passed as example references, not the plan's primary content.
     """
-    role_title   = role_spec.canonical_role_title if role_spec else "the target role"
-    student_ctx  = _format_student_context(student_model, evidence_items or [], constraints)
-    fixes_block  = _format_fixes(critique)
+    role_title       = role_spec.canonical_role_title if role_spec else "the target role"
+    student_ctx      = _format_student_context(student_model, evidence_items or [], constraints)
+    reflection_block = _format_reflection(critique)
 
     user_prompt = f"""\
 Target role: {role_title}
@@ -293,7 +298,7 @@ STUDENT CONSTRAINTS:
 GAPS TO ADDRESS (in priority order — respect this ordering):
 {_format_gap_context(ordered_items, resources_by_gap)}
 
-{fixes_block}
+{reflection_block}
 Design a personalised learning pathway with 3–6 phases.
 For each phase, write 1–3 concrete PROJECTS that YOU author (see system prompt for format).
 Each project should address multiple gaps naturally. Use available skills from the student context

@@ -218,7 +218,7 @@ class CritiqueReport(BaseModel):
     feasibility            >= 3
     level_appropriateness  >= 3'''
     issues: List[str] = Field(default_factory=list)
-    fixes: List[str] = Field(default_factory=list)
+    narrative_feedback: Optional[str] = None
     satisfactory: bool = False
 
 #Shared State
@@ -258,6 +258,8 @@ class AgentState(BaseModel):
     critique_iterations: int = 0
     best_plan: Optional[CareerPlan] = None
     best_critique_score: float = 0.0
+    prev_plan: Optional[CareerPlan] = None
+    # ^ snapshot of plan before current iteration, used by _reflect() for Reflexion comparison
     prev_critique_issues: List[str] = Field(default_factory=list)
     # ^ holds the issues from the previous critique iteration for stall detection
 

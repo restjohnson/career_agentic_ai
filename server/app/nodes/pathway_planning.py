@@ -145,7 +145,10 @@ def pathway_planning_node(state: Dict[str, Any], repo: SupabaseRepo) -> Dict[str
         s.errors.append(f"pathway_planning: internship synthesis failed: {type(e).__name__}: {e}")
         internship_specs = {}
 
-    # Step 4 — assemble final plan with internship recommendations
+    # Step 4 — snapshot current plan before overwriting (used by _reflect() for Reflexion comparison)
+    s.prev_plan = s.plan
+
+    # Assemble final plan with internship recommendations
     s.plan = assemble_plan(plan_spec, resources_by_gap, internship_specs)
     print(f"[PATHWAY_PLANNING] Plan created: {len(s.plan.phases)} phases, {s.plan.timeline_weeks} weeks total", flush=True)
     if s.plan.phases:
