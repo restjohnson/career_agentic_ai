@@ -134,6 +134,11 @@ Rules:
    what to change strategically. Reason about the guidance — do not follow it mechanically.
    Do not reintroduce issues that were resolved in prior iterations.
 
+9. PREVIOUS PLAN: when a PREVIOUS PLAN block is provided alongside a CRITIQUE REFLECTION,
+   use them together. The reflection explains why the previous plan failed; the previous
+   plan shows exactly what was built. Keep phases and projects that were not flagged as
+   problematic. Make targeted structural changes rather than rebuilding from scratch.
+
 9. NO INTERNSHIPS: Projects must NOT reference internship opportunities or recommendations.
    Internships are recommended separately outside the curriculum.
 """
@@ -264,6 +269,20 @@ def _format_reflection(critique: Optional[CritiqueReport]) -> str:
     )
 
 
+def _format_prev_plan(prev_plan: Optional[CareerPlan]) -> str:
+    if not prev_plan or not prev_plan.phases:
+        return ""
+    lines = [f"PREVIOUS PLAN ({prev_plan.timeline_weeks}w total — your last iteration):"]
+    for i, phase in enumerate(prev_plan.phases, 1):
+        gaps     = ", ".join(phase.addresses_gaps[:6]) or "none"
+        projects = "; ".join(a.title for a in phase.learning_actions[:3])
+        lines.append(
+            f"  Phase {i}: '{phase.title}' ({phase.weeks}w) | "
+            f"projects: [{projects}] | gaps: [{gaps}]"
+        )
+    return "\n".join(lines)
+
+
 # ---------------------------------------------------------------------------
 # Main LLM call
 # ---------------------------------------------------------------------------
@@ -279,14 +298,18 @@ def synthesise_phases(
     student_model: Optional[StudentModel] = None,
     evidence_items: Optional[List[EvidenceItem]] = None,
     critique: Optional[CritiqueReport] = None,
+    prev_plan: Optional[CareerPlan] = None,
 ) -> _PlanSpec:
     """
     Ask the LLM to author a personalised curriculum with concrete, multi-gap projects per phase.
     Retrieved resources are passed as example references, not the plan's primary content.
+    On replanning iterations, the critique reflection and previous plan structure are both
+    injected so the planner can make targeted changes rather than rebuilding from scratch.
     """
     role_title       = role_spec.canonical_role_title if role_spec else "the target role"
     student_ctx      = _format_student_context(student_model, evidence_items or [], constraints)
     reflection_block = _format_reflection(critique)
+    prev_plan_block  = _format_prev_plan(prev_plan)
 
     user_prompt = f"""\
 Target role: {role_title}
@@ -299,6 +322,7 @@ GAPS TO ADDRESS (in priority order — respect this ordering):
 {_format_gap_context(ordered_items, resources_by_gap)}
 
 {reflection_block}
+{prev_plan_block}
 Design a personalised learning pathway with 3–6 phases.
 For each phase, write 1–3 concrete PROJECTS that YOU author (see system prompt for format).
 Each project should address multiple gaps naturally. Use available skills from the student context

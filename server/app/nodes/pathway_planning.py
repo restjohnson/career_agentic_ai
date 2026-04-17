@@ -123,6 +123,7 @@ def pathway_planning_node(state: Dict[str, Any], repo: SupabaseRepo) -> Dict[str
             student_model=s.student_model,
             evidence_items=s.evidence_items,
             critique=active_critique,
+            prev_plan=s.prev_plan,
         )
     except Exception as e:
         s.errors.append(f"pathway_planning: phase synthesis failed: {type(e).__name__}: {e}")
