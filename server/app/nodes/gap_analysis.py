@@ -79,11 +79,15 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
     s = AgentState.model_validate(state)
     s.step = "gap_analysis"
 
+    print(f"[GAP_ANALYSIS] Starting. evidence_items={len(s.evidence_items or [])}, role_spec={'present' if s.role_spec else 'MISSING'}, student_model={'present' if s.student_model else 'MISSING'}", flush=True)
+
     if not s.role_spec:
+        print("[GAP_ANALYSIS] ERROR: role_spec missing.", flush=True)
         s.errors.append("gap_analysis: role_spec missing from state.")
         return s.model_dump(exclude_none=True)
 
     if not s.student_model:
+        print("[GAP_ANALYSIS] ERROR: student_model missing.", flush=True)
         s.errors.append("gap_analysis: student_model missing from state.")
         return s.model_dump(exclude_none=True)
 
@@ -102,6 +106,7 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
     def compute_student_scores_tool() -> str:
         """Compute proficiency, confidence, and student_level per role requirement from the student's evidence. Always call first."""
         results["scores"] = compute_student_scores(s.evidence_items, s.student_model, s.role_spec)
+        print(f"[GAP_ANALYSIS] compute_student_scores: {len(results['scores'])} requirements scored.", flush=True)
         return f"Computed scores for {len(results['scores'])} requirements."
 
     @tool
@@ -116,6 +121,7 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
         gap_summary = ", ".join(
             f"{g.gap_type}({g.summary[:30]})" for g in gap_items[:5]
         )
+        print(f"[GAP_ANALYSIS] compute_gaps: {len(gap_items)} total, {n_met} met, {n_actionable} actionable.", flush=True)
         return (
             f"{len(gap_items)} requirements assessed: {n_met} met, {n_actionable} with gaps. "
             f"Sample: {gap_summary}"
@@ -131,6 +137,7 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
         )
         for gap in results["gap_items"]:
             gap.student_level_reasoning = reasoning_map.get(gap.summary)
+        print(f"[GAP_ANALYSIS] generate_student_level_reasoning: {len(reasoning_map)} gaps explained.", flush=True)
         return f"Generated reasoning for {len(reasoning_map)} gaps."
 
     @tool
@@ -145,6 +152,7 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
             role_title=s.role_spec.canonical_role_title,
         )
         _attach_prerequisites(results["gap_items"], prerequisites)
+        print(f"[GAP_ANALYSIS] decompose_prerequisites: {len(prerequisites)} prerequisite concepts.", flush=True)
         return f"Decomposed {len(prerequisites)} knowledge prerequisite concepts across {len(actionable)} actionable gaps."
 
     @tool
@@ -153,6 +161,7 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
         if results["gap_items"] is None:
             return "Error: call compute_gaps_tool first."
         results["gap_report"] = build_gap_report(results["gap_items"])
+        print(f"[GAP_ANALYSIS] build_gap_report: {results['gap_report'].summary}", flush=True)
         return results["gap_report"].summary
 
     # ------------------------------------------------------------------
@@ -174,7 +183,12 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
     try:
         agent.invoke({"messages": [HumanMessage(content="Run the full gap assessment.")]})
     except Exception as e:
+        print(f"[GAP_ANALYSIS] Agent ERROR: {type(e).__name__}: {e}", flush=True)
         s.errors.append(f"gap_analysis agent error: {type(e).__name__}: {e}")
 
-    s.gap_report = results["gap_report"] or GapReport(summary="No gaps assessed.", gaps=[])
+    gap_report = results["gap_report"] or GapReport(summary="No gaps assessed.", gaps=[])
+    n_gaps = len(gap_report.gaps)
+    n_met = sum(1 for g in gap_report.gaps if g.gap_type == "met")
+    print(f"[GAP_ANALYSIS] Done. {n_gaps} gaps in report ({n_met} met, {n_gaps - n_met} actionable).", flush=True)
+    s.gap_report = gap_report
     return s.model_dump(exclude_none=True)

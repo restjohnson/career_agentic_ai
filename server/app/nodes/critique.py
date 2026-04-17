@@ -331,7 +331,10 @@ def critique_node(state: Dict[str, Any]) -> Dict[str, Any]:
     s = AgentState.model_validate(state)
     s.step = "critique"
 
+    print(f"[CRITIQUE] Iteration #{s.critique_iterations + 1}. plan={'present' if s.plan else 'MISSING'}, gap_report={'present' if s.gap_report else 'MISSING'}", flush=True)
+
     if not s.plan or not s.student_constraints or not s.gap_report:
+        print("[CRITIQUE] ERROR: plan, student_constraints, or gap_report missing.", flush=True)
         s.errors.append("critique: plan, student_constraints, or gap_report missing.")
         return s.model_dump(exclude_none=True)
 
@@ -359,6 +362,12 @@ def critique_node(state: Dict[str, Any]) -> Dict[str, Any]:
     satisfactory = all(
         rubric_scores.get(k, 0) >= v for k, v in _THRESHOLDS.items()
     )
+
+    score_str = ", ".join(f"{k}={v}/{_THRESHOLDS[k]}" for k, v in rubric_scores.items())
+    print(f"[CRITIQUE] Scores: {score_str}. satisfactory={satisfactory}", flush=True)
+    if issues:
+        for iss in issues:
+            print(f"[CRITIQUE]   issue: {iss}", flush=True)
 
     # Reflexion — generate narrative feedback only when the plan is not satisfactory.
     # No point reflecting on a passing plan; the planner will not re-run.
@@ -394,5 +403,6 @@ def critique_node(state: Dict[str, Any]) -> Dict[str, Any]:
         s.best_critique_score = mean_score
 
     s.critique_iterations += 1
+    print(f"[CRITIQUE] best_critique_score now {s.best_critique_score:.2f}. Total iterations: {s.critique_iterations}", flush=True)
 
     return s.model_dump(exclude_none=True)
