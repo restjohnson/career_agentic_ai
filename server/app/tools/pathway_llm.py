@@ -68,7 +68,7 @@ You receive:
 - An ordered list of skill gaps and prerequisite concepts to address
 - Available example resources for each gap (for reference only — projects are what matter)
 - Student constraints (academic level, hours/week, target goal, learning mode)
-- Optionally, critique fixes from a previous iteration that MUST be resolved
+- Optionally, a critique reflection and previous plan structure from the last iteration
 
 Your task: author a personalised curriculum in 3–6 phases. Each phase contains 1–3 CONCRETE PROJECTS.
 
@@ -102,14 +102,18 @@ For each phase also write:
   - resume_updates: what to add to the resume before the NEXT phase
 
 Rules:
-1. PREREQUISITE ORDERING: Any gap marked [PREREQUISITE] must be addressed by projects in a phase
-   that strictly precedes the phase handling its parent gap.
+1. JUST-IN-TIME LEARNING: Do NOT create separate prerequisite phases or "foundations" phases
+   as a preamble to applied work. Every phase — including Phase 1 — must lead with at least
+   one concrete project (bloom_level ≥ apply). Any gap marked [PREREQUISITE] should be
+   embedded contextually within the project that addresses its parent gap: the project
+   description should note the foundational concept the student will encounter and point them
+   to the example resources provided so they can learn it on-demand, within the project.
 
 2. LEARNING MODE BIAS:
-   - structured    → sequence conceptual before applied projects
-   - project_based → lead with build/create projects
-   - self_paced    → lead with documentation/tutorial projects
-   - mixed         → balance conceptual and applied
+   - structured    → projects proceed from simpler to complex; include guiding resources
+   - project_based → lead with build/create projects from day one
+   - self_paced    → projects include explicit self-study checkpoints using example resources
+   - mixed         → balance hands-on projects with embedded concept pointers
 
 3. ADDRESSES_GAPS: must be a LIST of EXACT strings from the "VALID GAP LABELS" list.
    Copy the strings character-for-character. NEVER use prerequisite concept labels.
@@ -118,9 +122,13 @@ Rules:
 4. STACK: choose ONLY from the AVAILABLE SKILLS block provided. Do not invent tools
    the student does not have access to. Stack should be 2–5 tools per project.
 
-5. ACADEMIC LEVEL & COMPLEXITY: Projects for freshman/sophomore should be focused and scaffolded.
-   Projects for junior/senior should be more integrated and open-ended.
-   Projects for grad should be research-oriented or novel implementations.
+5. ACADEMIC LEVEL & SCOPE: Project scope and complexity should match the student's level —
+   this governs WHAT they build, not WHEN they start building.
+   freshman/sophomore → focused, scaffolded projects with step-by-step guidance.
+   junior/senior      → integrated, multi-part projects combining 3+ skills.
+   grad / working_professional → research-oriented or novel implementations with open-ended design.
+   AT ALL LEVELS, Phase 1 starts with an applied project. No level justifies a conceptual-only
+   first phase.
 
 6. PERSONALISATION: Always reference the student's specific background in rationale fields.
    A student with XGBoost experience needs a different project than one with none.
@@ -224,10 +232,10 @@ def _format_gap_context(
 
     if prereq_items:
         lines.append("")
-        lines.append("PREREQUISITE CONCEPTS (context only — NEVER use as addresses_gap):")
+        lines.append("EMBEDDED PREREQUISITE CONCEPTS (embed in project descriptions — NEVER use as addresses_gap):")
         for p in prereq_items:
             parent = p.get("parent_gap", "?")
-            lines.append(f'  - "{p["label"]}"  →  sub-component of: "{parent}"')
+            lines.append(f'  - "{p["label"]}"  →  needed within project for: "{parent}"')
 
     # --- Section 2: full detail with example resources ---
     lines.append("")
@@ -239,7 +247,7 @@ def _format_gap_context(
         proficiency = item.get("proficiency", 0)
         is_prereq   = item.get("is_prereq", False)
 
-        tag = "PREREQUISITE" if is_prereq else gap_type.upper()
+        tag = "EMBED_IN_PROJECT" if is_prereq else gap_type.upper()
         lines.append(f'  "{label}"  [{tag}]  proficiency={proficiency}/4')
         if root:
             lines.append(f"    root_cause: {root}")

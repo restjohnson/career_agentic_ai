@@ -9,7 +9,6 @@ from app.state import (
     CareerPlan,
     CritiqueReport,
     GapReport,
-    PlanPhase,
     StudentConstraints,
 )
 
@@ -20,7 +19,7 @@ from app.state import (
 
 _THRESHOLDS: Dict[str, int] = {
     "gap_coverage":          3,
-    "prerequisite_ordering": 4,   # high bar — KST compliance
+    "jit_compliance":        4,   # high bar — every phase must lead with applied projects
     "feasibility":           3,
     "level_appropriateness": 3,
 }
@@ -51,48 +50,36 @@ def _check_gap_coverage(
 
 
 # ---------------------------------------------------------------------------
-# Dimension 2: Prerequisite ordering
-# Foundational prerequisites must appear in an earlier phase than their parent gap.
+# Dimension 2: Just-in-time (JIT) compliance
+# Every phase must lead with at least one applied project (bloom_level ≥ apply).
+# Pure conceptual / foundational phases contradict the JIT principle: foundations
+# are embedded contextually within projects, not frontloaded as preamble phases.
 # ---------------------------------------------------------------------------
 
-def _check_prereq_ordering(
+_APPLIED_BLOOM: set = {"apply", "analyse", "evaluate", "create"}
+
+
+def _check_jit_compliance(
     plan: CareerPlan,
-    gap_report: GapReport,
+    gap_report: GapReport,  # kept for dispatch-loop compatibility
 ) -> Tuple[int, List[str]]:
-    phase_index: Dict[str, int] = {}
+    issues: List[str] = []
+
     for i, phase in enumerate(plan.phases):
-        for g in phase.addresses_gaps:
-            key = g.lower().strip()
-            if key not in phase_index:
-                phase_index[key] = i
+        has_applied = any(
+            a.bloom_level in _APPLIED_BLOOM for a in phase.learning_actions
+        )
+        if not has_applied:
+            issues.append(
+                f"Phase {i + 1} ('{phase.title}') has no applied project "
+                f"(bloom_level ≥ 'apply'). Foundations must be embedded in projects, "
+                f"not isolated in a standalone conceptual phase."
+            )
 
-    violations: List[Tuple[str, str, int, int]] = []
-
-    for gap in gap_report.gaps:
-        parent_idx = phase_index.get(gap.summary.lower().strip())
-        if parent_idx is None:
-            continue
-
-        for prereq in gap.knowledge_prerequisites:
-            if not prereq.is_foundational:
-                continue
-
-            prereq_idx = phase_index.get(prereq.concept.lower().strip())
-            if prereq_idx is not None and prereq_idx >= parent_idx:
-                violations.append((prereq.concept, gap.summary, prereq_idx, parent_idx))
-
-    if not violations:
+    if not issues:
         return 5, []
 
-    issues: List[str] = []
-    for prereq, parent, pi, parent_i in violations:
-        issues.append(
-            f"Prerequisite '{prereq}' appears in Phase {pi + 1} "
-            f"but its parent gap '{parent}' is addressed in Phase {parent_i + 1}."
-        )
-
-    n_ordering = len(violations)
-    score = max(1, 5 - n_ordering)
+    score = max(1, 5 - len(issues))
     return score, issues
 
 
@@ -130,8 +117,14 @@ def _check_feasibility(
 
 # ---------------------------------------------------------------------------
 # Dimension 4: Level appropriateness
-# Resources must suit the student's academic level.
+# Projects and resources must suit the student's academic level.
+# JIT principle: all levels start with projects in Phase 1.
+# Advanced levels (senior / grad / working_professional) must apply from day one.
 # ---------------------------------------------------------------------------
+
+_ADVANCED_LEVELS: set = {"senior", "grad", "working_professional"}
+_CONCEPTUAL_BLOOM: set = {"remember", "understand"}
+
 
 def _check_level_appropriateness(
     plan: CareerPlan,
@@ -140,12 +133,41 @@ def _check_level_appropriateness(
     issues: List[str] = []
     level = constraints.academic_level
 
-    if level in ("freshman", "sophomore") and plan.phases:
-        phase1_rtypes = {r.resource_type for r in plan.phases[0].resources}
+    if not plan.phases:
+        return 5, []
+
+    phase1 = plan.phases[0]
+
+    # All levels: Phase 1 must contain at least one applied project
+    has_applied_in_phase1 = any(
+        a.bloom_level in _APPLIED_BLOOM for a in phase1.learning_actions
+    )
+    if not has_applied_in_phase1:
+        issues.append(
+            f"Phase 1 ('{phase1.title}') has no applied project at bloom_level ≥ 'apply' "
+            f"(student level: {level}). Every student starts with a project."
+        )
+
+    # Advanced students: all Phase 1 actions must be applied or higher
+    if level in _ADVANCED_LEVELS:
+        conceptual_actions = [
+            a.title for a in phase1.learning_actions
+            if a.bloom_level in _CONCEPTUAL_BLOOM
+        ]
+        if conceptual_actions:
+            issues.append(
+                f"Phase 1 has conceptual-only actions for an advanced student "
+                f"({level}): {', '.join(conceptual_actions[:3])}. "
+                f"Advanced students should work on applied projects from Phase 1."
+            )
+
+    # Freshman / sophomore: Phase 1 should include scaffolding resources
+    if level in ("freshman", "sophomore") and phase1.resources:
+        phase1_rtypes = {r.resource_type for r in phase1.resources}
         if not phase1_rtypes & {"tutorial", "online_course", "documentation"}:
             issues.append(
                 f"Phase 1 has no tutorial, course, or documentation resources "
-                f"(student level: {level})."
+                f"for scaffolding (student level: {level})."
             )
 
     score = max(1, 5 - len(issues))
@@ -165,7 +187,7 @@ You are a strategic curriculum advisor reviewing a student's personalised learni
 You will be given:
 - The student's constraints and target role
 - A structured summary of the proposed plan (phases, projects, gaps addressed, week counts)
-- Scores from a deterministic rubric (gap_coverage, prerequisite_ordering, feasibility,
+- Scores from a deterministic rubric (gap_coverage, jit_compliance, feasibility,
   level_appropriateness) each out of 5 with their minimum passing thresholds
 - A list of specific issues the rubric detected
 - Optionally, the structure of the previous plan iteration for comparison
@@ -282,7 +304,7 @@ def critique_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     for dim_fn, dim_key in [
         (_check_gap_coverage,          "gap_coverage"),
-        (_check_prereq_ordering,       "prerequisite_ordering"),
+        (_check_jit_compliance,        "jit_compliance"),
         (_check_feasibility,           "feasibility"),
         (_check_level_appropriateness, "level_appropriateness"),
     ]:
