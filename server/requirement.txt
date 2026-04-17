@@ -21,4 +21,5 @@ structlog
 websockets>=13,<16
 
 docling
+numpy<2
 python-multipart

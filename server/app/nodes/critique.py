@@ -18,7 +18,7 @@ from app.state import (
 # ---------------------------------------------------------------------------
 
 _THRESHOLDS: Dict[str, int] = {
-    "gap_coverage":          3,
+    "gap_coverage":          4,   # raised from 3 — plan may miss at most 1 gap before failing
     "jit_compliance":        4,   # high bar — every phase must lead with applied projects
     "feasibility":           3,
     "level_appropriateness": 3,
@@ -52,11 +52,18 @@ def _check_gap_coverage(
 # ---------------------------------------------------------------------------
 # Dimension 2: Just-in-time (JIT) compliance
 # Every phase must lead with at least one applied project (bloom_level ≥ apply).
-# Pure conceptual / foundational phases contradict the JIT principle: foundations
-# are embedded contextually within projects, not frontloaded as preamble phases.
+# Additionally, phase titles must not signal a conceptual preamble (e.g. "Foundations
+# of X", "Introduction to Y") — this check is independent of the LLM-controlled
+# bloom_level field and cannot be trivially gamed.
 # ---------------------------------------------------------------------------
 
 _APPLIED_BLOOM: set = {"apply", "analyse", "evaluate", "create"}
+
+_FOUNDATION_KEYWORDS: set = {
+    "foundation", "foundations", "introduction", "intro", "basics",
+    "overview", "theory", "fundamentals", "concepts", "prerequisite",
+    "prerequisites",
+}
 
 
 def _check_jit_compliance(
@@ -66,6 +73,7 @@ def _check_jit_compliance(
     issues: List[str] = []
 
     for i, phase in enumerate(plan.phases):
+        # Bloom-level check (LLM-controlled — defence-in-depth only)
         has_applied = any(
             a.bloom_level in _APPLIED_BLOOM for a in phase.learning_actions
         )
@@ -74,6 +82,15 @@ def _check_jit_compliance(
                 f"Phase {i + 1} ('{phase.title}') has no applied project "
                 f"(bloom_level ≥ 'apply'). Foundations must be embedded in projects, "
                 f"not isolated in a standalone conceptual phase."
+            )
+
+        # Title keyword check — structural signal independent of self-reported bloom_level
+        title_words = set(phase.title.lower().split())
+        if title_words & _FOUNDATION_KEYWORDS:
+            issues.append(
+                f"Phase {i + 1} title ('{phase.title}') suggests a conceptual preamble. "
+                f"Every phase must lead with a concrete applied project — "
+                f"foundations are embedded within projects, not frontloaded."
             )
 
     if not issues:
@@ -97,33 +114,52 @@ def _check_feasibility(
     delta  = actual - target
     overshoot_pct = delta / target if target > 0 else 0
 
-    if delta <= 0:
-        return 5, []
+    # --- Overshoot (unchanged) ---
+    if delta > 0:
+        issues = [
+            f"Plan runs {actual}w but target is {target}w "
+            f"({round(overshoot_pct * 100)}% over budget — {delta}w excess)."
+        ]
+        if overshoot_pct <= 0.10:
+            return 3, issues
+        elif overshoot_pct <= 0.25:
+            return 2, issues
+        else:
+            return 1, issues
 
-    issues = [
-        f"Plan runs {actual}w but target is {target}w "
-        f"({round(overshoot_pct * 100)}% over budget — {delta}w excess)."
-    ]
+    # --- Underplanning ---
+    # Applied universally via utilisation ratio — no target-length carve-out.
+    # Thresholds (< 0.30 hard fail, < 0.45 marginal) are empirically-motivated
+    # design parameters that prevent degenerate plans; optimal values are a
+    # function of the student's constraint set and left for future calibration.
+    undershoot_ratio = actual / target
+    if undershoot_ratio < 0.30:
+        return 2, [
+            f"Plan is only {actual}w against a {target}w target "
+            f"({round(undershoot_ratio * 100)}% of available time). "
+            f"The plan is too short to comprehensively address all gaps — "
+            f"expand phases or add phases to use more of the available time."
+        ]
+    if undershoot_ratio < 0.45:
+        return 3, [
+            f"Plan is {actual}w against a {target}w target "
+            f"({round(undershoot_ratio * 100)}% of available time). "
+            f"Consider expanding the plan to make fuller use of the available time."
+        ]
 
-    if overshoot_pct <= 0.10:
-        score = 3
-    elif overshoot_pct <= 0.25:
-        score = 2
-    else:
-        score = 1
-
-    return score, issues
+    return 5, []
 
 
 # ---------------------------------------------------------------------------
 # Dimension 4: Level appropriateness
-# Projects and resources must suit the student's academic level.
-# JIT principle: all levels start with projects in Phase 1.
-# Advanced levels (senior / grad / working_professional) must apply from day one.
+# Projects must suit the student's academic level.
+# All levels: Phase 1 must contain at least one applied project.
+# Advanced students (senior/grad/working_professional): Phase 1 projects must each
+# address ≥ 2 gaps — single-gap projects are too narrow for integrative advanced work.
+# This uses the addresses_gaps list length (structural, not LLM-self-reported).
 # ---------------------------------------------------------------------------
 
 _ADVANCED_LEVELS: set = {"senior", "grad", "working_professional"}
-_CONCEPTUAL_BLOOM: set = {"remember", "understand"}
 
 
 def _check_level_appropriateness(
@@ -138,7 +174,7 @@ def _check_level_appropriateness(
 
     phase1 = plan.phases[0]
 
-    # All levels: Phase 1 must contain at least one applied project
+    # All levels: Phase 1 must contain at least one applied project (bloom check)
     has_applied_in_phase1 = any(
         a.bloom_level in _APPLIED_BLOOM for a in phase1.learning_actions
     )
@@ -148,17 +184,20 @@ def _check_level_appropriateness(
             f"(student level: {level}). Every student starts with a project."
         )
 
-    # Advanced students: all Phase 1 actions must be applied or higher
+    # Advanced students: Phase 1 projects must each address ≥ 2 gaps.
+    # Single-gap projects are too narrow — advanced learners need integrative work.
+    # addresses_gaps length is structural (validated against gap report labels) and
+    # cannot be trivially gamed by self-reporting bloom_level.
     if level in _ADVANCED_LEVELS:
-        conceptual_actions = [
+        single_gap_actions = [
             a.title for a in phase1.learning_actions
-            if a.bloom_level in _CONCEPTUAL_BLOOM
+            if len(a.addresses_gaps) < 2
         ]
-        if conceptual_actions:
+        if single_gap_actions:
             issues.append(
-                f"Phase 1 has conceptual-only actions for an advanced student "
-                f"({level}): {', '.join(conceptual_actions[:3])}. "
-                f"Advanced students should work on applied projects from Phase 1."
+                f"Phase 1 has single-gap projects for an advanced student ({level}): "
+                f"{', '.join(single_gap_actions[:3])}. "
+                f"Advanced students need integrative projects addressing ≥ 2 gaps simultaneously."
             )
 
     # Freshman / sophomore: Phase 1 should include scaffolding resources

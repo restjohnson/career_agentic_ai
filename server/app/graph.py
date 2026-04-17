@@ -108,10 +108,14 @@ def build_graph(repo: SupabaseRepo):
             print(f"[ROUTING] STOP: Plan is satisfactory", flush=True)
             return "explanation"
 
-        # Check for convergence stall
-        if iters > 0 and s.prev_critique_issues and s.critique:
-            if set(s.prev_critique_issues) == set(s.critique.issues):
-                print(f"[ROUTING] STOP: Convergence stall (same issues)", flush=True)
+        # Check for convergence stall — fire when:
+        # (a) issues are identical to the previous iteration, OR
+        # (b) there were no previous issues to compare (plan unchanged from iteration 0)
+        if iters > 0 and s.critique:
+            prev = set(s.prev_critique_issues)
+            curr = set(s.critique.issues)
+            if prev == curr:
+                print(f"[ROUTING] STOP: Convergence stall (issues unchanged)", flush=True)
                 return "finalise"
 
         # Continue looping

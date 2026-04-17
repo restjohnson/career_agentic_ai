@@ -133,7 +133,11 @@ Rules:
 6. PERSONALISATION: Always reference the student's specific background in rationale fields.
    A student with XGBoost experience needs a different project than one with none.
 
-7. WEEKS_ESTIMATE: realistic per-phase estimate. Sum should approach the target timeline.
+7. WEEKS_ESTIMATE: your phase week estimates MUST total between 50% and 110% of the
+   target timeline shown in STUDENT CONSTRAINTS. For a 52-week graduation target the
+   plan must total at least 26 weeks; for a 26-week job_ready target at least 13 weeks.
+   Use the available time to build deeper, more comprehensive projects — do not compress
+   all gaps into a minimal-duration plan.
 
 8. CRITIQUE REFLECTION: when a CRITIQUE REFLECTION block is provided, use it to guide
    structural decisions in this revision. It explains why previous scores were low and
