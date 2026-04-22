@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Optional
 
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
+import base64
 
 from app.state import (
     EvidenceItem,
@@ -67,32 +68,28 @@ Rules:
 # ---------------------------------------------------------------------------
 # Public function
 # ---------------------------------------------------------------------------
-
 def extract_evidence_items(
     *,
-    markdown_content: str,
+    markdown_content: Optional[str] = None,
+    file_bytes: Optional[bytes] = None,
+    file_mime_type: str = "application/pdf",
     source_type: str,
     role_spec: Optional[RoleSpecModel] = None,
     consent_level: str = "derived_only",
 ) -> List[EvidenceItem]:
     """
-    Use an LLM to extract structured EvidenceItems from Docling markdown output.
+    Use an LLM to extract structured EvidenceItems.
 
-    Extraction is exhaustive — all items in the document are captured regardless
-    of role relevance. Skill list entries (COMPETENCIES, Technical Skills, etc.)
-    are each extracted as individual claim items.
-
-    Args:
-        markdown_content: Markdown representation of the parsed document.
-        source_type: One of EvidenceSourceType ("resume", "portfolio", etc.).
-        role_spec: The current RoleSpecModel so the LLM can match evidence to requirements.
-        consent_level: Controls whether snippets are included.
-
-    Returns:
-        List of EvidenceItem objects (without DB ids — caller sets those after insert).
+    Full COMPASS:  pass markdown_content  (Docling-parsed markdown string)
+    Ablation 2:    pass file_bytes        (raw file, base64-encoded)
     """
+    if markdown_content is None and file_bytes is None:
+        raise ValueError("Either markdown_content or file_bytes must be provided.")
+
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.1)
-    llm_struct = llm.with_structured_output(_ExtractionResult, method="json_schema", strict=True)
+    llm_struct = llm.with_structured_output(
+        _ExtractionResult, method="json_schema", strict=True
+    )
 
     req_index: List[str] = []
     requirements_text = "No role requirements provided."
@@ -103,7 +100,8 @@ def extract_evidence_items(
             for i, r in enumerate(role_spec.requirements)
         )
 
-    prompt = f"""\
+    # Common instruction text — identical for both conditions
+    instruction = f"""\
 Document type: {source_type}
 Target role: {role_spec.canonical_role_title if role_spec else "Unknown"}
 Consent level: {consent_level}
@@ -112,17 +110,39 @@ Role requirements (use index number, starting from 0, in matched_requirement_ind
 {requirements_text}
 
 ---
-Parsed document content:
-
-{markdown_content}
----
-
 Extract ALL evidence items from this document. For skill list or competency sections, extract each tool or skill as a separate claim item. Use matched_requirement_indices to link items to requirements where applicable; leave it empty if an item does not map to any requirement.
 """
 
-    result: _ExtractionResult = llm_struct.invoke(
-        [{"role": "system", "content": _SYSTEM}, {"role": "user", "content": prompt}]
-    )
+    if markdown_content is not None:
+        # ── Full COMPASS path: markdown string as plain text ──────────
+        user_content = instruction + f"\nParsed document content:\n\n{markdown_content}\n"
+        messages = [
+            {"role": "system", "content": _SYSTEM},
+            {"role": "user",   "content": user_content},
+        ]
+    else:
+        # ── Ablation 2 path: raw file as base64 image block ───────────
+        # gpt-4o-mini accepts base64-encoded files via the image_url block.
+        # For PDFs, OpenAI expects the data URI format:
+        #   "data:<mime_type>;base64,<encoded_data>"
+        encoded = base64.b64encode(file_bytes).decode("utf-8")
+        data_uri = f"data:{file_mime_type};base64,{encoded}"
+
+        messages = [
+            {"role": "system", "content": _SYSTEM},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": instruction},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": data_uri},
+                    },
+                ],
+            },
+        ]
+
+    result: _ExtractionResult = llm_struct.invoke(messages)
 
     return [
         EvidenceItem(
@@ -130,17 +150,17 @@ Extract ALL evidence items from this document. For skill list or competency sect
             summary=item.summary,
             snippet=item.snippet,
             confidence=item.confidence,
-            confidence_reason = item.confidence_reason,
+            confidence_reason=item.confidence_reason,
             metadata={
                 "matched_requirements": [
-                    req_index[i] for i in item.matched_requirement_indices
+                    req_index[i]
+                    for i in item.matched_requirement_indices
                     if 0 <= i < len(req_index)
                 ]
             },
         )
         for item in result.items
     ]
-
 
 # ---------------------------------------------------------------------------
 # StudentModel builder

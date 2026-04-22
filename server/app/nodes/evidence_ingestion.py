@@ -4,10 +4,12 @@ import hashlib
 from typing import Any, Dict, Optional
 
 from app.state import AgentState, EvidenceItem, RoleSpecModel
+import os
 from app.tools.docling_parser import infer_suffix, parse_document_to_markdown
 from app.tools.evidence_llm import build_student_model, extract_evidence_items
 from app.tools.supabase_repo import SupabaseRepo
-
+# Ablation 2 flag — set env var to skip Docling
+ABLATION_2_NO_DOCLING = os.getenv("ABLATION_2_NO_DOCLING", "false").lower() == "true"
 
 def _role_hash(role_spec: Optional[RoleSpecModel]) -> str:
     """
@@ -93,37 +95,71 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
             continue
 
         #Parse with Docling
-        try:
+        # ----------------------------------------------------------------
+        # ABLATION 2: Skip Docling — pass raw bytes directly to LLM
+        # Full COMPASS: Parse with Docling first, then pass markdown
+        # ----------------------------------------------------------------
+        if ABLATION_2_NO_DOCLING:
+            print(f"[ABLATION2] Skipping Docling — passing raw bytes to LLM", flush=True)
             suffix = infer_suffix(doc.storage_ref)
-            markdown_content = parse_document_to_markdown(file_bytes, suffix)
-            print(f"[EVIDENCE] Docling parsed {len(markdown_content)} chars (suffix={suffix})", flush=True)
-        except Exception as e:
-            print(f"[EVIDENCE] Docling FAILED: {type(e).__name__}: {e}", flush=True)
-            s.errors.append(
-                f"evidence_ingestion: Docling parse failed for {doc.storage_ref}: "
-                f"{type(e).__name__}: {e}"
-            )
-            continue
+            mime_map = {
+                ".pdf": "application/pdf",
+                ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                ".doc": "application/msword",
+                ".txt": "text/plain",
+                ".md": "text/markdown",
+            }
+            mime_type = mime_map.get(suffix, "application/pdf")
 
-        if not markdown_content.strip():
-            print(f"[EVIDENCE] WARNING: Docling returned empty content for {doc.storage_ref}", flush=True)
+            try:
+                items = extract_evidence_items(
+                    file_bytes=file_bytes,
+                    file_mime_type=mime_type,
+                    source_type=doc.source_type,
+                    role_spec=s.role_spec,
+                    consent_level=doc.consent_level,
+                )
+                print(f"[ABLATION2] LLM extracted {len(items)} items from {doc.storage_ref}", flush=True)
+            except Exception as e:
+                print(f"[ABLATION2] LLM extraction FAILED: {type(e).__name__}: {e}", flush=True)
+                s.errors.append(
+                    f"evidence_ingestion: Ablation2 LLM extraction failed for {doc.storage_ref}: "
+                    f"{type(e).__name__}: {e}"
+                )
+                continue
 
-        #LLM extraction
-        try:
-            items = extract_evidence_items(
-                markdown_content=markdown_content,
-                source_type=doc.source_type,
-                role_spec=s.role_spec,
-                consent_level=doc.consent_level,
-            )
-            print(f"[EVIDENCE] LLM extracted {len(items)} items from {doc.storage_ref}", flush=True)
-        except Exception as e:
-            print(f"[EVIDENCE] LLM extraction FAILED: {type(e).__name__}: {e}", flush=True)
-            s.errors.append(
-                f"evidence_ingestion: LLM extraction failed for {doc.storage_ref}: "
-                f"{type(e).__name__}: {e}"
-            )
-            continue
+        else:
+            # Full COMPASS path — Parse with Docling
+            try:
+                suffix = infer_suffix(doc.storage_ref)
+                markdown_content = parse_document_to_markdown(file_bytes, suffix)
+                print(f"[EVIDENCE] Docling parsed {len(markdown_content)} chars (suffix={suffix})", flush=True)
+            except Exception as e:
+                print(f"[EVIDENCE] Docling FAILED: {type(e).__name__}: {e}", flush=True)
+                s.errors.append(
+                    f"evidence_ingestion: Docling parse failed for {doc.storage_ref}: "
+                    f"{type(e).__name__}: {e}"
+                )
+                continue
+
+            if not markdown_content.strip():
+                print(f"[EVIDENCE] WARNING: Docling returned empty content for {doc.storage_ref}", flush=True)
+
+            try:
+                items = extract_evidence_items(
+                    markdown_content=markdown_content,
+                    source_type=doc.source_type,
+                    role_spec=s.role_spec,
+                    consent_level=doc.consent_level,
+                )
+                print(f"[EVIDENCE] LLM extracted {len(items)} items from {doc.storage_ref}", flush=True)
+            except Exception as e:
+                print(f"[EVIDENCE] LLM extraction FAILED: {type(e).__name__}: {e}", flush=True)
+                s.errors.append(
+                    f"evidence_ingestion: LLM extraction failed for {doc.storage_ref}: "
+                    f"{type(e).__name__}: {e}"
+                )
+                continue
 
         #persist EvidenceItems and back-fill ids
         if doc.id and items:
