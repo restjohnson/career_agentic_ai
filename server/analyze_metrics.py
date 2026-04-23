@@ -125,9 +125,11 @@ def generate_summary_table(
         ('resume_terms_mentioned', 'Resume Terms Mentioned'),
     ]
 
+    conditions = sorted(grouped_rows.keys())
+
     # Build table header
-    header = "| Metric | " + " | ".join(grouped_rows.keys()) + " |\n"
-    separator = "|--------|" + "|".join(["---" for _ in grouped_rows.keys()]) + "|\n"
+    header = "| Metric | " + " | ".join(conditions) + " |\n"
+    separator = "|--------|" + "|".join(["---" for _ in conditions]) + "|\n"
 
     rows_md = [header, separator]
 
@@ -135,7 +137,7 @@ def generate_summary_table(
     for metric_key, metric_label in metrics:
         row_parts = [f"| {metric_label} |"]
 
-        for condition in sorted(grouped_rows.keys()):
+        for condition in conditions:
             condition_rows = grouped_rows[condition]
             values = [r.get(metric_key) for r in condition_rows]
             stats = compute_metric_stats(values, metric_key)
