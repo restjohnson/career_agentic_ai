@@ -14,11 +14,11 @@ from app.state import AgentState, EvidenceDocument, StudentConstraints
 from app.tools.supabase_repo import SupabaseRepo
 from app.tools.session_token import get_session_id, get_session_id_from_query
 from app.graph import build_graph
+from app.graph_ablation3 import build_ablation3_graph
 from app.run_events import get_queue, publish, cleanup
 
 router = APIRouter(prefix="/runs", tags=["runs"])
 repo = SupabaseRepo()
-graph = build_graph(repo)
 
 
 class RunCreateRequest(BaseModel):
@@ -31,6 +31,10 @@ class RunCreateRequest(BaseModel):
     student_constraints: Optional[StudentConstraints] = Field(
         default=None,
         description="Learning constraints: academic_level, hours_per_week, target_goal, target_date (optional ISO date), preferred_learning_mode.",
+    )
+    condition: str = Field(
+        default="full",
+        description="Graph variant: 'full' (default) or 'ablation3' (single-pass baseline).",
     )
 
 
@@ -70,6 +74,12 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
         student_constraints=payload.student_constraints,
         status="running",
     )
+
+    # Select graph based on condition
+    if payload.condition == "ablation3":
+        graph = build_ablation3_graph(repo)
+    else:
+        graph = build_graph(repo)
 
     config = {"configurable": {"thread_id": run_id}, "recursion_limit": 15}
 

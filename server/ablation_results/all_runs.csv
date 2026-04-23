@@ -1,0 +1,11 @@
+timestamp,run_id,condition,scenario,attempt,critique_satisfactory,rubric_feasibility,rubric_level_appropriateness,rubric_prerequisite_ordering,rubric_gap_coverage,rubric_internship_readiness,rubric_composite,plan_phases,plan_actions_total,plan_timeline_weeks,resources_per_action,action_specificity_ratio,resume_terms_mentioned,resume_terms_total,critique_iterations,has_errors,error_count
+2026-04-23T01:49:46.742657,1fa96ef1-e741-4cf9-992e-f0d6ba1fe5d8,full,scenario_3_backend,1,True,5.0,5.0,,4.0,,5.0,3.0,3.0,12.0,3.0,0.20224719101123595,18.0,89.0,1.0,True,1.0
+2026-04-23T01:51:10.780529,8ee1ae47-023c-46ac-80e3-311ef3f7471f,full,scenario_3_backend,2,True,5.0,5.0,,4.0,,5.0,3.0,3.0,12.0,3.0,0.2247191011235955,20.0,89.0,1.0,True,1.0
+2026-04-23T01:52:41.592053,6c52ed8a-a59e-4699-a9d7-c91995c975af,full,scenario_3_backend,3,True,5.0,5.0,,5.0,,5.0,3.0,3.0,16.0,3.0,0.16853932584269662,15.0,89.0,1.0,True,1.0
+2026-04-23T01:54:24.113769,8a5892ac-0cc5-4c0a-a8e4-4f8de96cf30e,full,scenario_3_backend,4,True,5.0,5.0,,5.0,,5.0,3.0,3.0,16.0,3.0,0.23595505617977527,21.0,89.0,1.0,True,1.0
+2026-04-23T01:55:42.353652,042e9894-ffa4-4d23-ae35-1b2e9a89b7ab,full,scenario_3_backend,5,True,5.0,5.0,,5.0,,5.0,3.0,3.0,12.0,3.0,0.20224719101123595,18.0,89.0,1.0,True,1.0
+2026-04-23T01:57:40.838506,75d3a820-a0c5-45d4-bea8-4e1a2adf5cc6,ablation3,scenario_3_backend,1,False,2.0,5.0,,5.0,,3.5,5.0,5.0,20.0,0.0,0.12359550561797752,11.0,89.0,1.0,False,0.0
+2026-04-23T01:58:01.414307,4fc5e1fe-1b82-4ff0-aa79-92c14c6e6686,ablation3,scenario_3_backend,2,True,5.0,5.0,,5.0,,5.0,3.0,3.0,12.0,0.0,0.0898876404494382,8.0,89.0,1.0,False,0.0
+2026-04-23T01:58:27.831904,23cec54a-4795-4b2a-9e28-74e26033c24d,ablation3,scenario_3_backend,3,False,5.0,5.0,,5.0,,5.0,4.0,7.0,16.0,0.0,0.1797752808988764,16.0,89.0,1.0,False,0.0
+2026-04-23T01:58:48.712613,09d810b8-252a-4b39-867e-decc0af62901,ablation3,scenario_3_backend,4,True,5.0,5.0,,5.0,,5.0,3.0,6.0,12.0,0.0,0.0898876404494382,8.0,89.0,1.0,False,0.0
+2026-04-23T01:59:22.368009,13e7f016-65dd-4f3b-9d53-cbdb34d134f2,ablation3,scenario_3_backend,5,False,1.0,5.0,,5.0,,3.0,6.0,6.0,24.0,0.0,0.1348314606741573,12.0,89.0,1.0,False,0.0

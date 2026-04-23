@@ -345,7 +345,7 @@ GAPS TO ADDRESS (in priority order — respect this ordering):
 
 {reflection_block}
 {prev_plan_block}
-Design a personalised learning pathway with 3–6 phases.
+Design a personalised learning pathway with 3–8 phases.
 For each phase, write 1–3 concrete PROJECTS that YOU author (see system prompt for format).
 Each project should address multiple gaps naturally. Use available skills from the student context
 to populate the project stack. Use example resources as inspiration, but author projects directly.
@@ -531,3 +531,85 @@ Only recommend after Phase 1. Return empty object {{}} if no good windows exist.
         return result or {}
     except Exception:
         return {}
+
+
+# ---------------------------------------------------------------------------
+# Ablation 3 – Single-pass plan synthesis (no intermediate state)
+# ---------------------------------------------------------------------------
+
+_SINGLE_PASS_SYSTEM = """\
+You are an expert career pathway architect.
+
+You are given a student's resume and their desired career role.
+Your task is to design a personalised learning pathway that bridges
+where the student is now to where they want to be.
+
+Produce a curriculum of 3–6 phases. Each phase must contain 1–3 concrete,
+buildable projects. Each project must:
+- Have a specific title and step-by-step description the student can follow
+- List the tools and technologies the student should use
+- Explain why this project is relevant to their target role
+- Address one or more skill gaps implied by comparing their resume to the role
+
+IMPORTANT:
+- Be specific to the student's actual background shown in the resume
+- Do not recommend generic resources — design concrete projects
+- Each phase should have a clear outcome and checkpoint
+- The plan must be realistic given what the resume reveals about the student's level
+"""
+
+
+def synthesise_plan_single_pass(
+    desired_role: str,
+    raw_resume_text: str,
+    constraints: StudentConstraints,
+) -> CareerPlan:
+    """
+    Ablation 3: generate a CareerPlan in a single LLM call with no
+    intermediate structured state. The LLM receives the raw resume text
+    and desired role directly and produces a pathway without gap analysis,
+    role specification, or critique loop.
+
+    Uses the same _PlanSpec / _PhaseSpec / _ProjectSpec output schema as
+    synthesise_phases so the resulting CareerPlan is structurally identical
+    to a production plan and can be evaluated by the same critique rubric.
+
+    Args:
+        desired_role:     The student's target role string.
+        raw_resume_text:  Plain text content of the student's resume artefact.
+        constraints:      StudentConstraints for timeline and level context.
+
+    Returns:
+        CareerPlan assembled from the LLM's single-pass output.
+    """
+    user_prompt = f"""\
+Desired role: {desired_role}
+
+Student constraints:
+- Academic level: {constraints.academic_level}
+- Hours available per week: {constraints.hours_per_week}
+- Target goal: {constraints.target_goal} ({constraints.target_weeks} weeks)
+- Preferred learning mode: {constraints.preferred_learning_mode}
+
+Student resume:
+---
+{raw_resume_text}
+---
+
+Design a personalised learning pathway for this student to reach their
+desired role within their constraints. Produce 3–6 phases with 1–3
+concrete projects each.
+"""
+
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
+    llm_struct = llm.with_structured_output(_PlanSpec, method="json_schema", strict=True)
+
+    plan_spec: _PlanSpec = llm_struct.invoke([
+        {"role": "system", "content": _SINGLE_PASS_SYSTEM},
+        {"role": "user",   "content": user_prompt},
+    ])
+
+    # Assemble into CareerPlan using the same assembly logic as production.
+    # No resources_by_gap available – example_resources will be empty.
+    # This is correct: the single-pass baseline has no resource retrieval step.
+    return assemble_plan(plan_spec, resources_by_gap={})
