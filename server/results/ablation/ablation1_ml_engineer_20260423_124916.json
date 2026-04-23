@@ -1,0 +1,1919 @@
+{
+  "experiment": "ablation1_remove_role_grounding",
+  "scenario": {
+    "role": "Machine Learning Engineer",
+    "student_profile": "Junior CS major, 2 years in.\nCoursework: algorithms and linear algebra.\nProject: sentiment analysis classifier in Jupyter notebook using scikit-learn.\nResume skills: Python, NumPy, Pandas, Git.\nNo production systems experience, no MLOps, no deployment.",
+    "constraints": {
+      "academic_level": "junior",
+      "hours_per_week": 12,
+      "target_goal": "graduation",
+      "target_date": null,
+      "preferred_learning_mode": "mixed",
+      "target_weeks": 52
+    }
+  },
+  "results": [
+    {
+      "condition": "full_compass",
+      "canonical_role_title": "Data Scientists",
+      "matched_onet_code": "15-2051.00",
+      "num_requirements": 9,
+      "requirement_categories": [
+        "knowledge",
+        "skill"
+      ],
+      "num_requirements_with_provenance": 9,
+      "num_gaps": 9,
+      "num_no_evidence_gaps": 4,
+      "critique_satisfactory": true,
+      "critique_rubric_scores": {
+        "gap_coverage": 4,
+        "jit_compliance": 5,
+        "feasibility": 5,
+        "level_appropriateness": 5
+      },
+      "critique_iterations": 1,
+      "errors": [
+        "pathway_planning: internship synthesis failed: TypeError: typing.Dict[int, app.tools.pathway_llm._InternshipOpportunitySpec] is not a module, class, method, or function."
+      ]
+    },
+    {
+      "condition": "ablation1_no_role_grounding",
+      "canonical_role_title": "Data Scientists",
+      "matched_onet_code": "15-2051.00",
+      "num_requirements": 0,
+      "requirement_categories": [],
+      "num_requirements_with_provenance": 0,
+      "num_gaps": 0,
+      "num_no_evidence_gaps": 0,
+      "critique_satisfactory": true,
+      "critique_rubric_scores": {
+        "gap_coverage": 5,
+        "jit_compliance": 4,
+        "feasibility": 5,
+        "level_appropriateness": 5
+      },
+      "critique_iterations": 1,
+      "errors": [
+        "pathway_planning: internship synthesis failed: TypeError: typing.Dict[int, app.tools.pathway_llm._InternshipOpportunitySpec] is not a module, class, method, or function."
+      ]
+    }
+  ],
+  "final_states": {
+    "full_compass": {
+      "session_id": "ablation-88b5f6fd-913a-4f0e-88be-01be7b25a519",
+      "run_id": "ablation-run-c4f79ebc-bc42-4e71-9b72-2836f821e308",
+      "desired_role": "Machine Learning Engineer",
+      "evidence_documents": [],
+      "evidence_items": [
+        {
+          "id": "ev-1",
+          "item_type": "coursework",
+          "summary": "algorithms",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge in algorithms, which is relevant to understanding data structures and algorithms, but does not demonstrate independent application.",
+          "metadata": {
+            "matched_requirements": [
+              "Strong understanding of data structures and algorithms"
+            ]
+          }
+        },
+        {
+          "id": "ev-2",
+          "item_type": "coursework",
+          "summary": "linear algebra",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework is relevant for understanding mathematical concepts used in data science, but does not demonstrate independent application.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        },
+        {
+          "id": "ev-3",
+          "item_type": "project",
+          "summary": "sentiment analysis classifier in Jupyter notebook using scikit-learn",
+          "confidence": 0.51,
+          "confidence_reason": "This project involved building a sentiment analysis classifier, demonstrating independent use of machine learning techniques with clear outcomes, but does not specify the use of Python or any specific frameworks.",
+          "metadata": {
+            "matched_requirements": [
+              "Proficiency in Python for machine learning applications",
+              "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+              "Understanding of natural language processing techniques"
+            ]
+          }
+        },
+        {
+          "id": "ev-4",
+          "item_type": "claim",
+          "summary": "Python",
+          "confidence": 0.1,
+          "confidence_reason": "Python is listed as a skill, but there is no specific context provided to demonstrate its application.",
+          "metadata": {
+            "matched_requirements": [
+              "Proficiency in Python for machine learning applications"
+            ]
+          }
+        },
+        {
+          "id": "ev-5",
+          "item_type": "claim",
+          "summary": "NumPy",
+          "confidence": 0.1,
+          "confidence_reason": "NumPy is listed as a skill, but there is no specific context provided to demonstrate its application.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        },
+        {
+          "id": "ev-6",
+          "item_type": "claim",
+          "summary": "Pandas",
+          "confidence": 0.1,
+          "confidence_reason": "Pandas is listed as a skill, but there is no specific context provided to demonstrate its application.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        },
+        {
+          "id": "ev-7",
+          "item_type": "claim",
+          "summary": "Git",
+          "confidence": 0.1,
+          "confidence_reason": "Git is listed as a skill, but there is no specific context provided to demonstrate its application.",
+          "metadata": {
+            "matched_requirements": [
+              "Experience with version control systems like Git"
+            ]
+          }
+        }
+      ],
+      "raw_user_text": "Junior CS major, 2 years in.\nCoursework: algorithms and linear algebra.\nProject: sentiment analysis classifier in Jupyter notebook using scikit-learn.\nResume skills: Python, NumPy, Pandas, Git.\nNo production systems experience, no MLOps, no deployment.",
+      "student_model": {
+        "skills": [
+          "Python",
+          "NumPy",
+          "Pandas",
+          "Git"
+        ],
+        "experiences": [],
+        "education": [
+          "algorithms",
+          "linear algebra"
+        ],
+        "constraints": {},
+        "evidence_map": {
+          "Strong understanding of data structures and algorithms": [
+            "ev-1"
+          ],
+          "Proficiency in Python for machine learning applications": [
+            "ev-3",
+            "ev-4"
+          ],
+          "Experience with machine learning frameworks such as TensorFlow and PyTorch": [
+            "ev-3"
+          ],
+          "Understanding of natural language processing techniques": [
+            "ev-3"
+          ],
+          "Experience with version control systems like Git": [
+            "ev-7"
+          ]
+        }
+      },
+      "student_constraints": {
+        "academic_level": "junior",
+        "hours_per_week": 12,
+        "target_goal": "graduation",
+        "preferred_learning_mode": "mixed",
+        "target_weeks": 52
+      },
+      "role_spec": {
+        "canonical_role_title": "Data Scientists",
+        "matched_onet_code": "15-2051.00",
+        "confidence_role_match": 0.9,
+        "requirements": [
+          {
+            "req_summary": "Proficiency in Python for machine learning applications",
+            "category": "skill",
+            "provenance": [
+              {
+                "source_type": "ONET",
+                "source_ids": [
+                  "15-2051.00"
+                ],
+                "note": "hot_technology"
+              }
+            ],
+            "optional": false,
+            "required_level": 4.0,
+            "importance": 5.0
+          },
+          {
+            "req_summary": "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+            "category": "skill",
+            "provenance": [
+              {
+                "source_type": "ONET",
+                "source_ids": [
+                  "15-2051.00"
+                ],
+                "note": "technology_skills"
+              }
+            ],
+            "optional": false,
+            "required_level": 4.0,
+            "importance": 5.0
+          },
+          {
+            "req_summary": "Strong understanding of data structures and algorithms",
+            "category": "knowledge",
+            "provenance": [
+              {
+                "source_type": "INFERRED",
+                "note": "Essential for developing efficient machine learning models."
+              }
+            ],
+            "optional": false,
+            "required_level": 4.0,
+            "importance": 5.0
+          },
+          {
+            "req_summary": "Experience with SQL for data manipulation and querying",
+            "category": "skill",
+            "provenance": [
+              {
+                "source_type": "ONET",
+                "source_ids": [
+                  "15-2051.00"
+                ],
+                "note": "hot_technology"
+              }
+            ],
+            "optional": false,
+            "required_level": 3.0,
+            "importance": 4.0
+          },
+          {
+            "req_summary": "Familiarity with cloud platforms such as AWS or Azure for deploying models",
+            "category": "skill",
+            "provenance": [
+              {
+                "source_type": "INFERRED",
+                "note": "Commonly required for machine learning engineers to deploy applications."
+              }
+            ],
+            "optional": false,
+            "required_level": 3.0,
+            "importance": 4.0
+          },
+          {
+            "req_summary": "Ability to visualize data findings using tools like Tableau or Power BI",
+            "category": "skill",
+            "provenance": [
+              {
+                "source_type": "ONET",
+                "source_ids": [
+                  "15-2051.00"
+                ],
+                "note": "technology_skills"
+              }
+            ],
+            "optional": true,
+            "required_level": 2.0,
+            "importance": 3.0
+          },
+          {
+            "req_summary": "Understanding of natural language processing techniques",
+            "category": "knowledge",
+            "provenance": [
+              {
+                "source_type": "INFERRED",
+                "note": "Important for roles focusing on text data."
+              }
+            ],
+            "optional": true,
+            "required_level": 2.0,
+            "importance": 3.0
+          },
+          {
+            "req_summary": "Experience with version control systems like Git",
+            "category": "skill",
+            "provenance": [
+              {
+                "source_type": "ONET",
+                "source_ids": [
+                  "15-2051.00"
+                ],
+                "note": "hot_technology"
+              }
+            ],
+            "optional": true,
+            "required_level": 2.0,
+            "importance": 3.0
+          },
+          {
+            "req_summary": "Strong communication skills for reporting findings and collaborating with teams",
+            "category": "skill",
+            "provenance": [
+              {
+                "source_type": "INFERRED",
+                "note": "Essential for effective teamwork and project success."
+              }
+            ],
+            "optional": true,
+            "required_level": 2.0,
+            "importance": 3.0
+          }
+        ],
+        "assumptions": []
+      },
+      "gap_report": {
+        "summary": "9 requirement(s) assessed. 4 with no evidence. 1 claimed but not demonstrated. 3 partially evidenced. 1 optional gap(s).",
+        "gaps": [
+          {
+            "summary": "Strong understanding of data structures and algorithms",
+            "category": "knowledge",
+            "required_level": 4.0,
+            "student_level": 0.26,
+            "raw_gap": 3.74,
+            "weighted_gap": 18.7,
+            "proficiency": 1,
+            "confidence": 0.26,
+            "student_level_reasoning": "The student has completed coursework in algorithms, which provides foundational knowledge; however, this does not demonstrate their ability to apply this knowledge independently, resulting in a low proficiency level.",
+            "gap_type": "partial",
+            "evidence_item_ids": [
+              "ev-1"
+            ],
+            "knowledge_prerequisites": [
+              {
+                "concept": "Big O notation",
+                "parent_skill_gap": "Strong understanding of data structures and algorithms",
+                "is_foundational": true
+              },
+              {
+                "concept": "Common data structures (arrays, linked lists, trees, graphs)",
+                "parent_skill_gap": "Strong understanding of data structures and algorithms",
+                "is_foundational": true
+              },
+              {
+                "concept": "Sorting and searching algorithms",
+                "parent_skill_gap": "Strong understanding of data structures and algorithms",
+                "is_foundational": true
+              }
+            ]
+          },
+          {
+            "summary": "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+            "category": "skill",
+            "required_level": 4.0,
+            "student_level": 1.02,
+            "raw_gap": 2.98,
+            "weighted_gap": 14.9,
+            "proficiency": 2,
+            "confidence": 0.51,
+            "student_level_reasoning": "The student has completed a project involving a sentiment analysis classifier, showcasing independent application of machine learning techniques, but the lack of specific mention of TensorFlow or PyTorch limits their demonstrated experience with these frameworks.",
+            "gap_type": "partial",
+            "evidence_item_ids": [
+              "ev-3"
+            ],
+            "knowledge_prerequisites": [
+              {
+                "concept": "Machine learning model training and evaluation",
+                "parent_skill_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+                "is_foundational": true
+              },
+              {
+                "concept": "Neural networks and deep learning concepts",
+                "parent_skill_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+                "is_foundational": false
+              }
+            ]
+          },
+          {
+            "summary": "Proficiency in Python for machine learning applications",
+            "category": "skill",
+            "required_level": 4.0,
+            "student_level": 1.118,
+            "raw_gap": 2.882,
+            "weighted_gap": 14.41,
+            "proficiency": 2,
+            "confidence": 0.559,
+            "student_level_reasoning": "The project on sentiment analysis indicates some application of machine learning techniques, but without explicit mention of Python or its use in the project, the student's proficiency remains uncertain.",
+            "gap_type": "partial",
+            "evidence_item_ids": [
+              "ev-3",
+              "ev-4"
+            ],
+            "knowledge_prerequisites": [
+              {
+                "concept": "Python libraries for machine learning (e.g., scikit-learn, TensorFlow, PyTorch)",
+                "parent_skill_gap": "Proficiency in Python for machine learning applications",
+                "is_foundational": true
+              }
+            ]
+          },
+          {
+            "summary": "Experience with SQL for data manipulation and querying",
+            "category": "skill",
+            "required_level": 3.0,
+            "student_level": 0.0,
+            "raw_gap": 3.0,
+            "weighted_gap": 12.0,
+            "proficiency": 0,
+            "confidence": 0.0,
+            "gap_type": "no_evidence",
+            "evidence_item_ids": [],
+            "knowledge_prerequisites": [
+              {
+                "concept": "SQL query syntax and functions",
+                "parent_skill_gap": "Experience with SQL for data manipulation and querying",
+                "is_foundational": true
+              },
+              {
+                "concept": "Database normalization and design principles",
+                "parent_skill_gap": "Experience with SQL for data manipulation and querying",
+                "is_foundational": false
+              }
+            ]
+          },
+          {
+            "summary": "Familiarity with cloud platforms such as AWS or Azure for deploying models",
+            "category": "skill",
+            "required_level": 3.0,
+            "student_level": 0.0,
+            "raw_gap": 3.0,
+            "weighted_gap": 12.0,
+            "proficiency": 0,
+            "confidence": 0.0,
+            "gap_type": "no_evidence",
+            "evidence_item_ids": [],
+            "knowledge_prerequisites": [
+              {
+                "concept": "Cloud deployment strategies for machine learning models",
+                "parent_skill_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models",
+                "is_foundational": true
+              }
+            ]
+          },
+          {
+            "summary": "Ability to visualize data findings using tools like Tableau or Power BI",
+            "category": "skill",
+            "required_level": 2.0,
+            "student_level": 0.0,
+            "raw_gap": 2.0,
+            "weighted_gap": 6.0,
+            "proficiency": 0,
+            "confidence": 0.0,
+            "gap_type": "no_evidence",
+            "evidence_item_ids": [],
+            "knowledge_prerequisites": [
+              {
+                "concept": "Data visualization principles and best practices",
+                "parent_skill_gap": "Ability to visualize data findings using tools like Tableau or Power BI",
+                "is_foundational": false
+              }
+            ]
+          },
+          {
+            "summary": "Experience with version control systems like Git",
+            "category": "skill",
+            "required_level": 2.0,
+            "student_level": 0.0,
+            "raw_gap": 2.0,
+            "weighted_gap": 6.0,
+            "proficiency": 0,
+            "confidence": 0.1,
+            "student_level_reasoning": "The student only claims knowledge of Git without any evidence of practical application, resulting in a classification of claimed only.",
+            "gap_type": "claimed_only",
+            "evidence_item_ids": [
+              "ev-7"
+            ],
+            "knowledge_prerequisites": [
+              {
+                "concept": "Version control workflows (branching, merging, pull requests)",
+                "parent_skill_gap": "Experience with version control systems like Git",
+                "is_foundational": true
+              }
+            ]
+          },
+          {
+            "summary": "Strong communication skills for reporting findings and collaborating with teams",
+            "category": "skill",
+            "required_level": 2.0,
+            "student_level": 0.0,
+            "raw_gap": 2.0,
+            "weighted_gap": 6.0,
+            "proficiency": 0,
+            "confidence": 0.0,
+            "gap_type": "no_evidence",
+            "evidence_item_ids": [],
+            "knowledge_prerequisites": [
+              {
+                "concept": "Effective communication techniques for data reporting",
+                "parent_skill_gap": "Strong communication skills for reporting findings and collaborating with teams",
+                "is_foundational": false
+              }
+            ]
+          },
+          {
+            "summary": "Understanding of natural language processing techniques",
+            "category": "knowledge",
+            "required_level": 2.0,
+            "student_level": 1.02,
+            "raw_gap": 0.98,
+            "weighted_gap": 2.94,
+            "proficiency": 2,
+            "confidence": 0.51,
+            "student_level_reasoning": "The sentiment analysis project demonstrates the student's ability to apply machine learning techniques relevant to natural language processing, but the lack of specific frameworks or methods used keeps their proficiency at a partial level.",
+            "gap_type": "optional_gap",
+            "evidence_item_ids": [
+              "ev-3"
+            ],
+            "knowledge_prerequisites": []
+          }
+        ]
+      },
+      "plan": {
+        "timeline_weeks": 28,
+        "phases": [
+          {
+            "title": "Data Structures and Algorithms Exploration",
+            "rationale": "This phase focuses on strengthening your understanding of data structures and algorithms, which is crucial for your development as a data scientist. Given your coursework in algorithms, this project will help you apply that knowledge practically, enhancing your proficiency in this area.",
+            "outcome": "After completing this phase, you will be able to implement and analyze common data structures and algorithms in Python, demonstrating a strong understanding of their complexities and applications.",
+            "checkpoint": "After completing this phase, you will be able to implement and analyze common data structures and algorithms in Python, demonstrating a strong understanding of their complexities and applications.",
+            "weeks": 8,
+            "learning_actions": [
+              {
+                "title": "Data Structures Visualizer",
+                "description": "1. Choose a data structure (e.g., arrays, linked lists, trees). 2. Implement the chosen data structure in Python, ensuring to include methods for insertion, deletion, and traversal. 3. Create a visualization using Matplotlib to illustrate how the data structure changes with each operation. 4. Analyze the time complexity of each operation using Big O notation. 5. Document your findings and the code in a Jupyter notebook.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "NumPy",
+                  "Matplotlib"
+                ],
+                "rationale": "This project builds on your existing Python skills and introduces you to data structures, addressing the gap in your understanding of data structures and algorithms. The visualization component will also enhance your ability to communicate findings effectively.",
+                "addresses_gaps": [
+                  "Strong understanding of data structures and algorithms",
+                  "Proficiency in Python for machine learning applications"
+                ],
+                "bloom_level": "apply",
+                "example_resources": [
+                  {
+                    "title": "Data Structures and Algorithms Specialization",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/specializations/data-structures-algorithms",
+                    "resource_type": "project",
+                    "estimated_hours": 100,
+                    "is_free": false,
+                    "addresses_gap": "Strong understanding of data structures and algorithms"
+                  },
+                  {
+                    "title": "Data Structures and Algorithms Specialization",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/specializations/data-structures-algorithms",
+                    "resource_type": "open_source",
+                    "estimated_hours": 100,
+                    "is_free": false,
+                    "addresses_gap": "Strong understanding of data structures and algorithms"
+                  },
+                  {
+                    "title": "Machine Learning with Python: From Linear Models to Deep Learning",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/machine-learning-with-python",
+                    "resource_type": "project",
+                    "estimated_hours": 40,
+                    "is_free": false,
+                    "addresses_gap": "Strong understanding of data structures and algorithms"
+                  }
+                ]
+              },
+              {
+                "title": "Sorting Algorithms Comparison",
+                "description": "1. Implement at least three sorting algorithms (e.g., bubble sort, quicksort, mergesort) in Python. 2. Create a function to generate random arrays of varying sizes. 3. Measure and record the execution time of each sorting algorithm on these arrays. 4. Visualize the results using Matplotlib to compare the performance of each algorithm. 5. Discuss the results in terms of time complexity and practical applications.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "NumPy",
+                  "Matplotlib"
+                ],
+                "rationale": "This project will deepen your understanding of sorting algorithms, a key component of data structures and algorithms, while also enhancing your proficiency in Python. The performance analysis will provide insights into algorithm efficiency, which is essential for data science applications.",
+                "addresses_gaps": [
+                  "Strong understanding of data structures and algorithms",
+                  "Proficiency in Python for machine learning applications"
+                ],
+                "bloom_level": "apply",
+                "example_resources": [
+                  {
+                    "title": "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",
+                    "provider": "GitHub",
+                    "url": "https://github.com/ageron/handson-ml2",
+                    "resource_type": "open_source",
+                    "estimated_hours": 40,
+                    "is_free": true,
+                    "addresses_gap": "Strong understanding of data structures and algorithms"
+                  }
+                ]
+              }
+            ],
+            "resources": [
+              {
+                "title": "Data Structures and Algorithms Specialization",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/specializations/data-structures-algorithms",
+                "resource_type": "project",
+                "estimated_hours": 100,
+                "is_free": false,
+                "addresses_gap": "Strong understanding of data structures and algorithms"
+              },
+              {
+                "title": "Data Structures and Algorithms Specialization",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/specializations/data-structures-algorithms",
+                "resource_type": "open_source",
+                "estimated_hours": 100,
+                "is_free": false,
+                "addresses_gap": "Strong understanding of data structures and algorithms"
+              },
+              {
+                "title": "Machine Learning with Python: From Linear Models to Deep Learning",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/machine-learning-with-python",
+                "resource_type": "project",
+                "estimated_hours": 40,
+                "is_free": false,
+                "addresses_gap": "Strong understanding of data structures and algorithms"
+              },
+              {
+                "title": "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",
+                "provider": "GitHub",
+                "url": "https://github.com/ageron/handson-ml2",
+                "resource_type": "open_source",
+                "estimated_hours": 40,
+                "is_free": true,
+                "addresses_gap": "Strong understanding of data structures and algorithms"
+              }
+            ],
+            "addresses_gaps": [
+              "Strong understanding of data structures and algorithms",
+              "Proficiency in Python for machine learning applications"
+            ],
+            "resume_updates": [
+              "Implemented data structures and algorithms in Python, enhancing problem-solving skills."
+            ]
+          },
+          {
+            "title": "Machine Learning Frameworks and SQL",
+            "rationale": "In this phase, you will gain hands-on experience with machine learning frameworks and SQL, which are critical for data manipulation and model training. This will build on your existing sentiment analysis project and expand your toolkit for data science.",
+            "outcome": "After completing this phase, you will be able to train machine learning models using frameworks like TensorFlow or PyTorch and manipulate data using SQL.",
+            "checkpoint": "After completing this phase, you will be able to train machine learning models using frameworks like TensorFlow or PyTorch and manipulate data using SQL.",
+            "weeks": 10,
+            "learning_actions": [
+              {
+                "title": "Movie Recommendation System",
+                "description": "1. Use the MovieLens dataset to build a recommendation system. 2. Preprocess the data using Pandas and SQL for data manipulation. 3. Implement a collaborative filtering algorithm using TensorFlow or PyTorch. 4. Evaluate the model's performance using metrics like RMSE. 5. Document the process and findings in a Jupyter notebook.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "NumPy",
+                  "TensorFlow"
+                ],
+                "rationale": "This project will enhance your experience with machine learning frameworks and SQL, addressing gaps in both areas. It builds on your existing knowledge of sentiment analysis and introduces collaborative filtering, a common machine learning technique.",
+                "addresses_gaps": [
+                  "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+                  "Experience with SQL for data manipulation and querying",
+                  "Proficiency in Python for machine learning applications"
+                ],
+                "bloom_level": "create",
+                "example_resources": [
+                  {
+                    "title": "Deep Learning with PyTorch: A 60 Minute Blitz",
+                    "provider": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=GIsg-ZUy0MY",
+                    "resource_type": "project",
+                    "estimated_hours": 1,
+                    "is_free": true,
+                    "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+                  },
+                  {
+                    "title": "Deep Learning with PyTorch: A 60 Minute Blitz",
+                    "provider": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=G8y8g1g0g0g",
+                    "resource_type": "open_source",
+                    "estimated_hours": 1,
+                    "is_free": true,
+                    "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+                  },
+                  {
+                    "title": "SQL for Data Science",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/sql-for-data-science",
+                    "resource_type": "tutorial",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+                  }
+                ]
+              },
+              {
+                "title": "SQL Data Analysis Project",
+                "description": "1. Choose a public dataset (e.g., sales data, customer data) and upload it to a SQL database. 2. Write SQL queries to extract insights from the data, such as total sales by region or customer demographics. 3. Visualize the results using Matplotlib or Seaborn. 4. Document your SQL queries and findings in a report.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "SQL",
+                  "Matplotlib"
+                ],
+                "rationale": "This project will provide you with practical experience in SQL, allowing you to manipulate and query data effectively. It also integrates your existing Python skills for data visualization, addressing multiple gaps simultaneously.",
+                "addresses_gaps": [
+                  "Experience with SQL for data manipulation and querying",
+                  "Ability to visualize data findings using tools like Tableau or Power BI"
+                ],
+                "bloom_level": "apply",
+                "example_resources": [
+                  {
+                    "title": "SQL for Data Science",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/sql-for-data-science",
+                    "resource_type": "project",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Experience with SQL for data manipulation and querying"
+                  },
+                  {
+                    "title": "SQL for Data Science",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/sql-for-data-science",
+                    "resource_type": "open_source",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Experience with SQL for data manipulation and querying"
+                  },
+                  {
+                    "title": "Data Visualization with Tableau",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/data-visualization-tableau",
+                    "resource_type": "tutorial",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Experience with SQL for data manipulation and querying"
+                  }
+                ]
+              }
+            ],
+            "resources": [
+              {
+                "title": "Deep Learning with PyTorch: A 60 Minute Blitz",
+                "provider": "YouTube",
+                "url": "https://www.youtube.com/watch?v=GIsg-ZUy0MY",
+                "resource_type": "project",
+                "estimated_hours": 1,
+                "is_free": true,
+                "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+              },
+              {
+                "title": "Deep Learning with PyTorch: A 60 Minute Blitz",
+                "provider": "YouTube",
+                "url": "https://www.youtube.com/watch?v=G8y8g1g0g0g",
+                "resource_type": "open_source",
+                "estimated_hours": 1,
+                "is_free": true,
+                "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+              },
+              {
+                "title": "SQL for Data Science",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/sql-for-data-science",
+                "resource_type": "tutorial",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+              },
+              {
+                "title": "SQL for Data Science",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/sql-for-data-science",
+                "resource_type": "project",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Experience with SQL for data manipulation and querying"
+              },
+              {
+                "title": "SQL for Data Science",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/sql-for-data-science",
+                "resource_type": "open_source",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Experience with SQL for data manipulation and querying"
+              },
+              {
+                "title": "Data Visualization with Tableau",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/data-visualization-tableau",
+                "resource_type": "tutorial",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Experience with SQL for data manipulation and querying"
+              }
+            ],
+            "addresses_gaps": [
+              "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+              "Experience with SQL for data manipulation and querying",
+              "Proficiency in Python for machine learning applications",
+              "Ability to visualize data findings using tools like Tableau or Power BI"
+            ],
+            "resume_updates": [
+              "Developed a movie recommendation system using TensorFlow and SQL, enhancing machine learning skills."
+            ]
+          },
+          {
+            "title": "Cloud Deployment and Communication Skills",
+            "rationale": "This phase focuses on deploying machine learning models and improving your communication skills, both of which are essential for a successful data scientist. You will learn how to deploy models on cloud platforms, which is increasingly important in the industry.",
+            "outcome": "After completing this phase, you will be able to deploy machine learning models on cloud platforms and effectively communicate your findings to stakeholders.",
+            "checkpoint": "After completing this phase, you will be able to deploy machine learning models on cloud platforms and effectively communicate your findings to stakeholders.",
+            "weeks": 10,
+            "learning_actions": [
+              {
+                "title": "Deploying a Machine Learning Model on AWS",
+                "description": "1. Train a machine learning model using a dataset of your choice (e.g., from previous projects). 2. Follow a tutorial to deploy the model on AWS using services like SageMaker. 3. Create an API endpoint for your model. 4. Document the deployment process and any challenges faced in a report.",
+                "stack": [
+                  "Python",
+                  "AWS",
+                  "Pandas",
+                  "NumPy"
+                ],
+                "rationale": "This project will give you hands-on experience with cloud deployment strategies, addressing the gap in familiarity with cloud platforms. It also allows you to apply your machine learning knowledge in a practical setting.",
+                "addresses_gaps": [
+                  "Familiarity with cloud platforms such as AWS or Azure for deploying models",
+                  "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+                ],
+                "bloom_level": "create",
+                "example_resources": [
+                  {
+                    "title": "Deploying Machine Learning Models on AWS",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/deploying-machine-learning-models-on-aws",
+                    "resource_type": "tutorial",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+                  },
+                  {
+                    "title": "Deploying Machine Learning Models on AWS",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/projects/deploying-machine-learning-models-on-aws",
+                    "resource_type": "project",
+                    "estimated_hours": 8,
+                    "is_free": false,
+                    "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+                  },
+                  {
+                    "title": "Deploying Machine Learning Models on AWS",
+                    "provider": "GitHub",
+                    "url": "https://github.com/awslabs/machine-learning-model-deployment-on-aws",
+                    "resource_type": "open_source",
+                    "estimated_hours": 10,
+                    "is_free": true,
+                    "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+                  }
+                ]
+              },
+              {
+                "title": "Effective Communication of Data Findings",
+                "description": "1. Choose a project where you have analyzed data (e.g., from previous phases). 2. Create a presentation summarizing your findings, including visualizations and key insights. 3. Practice delivering the presentation to a peer or mentor for feedback. 4. Revise your presentation based on feedback received.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "Matplotlib"
+                ],
+                "rationale": "This project will enhance your communication skills, which are crucial for collaborating with teams and reporting findings. It builds on your previous projects and encourages you to articulate your insights effectively.",
+                "addresses_gaps": [
+                  "Strong communication skills for reporting findings and collaborating with teams"
+                ],
+                "bloom_level": "create",
+                "example_resources": [
+                  {
+                    "title": "Effective Communication Skills for Engineers",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/effective-communication-skills-for-engineers",
+                    "resource_type": "tutorial",
+                    "estimated_hours": 15,
+                    "is_free": false,
+                    "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+                  },
+                  {
+                    "title": "Communication Skills for Bridging Divides",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/communication-skills-for-bridging-divides",
+                    "resource_type": "project",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+                  },
+                  {
+                    "title": "Communicating Data Science Results",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/communicating-data-science-results",
+                    "resource_type": "open_source",
+                    "estimated_hours": 15,
+                    "is_free": true,
+                    "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+                  }
+                ]
+              }
+            ],
+            "resources": [
+              {
+                "title": "Deploying Machine Learning Models on AWS",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/deploying-machine-learning-models-on-aws",
+                "resource_type": "tutorial",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+              },
+              {
+                "title": "Deploying Machine Learning Models on AWS",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/projects/deploying-machine-learning-models-on-aws",
+                "resource_type": "project",
+                "estimated_hours": 8,
+                "is_free": false,
+                "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+              },
+              {
+                "title": "Deploying Machine Learning Models on AWS",
+                "provider": "GitHub",
+                "url": "https://github.com/awslabs/machine-learning-model-deployment-on-aws",
+                "resource_type": "open_source",
+                "estimated_hours": 10,
+                "is_free": true,
+                "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+              },
+              {
+                "title": "Effective Communication Skills for Engineers",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/effective-communication-skills-for-engineers",
+                "resource_type": "tutorial",
+                "estimated_hours": 15,
+                "is_free": false,
+                "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+              },
+              {
+                "title": "Communication Skills for Bridging Divides",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/communication-skills-for-bridging-divides",
+                "resource_type": "project",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+              },
+              {
+                "title": "Communicating Data Science Results",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/communicating-data-science-results",
+                "resource_type": "open_source",
+                "estimated_hours": 15,
+                "is_free": true,
+                "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+              }
+            ],
+            "addresses_gaps": [
+              "Familiarity with cloud platforms such as AWS or Azure for deploying models",
+              "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+              "Strong communication skills for reporting findings and collaborating with teams"
+            ],
+            "resume_updates": [
+              "Deployed a machine learning model on AWS, enhancing cloud computing skills."
+            ]
+          }
+        ]
+      },
+      "critique": {
+        "rubric_scores": {
+          "gap_coverage": 4,
+          "jit_compliance": 5,
+          "feasibility": 5,
+          "level_appropriateness": 5
+        },
+        "issues": [
+          "Gap not addressed by any phase: 'experience with version control systems like git'",
+          "Gap not addressed by any phase: 'understanding of natural language processing techniques'"
+        ],
+        "satisfactory": true
+      },
+      "critique_iterations": 1,
+      "best_plan": {
+        "timeline_weeks": 28,
+        "phases": [
+          {
+            "title": "Data Structures and Algorithms Exploration",
+            "rationale": "This phase focuses on strengthening your understanding of data structures and algorithms, which is crucial for your development as a data scientist. Given your coursework in algorithms, this project will help you apply that knowledge practically, enhancing your proficiency in this area.",
+            "outcome": "After completing this phase, you will be able to implement and analyze common data structures and algorithms in Python, demonstrating a strong understanding of their complexities and applications.",
+            "checkpoint": "After completing this phase, you will be able to implement and analyze common data structures and algorithms in Python, demonstrating a strong understanding of their complexities and applications.",
+            "weeks": 8,
+            "learning_actions": [
+              {
+                "title": "Data Structures Visualizer",
+                "description": "1. Choose a data structure (e.g., arrays, linked lists, trees). 2. Implement the chosen data structure in Python, ensuring to include methods for insertion, deletion, and traversal. 3. Create a visualization using Matplotlib to illustrate how the data structure changes with each operation. 4. Analyze the time complexity of each operation using Big O notation. 5. Document your findings and the code in a Jupyter notebook.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "NumPy",
+                  "Matplotlib"
+                ],
+                "rationale": "This project builds on your existing Python skills and introduces you to data structures, addressing the gap in your understanding of data structures and algorithms. The visualization component will also enhance your ability to communicate findings effectively.",
+                "addresses_gaps": [
+                  "Strong understanding of data structures and algorithms",
+                  "Proficiency in Python for machine learning applications"
+                ],
+                "bloom_level": "apply",
+                "example_resources": [
+                  {
+                    "title": "Data Structures and Algorithms Specialization",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/specializations/data-structures-algorithms",
+                    "resource_type": "project",
+                    "estimated_hours": 100,
+                    "is_free": false,
+                    "addresses_gap": "Strong understanding of data structures and algorithms"
+                  },
+                  {
+                    "title": "Data Structures and Algorithms Specialization",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/specializations/data-structures-algorithms",
+                    "resource_type": "open_source",
+                    "estimated_hours": 100,
+                    "is_free": false,
+                    "addresses_gap": "Strong understanding of data structures and algorithms"
+                  },
+                  {
+                    "title": "Machine Learning with Python: From Linear Models to Deep Learning",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/machine-learning-with-python",
+                    "resource_type": "project",
+                    "estimated_hours": 40,
+                    "is_free": false,
+                    "addresses_gap": "Strong understanding of data structures and algorithms"
+                  }
+                ]
+              },
+              {
+                "title": "Sorting Algorithms Comparison",
+                "description": "1. Implement at least three sorting algorithms (e.g., bubble sort, quicksort, mergesort) in Python. 2. Create a function to generate random arrays of varying sizes. 3. Measure and record the execution time of each sorting algorithm on these arrays. 4. Visualize the results using Matplotlib to compare the performance of each algorithm. 5. Discuss the results in terms of time complexity and practical applications.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "NumPy",
+                  "Matplotlib"
+                ],
+                "rationale": "This project will deepen your understanding of sorting algorithms, a key component of data structures and algorithms, while also enhancing your proficiency in Python. The performance analysis will provide insights into algorithm efficiency, which is essential for data science applications.",
+                "addresses_gaps": [
+                  "Strong understanding of data structures and algorithms",
+                  "Proficiency in Python for machine learning applications"
+                ],
+                "bloom_level": "apply",
+                "example_resources": [
+                  {
+                    "title": "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",
+                    "provider": "GitHub",
+                    "url": "https://github.com/ageron/handson-ml2",
+                    "resource_type": "open_source",
+                    "estimated_hours": 40,
+                    "is_free": true,
+                    "addresses_gap": "Strong understanding of data structures and algorithms"
+                  }
+                ]
+              }
+            ],
+            "resources": [
+              {
+                "title": "Data Structures and Algorithms Specialization",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/specializations/data-structures-algorithms",
+                "resource_type": "project",
+                "estimated_hours": 100,
+                "is_free": false,
+                "addresses_gap": "Strong understanding of data structures and algorithms"
+              },
+              {
+                "title": "Data Structures and Algorithms Specialization",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/specializations/data-structures-algorithms",
+                "resource_type": "open_source",
+                "estimated_hours": 100,
+                "is_free": false,
+                "addresses_gap": "Strong understanding of data structures and algorithms"
+              },
+              {
+                "title": "Machine Learning with Python: From Linear Models to Deep Learning",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/machine-learning-with-python",
+                "resource_type": "project",
+                "estimated_hours": 40,
+                "is_free": false,
+                "addresses_gap": "Strong understanding of data structures and algorithms"
+              },
+              {
+                "title": "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",
+                "provider": "GitHub",
+                "url": "https://github.com/ageron/handson-ml2",
+                "resource_type": "open_source",
+                "estimated_hours": 40,
+                "is_free": true,
+                "addresses_gap": "Strong understanding of data structures and algorithms"
+              }
+            ],
+            "addresses_gaps": [
+              "Strong understanding of data structures and algorithms",
+              "Proficiency in Python for machine learning applications"
+            ],
+            "resume_updates": [
+              "Implemented data structures and algorithms in Python, enhancing problem-solving skills."
+            ]
+          },
+          {
+            "title": "Machine Learning Frameworks and SQL",
+            "rationale": "In this phase, you will gain hands-on experience with machine learning frameworks and SQL, which are critical for data manipulation and model training. This will build on your existing sentiment analysis project and expand your toolkit for data science.",
+            "outcome": "After completing this phase, you will be able to train machine learning models using frameworks like TensorFlow or PyTorch and manipulate data using SQL.",
+            "checkpoint": "After completing this phase, you will be able to train machine learning models using frameworks like TensorFlow or PyTorch and manipulate data using SQL.",
+            "weeks": 10,
+            "learning_actions": [
+              {
+                "title": "Movie Recommendation System",
+                "description": "1. Use the MovieLens dataset to build a recommendation system. 2. Preprocess the data using Pandas and SQL for data manipulation. 3. Implement a collaborative filtering algorithm using TensorFlow or PyTorch. 4. Evaluate the model's performance using metrics like RMSE. 5. Document the process and findings in a Jupyter notebook.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "NumPy",
+                  "TensorFlow"
+                ],
+                "rationale": "This project will enhance your experience with machine learning frameworks and SQL, addressing gaps in both areas. It builds on your existing knowledge of sentiment analysis and introduces collaborative filtering, a common machine learning technique.",
+                "addresses_gaps": [
+                  "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+                  "Experience with SQL for data manipulation and querying",
+                  "Proficiency in Python for machine learning applications"
+                ],
+                "bloom_level": "create",
+                "example_resources": [
+                  {
+                    "title": "Deep Learning with PyTorch: A 60 Minute Blitz",
+                    "provider": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=GIsg-ZUy0MY",
+                    "resource_type": "project",
+                    "estimated_hours": 1,
+                    "is_free": true,
+                    "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+                  },
+                  {
+                    "title": "Deep Learning with PyTorch: A 60 Minute Blitz",
+                    "provider": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=G8y8g1g0g0g",
+                    "resource_type": "open_source",
+                    "estimated_hours": 1,
+                    "is_free": true,
+                    "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+                  },
+                  {
+                    "title": "SQL for Data Science",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/sql-for-data-science",
+                    "resource_type": "tutorial",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+                  }
+                ]
+              },
+              {
+                "title": "SQL Data Analysis Project",
+                "description": "1. Choose a public dataset (e.g., sales data, customer data) and upload it to a SQL database. 2. Write SQL queries to extract insights from the data, such as total sales by region or customer demographics. 3. Visualize the results using Matplotlib or Seaborn. 4. Document your SQL queries and findings in a report.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "SQL",
+                  "Matplotlib"
+                ],
+                "rationale": "This project will provide you with practical experience in SQL, allowing you to manipulate and query data effectively. It also integrates your existing Python skills for data visualization, addressing multiple gaps simultaneously.",
+                "addresses_gaps": [
+                  "Experience with SQL for data manipulation and querying",
+                  "Ability to visualize data findings using tools like Tableau or Power BI"
+                ],
+                "bloom_level": "apply",
+                "example_resources": [
+                  {
+                    "title": "SQL for Data Science",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/sql-for-data-science",
+                    "resource_type": "project",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Experience with SQL for data manipulation and querying"
+                  },
+                  {
+                    "title": "SQL for Data Science",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/sql-for-data-science",
+                    "resource_type": "open_source",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Experience with SQL for data manipulation and querying"
+                  },
+                  {
+                    "title": "Data Visualization with Tableau",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/data-visualization-tableau",
+                    "resource_type": "tutorial",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Experience with SQL for data manipulation and querying"
+                  }
+                ]
+              }
+            ],
+            "resources": [
+              {
+                "title": "Deep Learning with PyTorch: A 60 Minute Blitz",
+                "provider": "YouTube",
+                "url": "https://www.youtube.com/watch?v=GIsg-ZUy0MY",
+                "resource_type": "project",
+                "estimated_hours": 1,
+                "is_free": true,
+                "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+              },
+              {
+                "title": "Deep Learning with PyTorch: A 60 Minute Blitz",
+                "provider": "YouTube",
+                "url": "https://www.youtube.com/watch?v=G8y8g1g0g0g",
+                "resource_type": "open_source",
+                "estimated_hours": 1,
+                "is_free": true,
+                "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+              },
+              {
+                "title": "SQL for Data Science",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/sql-for-data-science",
+                "resource_type": "tutorial",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+              },
+              {
+                "title": "SQL for Data Science",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/sql-for-data-science",
+                "resource_type": "project",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Experience with SQL for data manipulation and querying"
+              },
+              {
+                "title": "SQL for Data Science",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/sql-for-data-science",
+                "resource_type": "open_source",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Experience with SQL for data manipulation and querying"
+              },
+              {
+                "title": "Data Visualization with Tableau",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/data-visualization-tableau",
+                "resource_type": "tutorial",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Experience with SQL for data manipulation and querying"
+              }
+            ],
+            "addresses_gaps": [
+              "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+              "Experience with SQL for data manipulation and querying",
+              "Proficiency in Python for machine learning applications",
+              "Ability to visualize data findings using tools like Tableau or Power BI"
+            ],
+            "resume_updates": [
+              "Developed a movie recommendation system using TensorFlow and SQL, enhancing machine learning skills."
+            ]
+          },
+          {
+            "title": "Cloud Deployment and Communication Skills",
+            "rationale": "This phase focuses on deploying machine learning models and improving your communication skills, both of which are essential for a successful data scientist. You will learn how to deploy models on cloud platforms, which is increasingly important in the industry.",
+            "outcome": "After completing this phase, you will be able to deploy machine learning models on cloud platforms and effectively communicate your findings to stakeholders.",
+            "checkpoint": "After completing this phase, you will be able to deploy machine learning models on cloud platforms and effectively communicate your findings to stakeholders.",
+            "weeks": 10,
+            "learning_actions": [
+              {
+                "title": "Deploying a Machine Learning Model on AWS",
+                "description": "1. Train a machine learning model using a dataset of your choice (e.g., from previous projects). 2. Follow a tutorial to deploy the model on AWS using services like SageMaker. 3. Create an API endpoint for your model. 4. Document the deployment process and any challenges faced in a report.",
+                "stack": [
+                  "Python",
+                  "AWS",
+                  "Pandas",
+                  "NumPy"
+                ],
+                "rationale": "This project will give you hands-on experience with cloud deployment strategies, addressing the gap in familiarity with cloud platforms. It also allows you to apply your machine learning knowledge in a practical setting.",
+                "addresses_gaps": [
+                  "Familiarity with cloud platforms such as AWS or Azure for deploying models",
+                  "Experience with machine learning frameworks such as TensorFlow and PyTorch"
+                ],
+                "bloom_level": "create",
+                "example_resources": [
+                  {
+                    "title": "Deploying Machine Learning Models on AWS",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/deploying-machine-learning-models-on-aws",
+                    "resource_type": "tutorial",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+                  },
+                  {
+                    "title": "Deploying Machine Learning Models on AWS",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/projects/deploying-machine-learning-models-on-aws",
+                    "resource_type": "project",
+                    "estimated_hours": 8,
+                    "is_free": false,
+                    "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+                  },
+                  {
+                    "title": "Deploying Machine Learning Models on AWS",
+                    "provider": "GitHub",
+                    "url": "https://github.com/awslabs/machine-learning-model-deployment-on-aws",
+                    "resource_type": "open_source",
+                    "estimated_hours": 10,
+                    "is_free": true,
+                    "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+                  }
+                ]
+              },
+              {
+                "title": "Effective Communication of Data Findings",
+                "description": "1. Choose a project where you have analyzed data (e.g., from previous phases). 2. Create a presentation summarizing your findings, including visualizations and key insights. 3. Practice delivering the presentation to a peer or mentor for feedback. 4. Revise your presentation based on feedback received.",
+                "stack": [
+                  "Python",
+                  "Pandas",
+                  "Matplotlib"
+                ],
+                "rationale": "This project will enhance your communication skills, which are crucial for collaborating with teams and reporting findings. It builds on your previous projects and encourages you to articulate your insights effectively.",
+                "addresses_gaps": [
+                  "Strong communication skills for reporting findings and collaborating with teams"
+                ],
+                "bloom_level": "create",
+                "example_resources": [
+                  {
+                    "title": "Effective Communication Skills for Engineers",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/effective-communication-skills-for-engineers",
+                    "resource_type": "tutorial",
+                    "estimated_hours": 15,
+                    "is_free": false,
+                    "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+                  },
+                  {
+                    "title": "Communication Skills for Bridging Divides",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/communication-skills-for-bridging-divides",
+                    "resource_type": "project",
+                    "estimated_hours": 20,
+                    "is_free": false,
+                    "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+                  },
+                  {
+                    "title": "Communicating Data Science Results",
+                    "provider": "Coursera",
+                    "url": "https://www.coursera.org/learn/communicating-data-science-results",
+                    "resource_type": "open_source",
+                    "estimated_hours": 15,
+                    "is_free": true,
+                    "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+                  }
+                ]
+              }
+            ],
+            "resources": [
+              {
+                "title": "Deploying Machine Learning Models on AWS",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/deploying-machine-learning-models-on-aws",
+                "resource_type": "tutorial",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+              },
+              {
+                "title": "Deploying Machine Learning Models on AWS",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/projects/deploying-machine-learning-models-on-aws",
+                "resource_type": "project",
+                "estimated_hours": 8,
+                "is_free": false,
+                "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+              },
+              {
+                "title": "Deploying Machine Learning Models on AWS",
+                "provider": "GitHub",
+                "url": "https://github.com/awslabs/machine-learning-model-deployment-on-aws",
+                "resource_type": "open_source",
+                "estimated_hours": 10,
+                "is_free": true,
+                "addresses_gap": "Familiarity with cloud platforms such as AWS or Azure for deploying models"
+              },
+              {
+                "title": "Effective Communication Skills for Engineers",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/effective-communication-skills-for-engineers",
+                "resource_type": "tutorial",
+                "estimated_hours": 15,
+                "is_free": false,
+                "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+              },
+              {
+                "title": "Communication Skills for Bridging Divides",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/communication-skills-for-bridging-divides",
+                "resource_type": "project",
+                "estimated_hours": 20,
+                "is_free": false,
+                "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+              },
+              {
+                "title": "Communicating Data Science Results",
+                "provider": "Coursera",
+                "url": "https://www.coursera.org/learn/communicating-data-science-results",
+                "resource_type": "open_source",
+                "estimated_hours": 15,
+                "is_free": true,
+                "addresses_gap": "Strong communication skills for reporting findings and collaborating with teams"
+              }
+            ],
+            "addresses_gaps": [
+              "Familiarity with cloud platforms such as AWS or Azure for deploying models",
+              "Experience with machine learning frameworks such as TensorFlow and PyTorch",
+              "Strong communication skills for reporting findings and collaborating with teams"
+            ],
+            "resume_updates": [
+              "Deployed a machine learning model on AWS, enhancing cloud computing skills."
+            ]
+          }
+        ]
+      },
+      "best_critique_score": 4.75,
+      "prev_critique_issues": [],
+      "status": "done",
+      "step": "explanation",
+      "errors": [
+        "pathway_planning: internship synthesis failed: TypeError: typing.Dict[int, app.tools.pathway_llm._InternshipOpportunitySpec] is not a module, class, method, or function."
+      ]
+    },
+    "ablation1_no_role_grounding": {
+      "session_id": "ablation-273c67b8-4184-4941-b1cd-57f424d23af1",
+      "run_id": "ablation-run-e5ef95be-5a7a-41cf-9bc3-8e1ff42377b0",
+      "desired_role": "Machine Learning Engineer",
+      "evidence_documents": [],
+      "evidence_items": [
+        {
+          "id": "ev-1",
+          "item_type": "coursework",
+          "summary": "algorithms and linear algebra",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework is relevant to data science as it covers foundational concepts, but it was completed in a guided academic setting, so the confidence is moderate.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        },
+        {
+          "id": "ev-2",
+          "item_type": "project",
+          "summary": "sentiment analysis classifier in Jupyter notebook using scikit-learn",
+          "confidence": 0.51,
+          "confidence_reason": "This project involved building a sentiment analysis classifier, demonstrating independent use of scikit-learn with a clear outcome, thus justifying a moderate confidence level.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        },
+        {
+          "id": "ev-3",
+          "item_type": "claim",
+          "summary": "Python",
+          "confidence": 0.1,
+          "confidence_reason": "Python is listed as a skill, but there is no context provided to demonstrate its use, resulting in a low confidence score.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        },
+        {
+          "id": "ev-4",
+          "item_type": "claim",
+          "summary": "NumPy",
+          "confidence": 0.1,
+          "confidence_reason": "NumPy is mentioned as a skill without any supporting evidence of its application, leading to a low confidence score.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        },
+        {
+          "id": "ev-5",
+          "item_type": "claim",
+          "summary": "Pandas",
+          "confidence": 0.1,
+          "confidence_reason": "Pandas is listed as a skill, but there is no demonstration of its use, resulting in a low confidence score.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        },
+        {
+          "id": "ev-6",
+          "item_type": "claim",
+          "summary": "Git",
+          "confidence": 0.1,
+          "confidence_reason": "Git is mentioned as a skill without any context or evidence of its application, leading to a low confidence score.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        },
+        {
+          "id": "ev-7",
+          "item_type": "claim",
+          "summary": "Jupyter notebook",
+          "confidence": 0.1,
+          "confidence_reason": "Jupyter notebook is mentioned in the context of the project, but as a tool, it is not independently demonstrated, resulting in a low confidence score.",
+          "metadata": {
+            "matched_requirements": []
+          }
+        }
+      ],
+      "raw_user_text": "Junior CS major, 2 years in.\nCoursework: algorithms and linear algebra.\nProject: sentiment analysis classifier in Jupyter notebook using scikit-learn.\nResume skills: Python, NumPy, Pandas, Git.\nNo production systems experience, no MLOps, no deployment.",
+      "student_model": {
+        "skills": [
+          "Python",
+          "NumPy",
+          "Pandas",
+          "Git",
+          "Jupyter notebook"
+        ],
+        "experiences": [],
+        "education": [
+          "algorithms and linear algebra"
+        ],
+        "constraints": {},
+        "evidence_map": {}
+      },
+      "student_constraints": {
+        "academic_level": "junior",
+        "hours_per_week": 12,
+        "target_goal": "graduation",
+        "preferred_learning_mode": "mixed",
+        "target_weeks": 52
+      },
+      "role_spec": {
+        "canonical_role_title": "Data Scientists",
+        "matched_onet_code": "15-2051.00",
+        "confidence_role_match": 0.7,
+        "requirements": [],
+        "assumptions": []
+      },
+      "gap_report": {
+        "summary": "0 requirement(s) assessed.",
+        "gaps": []
+      },
+      "plan": {
+        "timeline_weeks": 34,
+        "phases": [
+          {
+            "title": "Exploratory Data Analysis and Visualization",
+            "rationale": "This phase builds on your existing skills in Python and Pandas, allowing you to deepen your understanding of data analysis and visualization. The projects will leverage your experience with Jupyter notebooks and will introduce you to data visualization techniques, which are crucial for a data scientist.",
+            "outcome": "You will be able to perform exploratory data analysis (EDA) on datasets and create insightful visualizations to communicate findings effectively.",
+            "checkpoint": "After completing this phase, you will be able to conduct EDA on a dataset and visualize the results using appropriate libraries.",
+            "weeks": 10,
+            "learning_actions": [
+              {
+                "title": "COVID-19 Data Analysis and Visualization",
+                "description": "1. Download the COVID-19 dataset from a public repository (e.g., Johns Hopkins University). 2. Use Pandas to load the dataset into a DataFrame and examine its structure. 3. Clean the data by handling missing values and filtering for relevant columns. 4. Perform exploratory data analysis (EDA) to summarize key statistics (e.g., total cases, deaths, recoveries). 5. Create visualizations using Matplotlib or Seaborn to show trends over time (e.g., daily cases, deaths by country). 6. Write a summary report in your Jupyter notebook detailing your findings and insights.",
+                "stack": [
+                  "Pandas",
+                  "Matplotlib",
+                  "Seaborn"
+                ],
+                "rationale": "This project utilizes your existing skills in Python and Pandas while introducing you to data visualization techniques. It addresses your gap in data visualization and exploratory data analysis, which are essential for data scientists.",
+                "addresses_gaps": [
+                  "data visualization",
+                  "exploratory data analysis"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              },
+              {
+                "title": "Customer Segmentation Analysis",
+                "description": "1. Obtain a customer dataset (e.g., from Kaggle) that includes demographic and purchase data. 2. Load the dataset into a Pandas DataFrame and perform initial data cleaning. 3. Conduct EDA to identify patterns in customer behavior. 4. Use clustering techniques (e.g., K-means) to segment customers based on their purchasing habits. 5. Visualize the clusters using scatter plots and interpret the results. 6. Document your analysis and insights in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "NumPy",
+                  "Matplotlib"
+                ],
+                "rationale": "This project builds on your previous experience with data analysis and introduces clustering techniques, which are vital for understanding customer behavior. It addresses gaps in exploratory data analysis and clustering.",
+                "addresses_gaps": [
+                  "exploratory data analysis",
+                  "clustering"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              }
+            ],
+            "resources": [],
+            "addresses_gaps": [
+              "data visualization",
+              "exploratory data analysis",
+              "clustering"
+            ],
+            "resume_updates": [
+              "Completed exploratory data analysis on COVID-19 dataset, including visualizations and insights.",
+              "Performed customer segmentation analysis using clustering techniques."
+            ]
+          },
+          {
+            "title": "Machine Learning Fundamentals",
+            "rationale": "In this phase, you will apply your knowledge of algorithms and linear algebra to implement machine learning models. This will enhance your understanding of how to build predictive models, which is crucial for a data scientist.",
+            "outcome": "You will be able to implement basic machine learning models and evaluate their performance using appropriate metrics.",
+            "checkpoint": "After completing this phase, you will be able to build and evaluate machine learning models using scikit-learn.",
+            "weeks": 12,
+            "learning_actions": [
+              {
+                "title": "House Price Prediction Model",
+                "description": "1. Download the Ames Housing dataset from Kaggle. 2. Load the dataset into a Pandas DataFrame and perform data cleaning (handle missing values, encode categorical variables). 3. Split the dataset into training and testing sets. 4. Implement a linear regression model using scikit-learn to predict house prices. 5. Evaluate the model's performance using metrics such as RMSE and R\u00b2. 6. Document your findings and model performance in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "NumPy",
+                  "scikit-learn"
+                ],
+                "rationale": "This project allows you to apply your knowledge of algorithms and linear algebra in a practical context. It addresses your gap in machine learning implementation and evaluation.",
+                "addresses_gaps": [
+                  "machine learning implementation",
+                  "model evaluation"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              },
+              {
+                "title": "Sentiment Analysis with Logistic Regression",
+                "description": "1. Use the sentiment analysis dataset you previously worked on. 2. Preprocess the text data (tokenization, removing stop words, etc.). 3. Split the dataset into training and testing sets. 4. Implement a logistic regression model using scikit-learn to classify sentiments. 5. Evaluate the model's performance using accuracy and confusion matrix. 6. Compare results with your previous classifier and document improvements in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "scikit-learn",
+                  "NumPy"
+                ],
+                "rationale": "This project builds on your existing sentiment analysis classifier experience, allowing you to deepen your understanding of machine learning models. It addresses gaps in machine learning implementation and evaluation.",
+                "addresses_gaps": [
+                  "machine learning implementation",
+                  "model evaluation"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              }
+            ],
+            "resources": [],
+            "addresses_gaps": [
+              "machine learning implementation",
+              "model evaluation"
+            ],
+            "resume_updates": [
+              "Built and evaluated a linear regression model for house price prediction.",
+              "Implemented sentiment analysis using logistic regression, comparing performance with previous models."
+            ]
+          },
+          {
+            "title": "Advanced Machine Learning Techniques",
+            "rationale": "This phase will introduce you to more advanced machine learning techniques, including ensemble methods and model optimization. This is essential for improving model performance and understanding complex data patterns.",
+            "outcome": "You will be able to implement advanced machine learning techniques and optimize model performance.",
+            "checkpoint": "After completing this phase, you will be able to apply ensemble methods and optimize machine learning models.",
+            "weeks": 12,
+            "learning_actions": [
+              {
+                "title": "Random Forest for Customer Churn Prediction",
+                "description": "1. Obtain a customer churn dataset from a public source. 2. Load the dataset into a Pandas DataFrame and preprocess the data. 3. Split the dataset into training and testing sets. 4. Implement a Random Forest classifier using scikit-learn to predict customer churn. 5. Optimize the model using GridSearchCV to find the best hyperparameters. 6. Evaluate the model's performance and document your findings in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "scikit-learn",
+                  "NumPy"
+                ],
+                "rationale": "This project introduces you to ensemble methods, which are crucial for improving model accuracy. It addresses gaps in advanced machine learning techniques and model optimization.",
+                "addresses_gaps": [
+                  "advanced machine learning techniques",
+                  "model optimization"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              },
+              {
+                "title": "Time Series Forecasting for Sales Data",
+                "description": "1. Obtain a sales dataset that includes time series data. 2. Load the dataset into a Pandas DataFrame and preprocess it. 3. Use ARIMA or Prophet to build a time series forecasting model. 4. Validate the model using time series cross-validation techniques. 5. Evaluate the forecast accuracy and document your findings in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "NumPy",
+                  "scikit-learn"
+                ],
+                "rationale": "This project allows you to explore time series forecasting, a critical area in data science. It addresses gaps in advanced machine learning techniques and model evaluation.",
+                "addresses_gaps": [
+                  "advanced machine learning techniques",
+                  "model evaluation"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              }
+            ],
+            "resources": [],
+            "addresses_gaps": [
+              "advanced machine learning techniques",
+              "model optimization",
+              "model evaluation"
+            ],
+            "resume_updates": [
+              "Implemented a Random Forest model for customer churn prediction with hyperparameter optimization.",
+              "Built a time series forecasting model for sales data using ARIMA/Prophet."
+            ]
+          }
+        ]
+      },
+      "critique": {
+        "rubric_scores": {
+          "gap_coverage": 5,
+          "jit_compliance": 4,
+          "feasibility": 5,
+          "level_appropriateness": 5
+        },
+        "issues": [
+          "Phase 2 title ('Machine Learning Fundamentals') suggests a conceptual preamble. Every phase must lead with a concrete applied project \u2014 foundations are embedded within projects, not frontloaded."
+        ],
+        "satisfactory": true
+      },
+      "critique_iterations": 1,
+      "best_plan": {
+        "timeline_weeks": 34,
+        "phases": [
+          {
+            "title": "Exploratory Data Analysis and Visualization",
+            "rationale": "This phase builds on your existing skills in Python and Pandas, allowing you to deepen your understanding of data analysis and visualization. The projects will leverage your experience with Jupyter notebooks and will introduce you to data visualization techniques, which are crucial for a data scientist.",
+            "outcome": "You will be able to perform exploratory data analysis (EDA) on datasets and create insightful visualizations to communicate findings effectively.",
+            "checkpoint": "After completing this phase, you will be able to conduct EDA on a dataset and visualize the results using appropriate libraries.",
+            "weeks": 10,
+            "learning_actions": [
+              {
+                "title": "COVID-19 Data Analysis and Visualization",
+                "description": "1. Download the COVID-19 dataset from a public repository (e.g., Johns Hopkins University). 2. Use Pandas to load the dataset into a DataFrame and examine its structure. 3. Clean the data by handling missing values and filtering for relevant columns. 4. Perform exploratory data analysis (EDA) to summarize key statistics (e.g., total cases, deaths, recoveries). 5. Create visualizations using Matplotlib or Seaborn to show trends over time (e.g., daily cases, deaths by country). 6. Write a summary report in your Jupyter notebook detailing your findings and insights.",
+                "stack": [
+                  "Pandas",
+                  "Matplotlib",
+                  "Seaborn"
+                ],
+                "rationale": "This project utilizes your existing skills in Python and Pandas while introducing you to data visualization techniques. It addresses your gap in data visualization and exploratory data analysis, which are essential for data scientists.",
+                "addresses_gaps": [
+                  "data visualization",
+                  "exploratory data analysis"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              },
+              {
+                "title": "Customer Segmentation Analysis",
+                "description": "1. Obtain a customer dataset (e.g., from Kaggle) that includes demographic and purchase data. 2. Load the dataset into a Pandas DataFrame and perform initial data cleaning. 3. Conduct EDA to identify patterns in customer behavior. 4. Use clustering techniques (e.g., K-means) to segment customers based on their purchasing habits. 5. Visualize the clusters using scatter plots and interpret the results. 6. Document your analysis and insights in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "NumPy",
+                  "Matplotlib"
+                ],
+                "rationale": "This project builds on your previous experience with data analysis and introduces clustering techniques, which are vital for understanding customer behavior. It addresses gaps in exploratory data analysis and clustering.",
+                "addresses_gaps": [
+                  "exploratory data analysis",
+                  "clustering"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              }
+            ],
+            "resources": [],
+            "addresses_gaps": [
+              "data visualization",
+              "exploratory data analysis",
+              "clustering"
+            ],
+            "resume_updates": [
+              "Completed exploratory data analysis on COVID-19 dataset, including visualizations and insights.",
+              "Performed customer segmentation analysis using clustering techniques."
+            ]
+          },
+          {
+            "title": "Machine Learning Fundamentals",
+            "rationale": "In this phase, you will apply your knowledge of algorithms and linear algebra to implement machine learning models. This will enhance your understanding of how to build predictive models, which is crucial for a data scientist.",
+            "outcome": "You will be able to implement basic machine learning models and evaluate their performance using appropriate metrics.",
+            "checkpoint": "After completing this phase, you will be able to build and evaluate machine learning models using scikit-learn.",
+            "weeks": 12,
+            "learning_actions": [
+              {
+                "title": "House Price Prediction Model",
+                "description": "1. Download the Ames Housing dataset from Kaggle. 2. Load the dataset into a Pandas DataFrame and perform data cleaning (handle missing values, encode categorical variables). 3. Split the dataset into training and testing sets. 4. Implement a linear regression model using scikit-learn to predict house prices. 5. Evaluate the model's performance using metrics such as RMSE and R\u00b2. 6. Document your findings and model performance in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "NumPy",
+                  "scikit-learn"
+                ],
+                "rationale": "This project allows you to apply your knowledge of algorithms and linear algebra in a practical context. It addresses your gap in machine learning implementation and evaluation.",
+                "addresses_gaps": [
+                  "machine learning implementation",
+                  "model evaluation"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              },
+              {
+                "title": "Sentiment Analysis with Logistic Regression",
+                "description": "1. Use the sentiment analysis dataset you previously worked on. 2. Preprocess the text data (tokenization, removing stop words, etc.). 3. Split the dataset into training and testing sets. 4. Implement a logistic regression model using scikit-learn to classify sentiments. 5. Evaluate the model's performance using accuracy and confusion matrix. 6. Compare results with your previous classifier and document improvements in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "scikit-learn",
+                  "NumPy"
+                ],
+                "rationale": "This project builds on your existing sentiment analysis classifier experience, allowing you to deepen your understanding of machine learning models. It addresses gaps in machine learning implementation and evaluation.",
+                "addresses_gaps": [
+                  "machine learning implementation",
+                  "model evaluation"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              }
+            ],
+            "resources": [],
+            "addresses_gaps": [
+              "machine learning implementation",
+              "model evaluation"
+            ],
+            "resume_updates": [
+              "Built and evaluated a linear regression model for house price prediction.",
+              "Implemented sentiment analysis using logistic regression, comparing performance with previous models."
+            ]
+          },
+          {
+            "title": "Advanced Machine Learning Techniques",
+            "rationale": "This phase will introduce you to more advanced machine learning techniques, including ensemble methods and model optimization. This is essential for improving model performance and understanding complex data patterns.",
+            "outcome": "You will be able to implement advanced machine learning techniques and optimize model performance.",
+            "checkpoint": "After completing this phase, you will be able to apply ensemble methods and optimize machine learning models.",
+            "weeks": 12,
+            "learning_actions": [
+              {
+                "title": "Random Forest for Customer Churn Prediction",
+                "description": "1. Obtain a customer churn dataset from a public source. 2. Load the dataset into a Pandas DataFrame and preprocess the data. 3. Split the dataset into training and testing sets. 4. Implement a Random Forest classifier using scikit-learn to predict customer churn. 5. Optimize the model using GridSearchCV to find the best hyperparameters. 6. Evaluate the model's performance and document your findings in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "scikit-learn",
+                  "NumPy"
+                ],
+                "rationale": "This project introduces you to ensemble methods, which are crucial for improving model accuracy. It addresses gaps in advanced machine learning techniques and model optimization.",
+                "addresses_gaps": [
+                  "advanced machine learning techniques",
+                  "model optimization"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              },
+              {
+                "title": "Time Series Forecasting for Sales Data",
+                "description": "1. Obtain a sales dataset that includes time series data. 2. Load the dataset into a Pandas DataFrame and preprocess it. 3. Use ARIMA or Prophet to build a time series forecasting model. 4. Validate the model using time series cross-validation techniques. 5. Evaluate the forecast accuracy and document your findings in a Jupyter notebook.",
+                "stack": [
+                  "Pandas",
+                  "NumPy",
+                  "scikit-learn"
+                ],
+                "rationale": "This project allows you to explore time series forecasting, a critical area in data science. It addresses gaps in advanced machine learning techniques and model evaluation.",
+                "addresses_gaps": [
+                  "advanced machine learning techniques",
+                  "model evaluation"
+                ],
+                "bloom_level": "apply",
+                "example_resources": []
+              }
+            ],
+            "resources": [],
+            "addresses_gaps": [
+              "advanced machine learning techniques",
+              "model optimization",
+              "model evaluation"
+            ],
+            "resume_updates": [
+              "Implemented a Random Forest model for customer churn prediction with hyperparameter optimization.",
+              "Built a time series forecasting model for sales data using ARIMA/Prophet."
+            ]
+          }
+        ]
+      },
+      "best_critique_score": 4.75,
+      "prev_critique_issues": [],
+      "status": "done",
+      "step": "explanation",
+      "errors": [
+        "pathway_planning: internship synthesis failed: TypeError: typing.Dict[int, app.tools.pathway_llm._InternshipOpportunitySpec] is not a module, class, method, or function."
+      ]
+    }
+  }
+}
