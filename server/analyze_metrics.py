@@ -44,12 +44,10 @@ def load_metrics_csv(csv_path: Path) -> List[Dict[str, Any]]:
             # Convert numeric columns to float
             numeric_cols = [
                 'rubric_feasibility', 'rubric_level_appropriateness',
-                'rubric_prerequisite_ordering', 'rubric_gap_coverage',
-                'rubric_internship_readiness', 'rubric_composite',
+                'rubric_gap_coverage', 'rubric_composite',
                 'plan_phases', 'plan_actions_total', 'plan_timeline_weeks',
                 'action_specificity_ratio',
                 'resume_terms_mentioned', 'resume_terms_total',
-                'critique_iterations', 'error_count',
             ]
             for col in numeric_cols:
                 if col in row and row[col]:
@@ -61,8 +59,6 @@ def load_metrics_csv(csv_path: Path) -> List[Dict[str, Any]]:
             # Convert boolean columns
             if 'critique_satisfactory' in row:
                 row['critique_satisfactory'] = row['critique_satisfactory'].lower() == 'true'
-            if 'has_errors' in row:
-                row['has_errors'] = row['has_errors'].lower() == 'true'
 
             rows.append(row)
 
@@ -121,14 +117,12 @@ def generate_summary_table(
         ('rubric_composite', 'Rubric Composite Score'),
         ('rubric_feasibility', 'Feasibility'),
         ('rubric_level_appropriateness', 'Level Appropriateness'),
-        ('rubric_prerequisite_ordering', 'Prerequisite Ordering'),
-        ('rubric_internship_readiness', 'Internship Readiness'),
+        ('rubric_gap_coverage', 'Gap Coverage'),
         ('plan_phases', 'Plan Phases'),
         ('plan_actions_total', 'Total Actions'),
         ('plan_timeline_weeks', 'Timeline (weeks)'),
         ('action_specificity_ratio', 'Specificity Ratio'),
         ('resume_terms_mentioned', 'Resume Terms Mentioned'),
-        ('critique_iterations', 'Critique Iterations'),
     ]
 
     # Build table header
@@ -149,28 +143,6 @@ def generate_summary_table(
             row_parts.append(f" {stats} |")
 
         rows_md.append("".join(row_parts) + "\n")
-
-    return "".join(rows_md)
-
-
-def generate_success_rate_table(
-    grouped_rows: Dict[str, List[Dict[str, Any]]]
-) -> str:
-    """Generate table showing success rate and error counts."""
-    header = "| Condition | Successful | Failed | Error Rate |\n"
-    separator = "|-----------|-----------|--------|------------|\n"
-
-    rows_md = [header, separator]
-
-    for condition in sorted(grouped_rows.keys()):
-        condition_rows = grouped_rows[condition]
-        total = len(condition_rows)
-        failed = sum(1 for r in condition_rows if r.get('has_errors', False))
-        successful = total - failed
-        error_rate = (failed / total * 100) if total > 0 else 0
-
-        row = f"| {condition} | {successful}/{total} | {failed} | {error_rate:.1f}% |\n"
-        rows_md.append(row)
 
     return "".join(rows_md)
 
@@ -224,14 +196,6 @@ def main():
     summary_path.write_text("# Ablation Study Results\n\n" + summary_md)
     print(f"  [OK] Saved to {summary_path}")
 
-    # Generate success rate table
-    print("Generating success rate table...")
-    success_md = generate_success_rate_table(grouped)
-    summary_path.write_text(
-        summary_path.read_text() + "\n## Run Success Rate\n\n" + success_md
-    )
-    print(f"  [OK] Updated {summary_path}")
-
     # Generate CSV with all data
     print("Generating full data table...")
     all_data_path = args.output / "all_runs.csv"
@@ -251,7 +215,7 @@ def main():
             print("Generating plots...")
 
             fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-            fig.suptitle("Ablation Study: Metric Comparison", fontsize=16)
+            fig.suptitle("Ablation 3: COMPASS vs Non-Agentic LLM run", fontsize=16)
 
             plot_metrics = [
                 ('rubric_composite', 'Rubric Composite Score'),

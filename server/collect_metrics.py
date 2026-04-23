@@ -266,8 +266,6 @@ def collect_condition_runs(
                 writer.writerow(row)
 
                 print(f"  [OK] Run {attempt} metrics collected")
-                if metrics['has_errors']:
-                    print(f"    [WARN] {metrics['error_count']} error(s) logged")
 
             except Exception as e:
                 print(f"  [FAIL] Run {attempt} failed: {type(e).__name__}: {e}")
@@ -278,8 +276,6 @@ def collect_condition_runs(
                     'condition': condition,
                     'scenario': scenario_id,
                     'attempt': attempt,
-                    'has_errors': True,
-                    'error_count': 1,
                 }
                 error_row = metrics_to_csv_row(error_metrics)
                 writer.writerow(error_row)

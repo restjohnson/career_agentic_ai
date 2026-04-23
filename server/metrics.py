@@ -162,16 +162,12 @@ def extract_metrics_from_state(
         metrics['critique_satisfactory'] = state.critique.satisfactory
         metrics['rubric_feasibility'] = scores.get('feasibility')
         metrics['rubric_level_appropriateness'] = scores.get('level_appropriateness')
-        metrics['rubric_prerequisite_ordering'] = scores.get('prerequisite_ordering')
         metrics['rubric_gap_coverage'] = scores.get('gap_coverage')
-        metrics['rubric_internship_readiness'] = scores.get('internship_readiness')
 
-        # Composite: mean of key dimensions (skip gap_coverage for ablation3)
+        # Composite: mean of feasibility and level_appropriateness
         key_scores = [
             scores.get('feasibility'),
             scores.get('level_appropriateness'),
-            scores.get('prerequisite_ordering'),
-            scores.get('internship_readiness'),
         ]
         valid = [s for s in key_scores if s is not None]
         metrics['rubric_composite'] = sum(valid) / len(valid) if valid else None
@@ -179,9 +175,7 @@ def extract_metrics_from_state(
         metrics['critique_satisfactory'] = None
         metrics['rubric_feasibility'] = None
         metrics['rubric_level_appropriateness'] = None
-        metrics['rubric_prerequisite_ordering'] = None
         metrics['rubric_gap_coverage'] = None
-        metrics['rubric_internship_readiness'] = None
         metrics['rubric_composite'] = None
 
     # Plan structure metrics
@@ -215,13 +209,6 @@ def extract_metrics_from_state(
         metrics['resume_terms_mentioned'] = 0
         metrics['resume_terms_total'] = 0
 
-    # Iteration metrics
-    metrics['critique_iterations'] = state.critique_iterations or 0
-
-    # Error tracking
-    metrics['has_errors'] = len(state.errors) > 0
-    metrics['error_count'] = len(state.errors)
-
     return metrics
 
 
@@ -230,10 +217,9 @@ def metrics_to_csv_row(metrics: Dict) -> List[str]:
     keys = [
         'timestamp', 'run_id', 'condition', 'scenario', 'attempt',
         'critique_satisfactory', 'rubric_feasibility', 'rubric_level_appropriateness',
-        'rubric_prerequisite_ordering', 'rubric_gap_coverage', 'rubric_internship_readiness',
-        'rubric_composite', 'plan_phases', 'plan_actions_total', 'plan_timeline_weeks',
-        'action_specificity_ratio', 'resume_terms_mentioned',
-        'resume_terms_total', 'critique_iterations', 'has_errors', 'error_count',
+        'rubric_gap_coverage', 'rubric_composite', 'plan_phases', 'plan_actions_total',
+        'plan_timeline_weeks', 'action_specificity_ratio', 'resume_terms_mentioned',
+        'resume_terms_total',
     ]
     return [str(metrics.get(k, '')) for k in keys]
 
@@ -243,8 +229,7 @@ def get_csv_header() -> List[str]:
     return [
         'timestamp', 'run_id', 'condition', 'scenario', 'attempt',
         'critique_satisfactory', 'rubric_feasibility', 'rubric_level_appropriateness',
-        'rubric_prerequisite_ordering', 'rubric_gap_coverage', 'rubric_internship_readiness',
-        'rubric_composite', 'plan_phases', 'plan_actions_total', 'plan_timeline_weeks',
-        'action_specificity_ratio', 'resume_terms_mentioned',
-        'resume_terms_total', 'critique_iterations', 'has_errors', 'error_count',
+        'rubric_gap_coverage', 'rubric_composite', 'plan_phases', 'plan_actions_total',
+        'plan_timeline_weeks', 'action_specificity_ratio', 'resume_terms_mentioned',
+        'resume_terms_total',
     ]
