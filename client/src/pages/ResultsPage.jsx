@@ -96,8 +96,8 @@ export default function ResultsPage() {
   }, [finalState, navigate]);
 
   const handleDownload = useCallback(() => {
-    downloadReport({ studentModel, roleSpec, gapReport, plan, targetRole });
-  }, [studentModel, roleSpec, gapReport, plan, targetRole]);
+    downloadReport({ studentModel, roleSpec, gapReport, plan, targetRole, evidenceItems });
+  }, [studentModel, roleSpec, gapReport, plan, targetRole, evidenceItems]);
 
   const gapCount    = gapReport?.gaps?.length ?? 0;
   const phaseCount  = plan?.phases?.length ?? 0;
