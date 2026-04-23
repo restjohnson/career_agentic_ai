@@ -1,0 +1,14 @@
+metric,full_compass,ablation_2,delta
+Total Evidence Items,0,0,0.0
+Requirements Matched,0,0,0.0
+Total Gaps,9,8,-1.0
+Mean Confidence Score,0.0,0.0,0.0
+Stdev Confidence Score,0.0,0.0,0.0
+Confidence Reason Population Rate,0.0,0.0,0.0
+Student Reasoning Population Rate,0.0,0.0,0.0
+Rubric Mean Score,4.5,4.5,0.0
+gap_type:no_evidence,9,8,-1
+rubric:feasibility,5,5,0.0
+rubric:gap_coverage,4,4,0.0
+rubric:jit_compliance,4,4,0.0
+rubric:level_appropriateness,5,5,0.0

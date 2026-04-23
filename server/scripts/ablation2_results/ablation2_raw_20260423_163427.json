@@ -1,0 +1,115 @@
+{
+  "run_timestamp": "2026-04-23T16:34:27.040719",
+  "scenario": "skills_claimer",
+  "role": "Data Analyst",
+  "full_compass": {
+    "label": "full_compass",
+    "total_evidence_items": 10,
+    "item_type_distribution": {
+      "claim": 7,
+      "coursework": 2,
+      "experience": 1
+    },
+    "requirements_matched": 4,
+    "mean_confidence": 0.122,
+    "stdev_confidence": 0.0791,
+    "gap_type_distribution": {
+      "claimed_only": 4,
+      "no_evidence": 4
+    },
+    "total_gaps": 8,
+    "student_level_reasoning_rate": 0.5,
+    "rubric_scores": {
+      "gap_coverage": 5,
+      "jit_compliance": 4,
+      "feasibility": 5,
+      "level_appropriateness": 5
+    },
+    "rubric_mean": 4.75,
+    "confidence_reason_populated_rate": 1.0,
+    "raw_items": [
+      {
+        "item_type": "claim",
+        "summary": "Python",
+        "confidence": 0.1,
+        "confidence_reason": "Only mentioned in the technical skills section without any demonstration context."
+      },
+      {
+        "item_type": "claim",
+        "summary": "SQL",
+        "confidence": 0.1,
+        "confidence_reason": "Only mentioned in the technical skills section without any demonstration context."
+      },
+      {
+        "item_type": "claim",
+        "summary": "Tableau",
+        "confidence": 0.1,
+        "confidence_reason": "Only mentioned in the technical skills section without any demonstration context."
+      },
+      {
+        "item_type": "claim",
+        "summary": "Excel",
+        "confidence": 0.1,
+        "confidence_reason": "Only mentioned in the technical skills section without any demonstration context."
+      },
+      {
+        "item_type": "claim",
+        "summary": "R",
+        "confidence": 0.1,
+        "confidence_reason": "Only mentioned in the technical skills section without any demonstration context."
+      },
+      {
+        "item_type": "claim",
+        "summary": "Power BI",
+        "confidence": 0.1,
+        "confidence_reason": "Only mentioned in the technical skills section without any demonstration context."
+      },
+      {
+        "item_type": "claim",
+        "summary": "Statistical Analysis",
+        "confidence": 0.1,
+        "confidence_reason": "Only mentioned in the technical skills section without any demonstration context."
+      },
+      {
+        "item_type": "coursework",
+        "summary": "B.S. Information Systems (In Progress)",
+        "confidence": 0.26,
+        "confidence_reason": "This degree is relevant to the field of database administration, indicating foundational knowledge, but lacks specific context of application."
+      },
+      {
+        "item_type": "coursework",
+        "summary": "Intro to Data Analysis",
+        "confidence": 0.26,
+        "confidence_reason": "This course likely covers relevant skills for data analysis, but it is unclear how it directly applies to database administration."
+      },
+      {
+        "item_type": "experience",
+        "summary": "Retail Cashier at Target Corp",
+        "confidence": 0.0,
+        "confidence_reason": "This role does not demonstrate any relevant skills or experience related to database administration."
+      }
+    ]
+  },
+  "ablation_2": {
+    "label": "ablation_2",
+    "total_evidence_items": 0,
+    "item_type_distribution": {},
+    "requirements_matched": 0,
+    "mean_confidence": 0.0,
+    "stdev_confidence": 0.0,
+    "gap_type_distribution": {
+      "no_evidence": 8
+    },
+    "total_gaps": 8,
+    "student_level_reasoning_rate": 0.0,
+    "rubric_scores": {
+      "gap_coverage": 5,
+      "jit_compliance": 4,
+      "feasibility": 5,
+      "level_appropriateness": 5
+    },
+    "rubric_mean": 4.75,
+    "confidence_reason_populated_rate": 0.0,
+    "raw_items": []
+  }
+}

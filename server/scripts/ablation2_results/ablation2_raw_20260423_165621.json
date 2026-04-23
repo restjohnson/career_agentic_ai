@@ -1,0 +1,49 @@
+{
+  "run_timestamp": "2026-04-23T16:56:21.652835",
+  "scenario": "skills_claimer",
+  "role": "Data Analyst",
+  "full_compass": {
+    "label": "full_compass",
+    "total_evidence_items": 0,
+    "item_type_distribution": {},
+    "requirements_matched": 0,
+    "mean_confidence": 0.0,
+    "stdev_confidence": 0.0,
+    "gap_type_distribution": {
+      "no_evidence": 9
+    },
+    "total_gaps": 9,
+    "student_level_reasoning_rate": 0.0,
+    "rubric_scores": {
+      "gap_coverage": 4,
+      "jit_compliance": 4,
+      "feasibility": 5,
+      "level_appropriateness": 5
+    },
+    "rubric_mean": 4.5,
+    "confidence_reason_populated_rate": 0.0,
+    "raw_items": []
+  },
+  "ablation_2": {
+    "label": "ablation_2",
+    "total_evidence_items": 0,
+    "item_type_distribution": {},
+    "requirements_matched": 0,
+    "mean_confidence": 0.0,
+    "stdev_confidence": 0.0,
+    "gap_type_distribution": {
+      "no_evidence": 8
+    },
+    "total_gaps": 8,
+    "student_level_reasoning_rate": 0.0,
+    "rubric_scores": {
+      "gap_coverage": 4,
+      "jit_compliance": 4,
+      "feasibility": 5,
+      "level_appropriateness": 5
+    },
+    "rubric_mean": 4.5,
+    "confidence_reason_populated_rate": 0.0,
+    "raw_items": []
+  }
+}
