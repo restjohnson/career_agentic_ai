@@ -261,6 +261,75 @@ def main():
             print(f"  [OK] Saved to {plot_path}")
             plt.close()
 
+            # --- Radar chart: rubric dimensions per condition ---
+            radar_metrics = [
+                ('rubric_composite', 'Composite'),
+                ('rubric_feasibility', 'Feasibility'),
+                ('rubric_level_appropriateness', 'Level\nAppropriateness'),
+                ('rubric_gap_coverage', 'Gap\nCoverage'),
+                ('action_specificity_ratio', 'Action\nSpecificity'),
+            ]
+            radar_labels = [label for _, label in radar_metrics]
+            num_vars = len(radar_labels)
+            angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
+            angles += angles[:1]  # close the polygon
+
+            fig_r, ax_r = plt.subplots(figsize=(7, 7), subplot_kw=dict(polar=True))
+            fig_r.suptitle("Rubric Profile by Condition", fontsize=14)
+
+            colors = ['#2196F3', '#FF5722', '#4CAF50', '#9C27B0']
+            for color, condition in zip(colors, sorted(grouped.keys())):
+                condition_rows = grouped[condition]
+                vals = []
+                for metric_key, _ in radar_metrics:
+                    raw = [r.get(metric_key) for r in condition_rows]
+                    valid = [v for v in raw if v is not None and isinstance(v, (int, float))]
+                    vals.append(mean(valid) if valid else 0.0)
+                vals += vals[:1]
+                ax_r.plot(angles, vals, color=color, linewidth=2, label=condition)
+                ax_r.fill(angles, vals, color=color, alpha=0.15)
+
+            ax_r.set_xticks(angles[:-1])
+            ax_r.set_xticklabels(radar_labels, size=10)
+            ax_r.set_ylim(0, 5)
+            ax_r.set_yticks([1, 2, 3, 4, 5])
+            ax_r.set_yticklabels(['1', '2', '3', '4', '5'], size=8)
+            ax_r.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
+            ax_r.grid(True)
+
+            radar_path = args.output / "radar_chart.png"
+            plt.savefig(radar_path, dpi=150, bbox_inches='tight')
+            print(f"  [OK] Saved to {radar_path}")
+            plt.close()
+
+            # --- Bar chart: satisfactory rate per condition ---
+            conditions_sorted = sorted(grouped.keys())
+            sat_rates = []
+            for condition in conditions_sorted:
+                rows_c = grouped[condition]
+                sat_vals = [r.get('critique_satisfactory') for r in rows_c]
+                sat_vals = [v for v in sat_vals if v is not None]
+                rate = sum(1 for v in sat_vals if v is True) / len(sat_vals) * 100 if sat_vals else 0.0
+                sat_rates.append(rate)
+
+            _, ax_b = plt.subplots(figsize=(6, 5))
+            x_pos = np.arange(len(conditions_sorted))
+            bars = ax_b.bar(x_pos, sat_rates, color=['#2196F3', '#FF5722', '#4CAF50', '#9C27B0'][:len(conditions_sorted)], width=0.5)
+            ax_b.set_xticks(x_pos)
+            ax_b.set_xticklabels(conditions_sorted, fontsize=12)
+            ax_b.set_ylabel('Satisfactory Rate (%)', fontsize=11)
+            ax_b.set_title('Critique Satisfactory Rate by Condition', fontsize=13)
+            ax_b.set_ylim(0, 110)
+            ax_b.grid(axis='y', alpha=0.3)
+            for bar, rate in zip(bars, sat_rates):
+                ax_b.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 2,
+                          f'{rate:.0f}%', ha='center', va='bottom', fontsize=12, fontweight='bold')
+
+            bar_path = args.output / "satisfactory_rate.png"
+            plt.savefig(bar_path, dpi=150, bbox_inches='tight')
+            print(f"  [OK] Saved to {bar_path}")
+            plt.close()
+
         except ImportError:
             print("  [WARN] matplotlib not found; skipping plots. Install with: pip install matplotlib")
 
