@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from app.state import AgentState, EvidenceDocument, StudentConstraints
+from app.state import AgentState, ConditionType, EvidenceDocument, StudentConstraints
 from app.tools.supabase_repo import SupabaseRepo
 from app.tools.session_token import get_session_id, get_session_id_from_query
 from app.graph import build_graph
@@ -31,6 +31,10 @@ class RunCreateRequest(BaseModel):
     student_constraints: Optional[StudentConstraints] = Field(
         default=None,
         description="Learning constraints: academic_level, hours_per_week, target_goal, target_date (optional ISO date), preferred_learning_mode.",
+    )
+    condition: ConditionType = Field(
+        default="full",
+        description='"full" = Docling-parsed markdown + typed items; "ablation2" = raw file bytes, all items forced to claim.',
     )
 
 
@@ -68,6 +72,7 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
         raw_user_text=payload.raw_user_text,
         evidence_documents=evidence_documents,
         student_constraints=payload.student_constraints,
+        condition=payload.condition,
         status="running",
     )
 

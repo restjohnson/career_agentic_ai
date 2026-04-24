@@ -121,10 +121,19 @@ Extract ALL evidence items from this document. For skill list or competency sect
             {"role": "user",   "content": user_content},
         ]
     else:
-        # ── Ablation 2 path: raw file as base64 image block ───────────
-        # gpt-4o-mini accepts base64-encoded files via the image_url block.
-        # For PDFs, OpenAI expects the data URI format:
-        #   "data:<mime_type>;base64,<encoded_data>"
+        # ── Ablation 2 path: raw file via OpenAI "file" content block ─
+        # image_url is only valid for images (PNG/JPEG/WEBP/GIF).
+        # For PDF/DOCX the correct OpenAI content block type is "file"
+        # with file.file_data as a base64 data URI.
+        # LangChain's ChatOpenAI passes untyped dicts through unchanged.
+        _MIME_TO_SUFFIX = {
+            "application/pdf": ".pdf",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+            "application/msword": ".doc",
+            "text/plain": ".txt",
+            "text/markdown": ".md",
+        }
+        file_suffix = _MIME_TO_SUFFIX.get(file_mime_type, ".pdf")
         encoded = base64.b64encode(file_bytes).decode("utf-8")
         data_uri = f"data:{file_mime_type};base64,{encoded}"
 
@@ -135,8 +144,11 @@ Extract ALL evidence items from this document. For skill list or competency sect
                 "content": [
                     {"type": "text", "text": instruction},
                     {
-                        "type": "image_url",
-                        "image_url": {"url": data_uri},
+                        "type": "file",
+                        "file": {
+                            "filename": f"resume{file_suffix}",
+                            "file_data": data_uri,
+                        },
                     },
                 ],
             },

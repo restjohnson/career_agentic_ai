@@ -1,0 +1,3387 @@
+{
+  "run_timestamp": "2026-04-24T17:40:47.901349",
+  "role": "Data Analyst",
+  "n_runs": 15,
+  "full_compass": {
+    "label": "full_compass",
+    "n_runs": 15,
+    "total_evidence_items": 20.2,
+    "total_evidence_items_stdev": 1.3732,
+    "item_type_distribution": {
+      "claim": 14.0667,
+      "coursework": 5,
+      "experience": 1.1333
+    },
+    "item_type_distribution_stdev": {
+      "claim": 1.4376,
+      "coursework": 0.0,
+      "experience": 1.4573
+    },
+    "requirements_matched": 5,
+    "requirements_matched_stdev": 0.0,
+    "mean_student_level": 0.1438,
+    "mean_student_level_stdev": 0.033,
+    "gap_type_distribution": {
+      "claimed_only": 1.6667,
+      "no_evidence": 4,
+      "partial": 3.3333
+    },
+    "gap_type_distribution_stdev": {
+      "claimed_only": 0.488,
+      "no_evidence": 0.0,
+      "partial": 0.488
+    },
+    "rubric_scores": {
+      "feasibility": 5,
+      "gap_coverage": 4,
+      "jit_compliance": 4.0667,
+      "level_appropriateness": 5
+    },
+    "rubric_scores_stdev": {
+      "feasibility": 0.0,
+      "gap_coverage": 0.378,
+      "jit_compliance": 0.2582,
+      "level_appropriateness": 0.0
+    },
+    "per_run_raw_items": [
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but it is not directly demonstrated in a practical context."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, which are relevant to database management, but it is not demonstrated in a practical context."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data analysis, but lacks practical demonstration."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database management, but it is not demonstrated in a practical context."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, relevant for data manipulation, but lacks practical demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a practical context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed but does not demonstrate a specific skill or capability."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Women in Technology Club (Fall 2023 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in a club related to technology but lacks specific demonstrated skills or outcomes."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Business Analytics Association (Spring 2024 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in a club related to business analytics but lacks specific demonstrated skills or outcomes."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Attendance at sessions indicates interest in the field but does not demonstrate skills or capabilities."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts related to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, but does not demonstrate independent application."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers database management principles, relevant to the target role, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, relevant to data manipulation, but does not demonstrate independent application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept from coursework, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in events listed, but does not demonstrate specific skills or experience relevant to the role."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers key concepts in database management, relevant to the role, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, relevant to data manipulation, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in events listed but does not demonstrate specific skills or experience."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers key concepts in database management, relevant to the role, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, relevant to data manipulation, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Women in Technology Club (Fall 2023 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership listed but does not demonstrate specific skills or experience relevant to database administration."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Business Analytics Association (Spring 2024 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership listed but does not demonstrate specific skills or experience relevant to database administration."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in events listed but does not demonstrate specific skills or experience relevant to database administration."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts in information systems, relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database administration, covering essential principles, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, relevant for data manipulation, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept from coursework, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Women in Technology Club (Fall 2023 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club related to technology, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Business Analytics Association (Spring 2024 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club related to business analytics, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in events related to data visualization, but does not demonstrate specific skills or experience relevant to the role."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, which are relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, which are relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database administration, providing foundational knowledge, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, which is relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but not demonstrated in a project or experience context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Mentioned in the context of attending sessions but not demonstrated in a project or experience context."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experiences."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, relevant to database management, but does not demonstrate specific skills or experiences."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data management, but does not demonstrate specific skills or experiences."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This course likely covers key concepts and practices in database management, demonstrating independent learning in a relevant area."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, relevant for data manipulation, but does not demonstrate specific skills or experiences."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory knowledge, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory knowledge, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory knowledge, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept learned in coursework, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data visualization tools",
+          "confidence": 0.1,
+          "confidence_reason": "Mentioned as a skill area, but no specific tools or context provided to demonstrate proficiency or application."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, relevant for data manipulation, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept from coursework, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in events listed, but does not demonstrate specific skills or experience."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, which are relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database administration, covering essential principles, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, which is relevant for data manipulation, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory knowledge, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory knowledge, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory knowledge, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept from coursework, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Mentioned in the context of attending sessions, but no direct experience or skill demonstrated."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, which are relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant for data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database management, providing foundational knowledge, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, which is relevant for data manipulation, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is mentioned as a data tool, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a data tool, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as a data tool at an introductory level, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned at an introductory level, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned at an introductory level, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as part of statistical concepts, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as part of statistical concepts, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as part of statistical concepts, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Data-driven decision making is mentioned as a business skill, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Report writing is mentioned as a business skill, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Microsoft Office Suite is mentioned, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Google Workspace is mentioned, but there is no context provided to demonstrate proficiency or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data visualization tools",
+          "confidence": 0.1,
+          "confidence_reason": "Data visualization tools are mentioned, but there is no context provided to demonstrate proficiency or experience."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts related to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers key concepts in database management, relevant to the role, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, relevant for data manipulation, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill without demonstration context, indicating only introductory knowledge."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill without demonstration context, indicating only introductory knowledge."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill without demonstration context, indicating only introductory knowledge."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed without demonstration context."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Women in Technology Club (Fall 2023 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership listed without specific contributions or demonstrated skills."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Business Analytics Association (Spring 2024 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership listed without specific contributions or demonstrated skills."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Participation listed without specific contributions or demonstrated skills."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experiences."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, which are relevant to database management, but does not demonstrate specific skills or experiences."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data analysis, but does not demonstrate specific skills or experiences."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This course likely covers key concepts and practices in database management, demonstrating independent learning relevant to the role."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, which is relevant but does not demonstrate independent application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed but does not demonstrate specific skills or experiences."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed but does not demonstrate specific skills or experiences relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed but does not demonstrate specific skills or experiences relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in events listed but does not demonstrate specific skills or experiences relevant to the role."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, but does not demonstrate independent application."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python, which is relevant but does not demonstrate independent application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Women in Technology Club (Fall 2023 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club related to technology, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Business Analytics Association (Spring 2024 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club related to business analytics, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in events related to data visualization, but does not demonstrate specific skills or experience."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This course likely covers database management principles, which are directly relevant to the role of a Database Administrator."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, which is relevant but does not demonstrate independent use or outcomes."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory knowledge, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory knowledge, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory knowledge, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept from coursework, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency or application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Women in Technology Club (Fall 2023 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club indicates interest in technology but does not demonstrate specific skills or experience relevant to database administration."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Member, UNCC Business Analytics Association (Spring 2024 - Present)",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club indicates interest in analytics but does not demonstrate specific skills or experience relevant to database administration."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Attendance at sessions indicates engagement with the field but does not demonstrate specific skills or experience relevant to database administration."
+        }
+      ],
+      [
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Information Systems - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course likely covers fundamental concepts of information systems, relevant to database administration, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides statistical analysis skills, relevant to data management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python programming, relevant for data manipulation, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill with introductory level, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept from coursework, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill, but no context provided to demonstrate proficiency."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition listed, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Extracurricular involvement listed, but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Participation in events listed, but does not demonstrate specific skills or experience relevant to the role."
+        }
+      ]
+    ]
+  },
+  "ablation_2": {
+    "label": "ablation_2",
+    "n_runs": 15,
+    "total_evidence_items": 15.8,
+    "total_evidence_items_stdev": 6.9816,
+    "item_type_distribution": {
+      "claim": 15.8
+    },
+    "item_type_distribution_stdev": {
+      "claim": 6.9816
+    },
+    "requirements_matched": 4.2,
+    "requirements_matched_stdev": 1.6987,
+    "mean_student_level": 0.0,
+    "mean_student_level_stdev": 0.0,
+    "gap_type_distribution": {
+      "claimed_only": 4.2,
+      "no_evidence": 4.4667
+    },
+    "gap_type_distribution_stdev": {
+      "claimed_only": 1.6987,
+      "no_evidence": 1.4573
+    },
+    "rubric_scores": {
+      "feasibility": 5,
+      "gap_coverage": 4.2,
+      "jit_compliance": 4,
+      "level_appropriateness": 4.8667
+    },
+    "rubric_scores_stdev": {
+      "feasibility": 0.0,
+      "gap_coverage": 0.414,
+      "jit_compliance": 0.0,
+      "level_appropriateness": 0.3519
+    },
+    "per_run_raw_items": [
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to database management, which is important for a Database Administrator role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical concepts that are useful for data analysis, relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This course directly relates to database management systems, which is crucial for a Database Administrator."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This introductory course provides basic programming skills in Python, relevant for data manipulation."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is mentioned as a data tool, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a data tool, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as a data tool at an introductory level, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned at an introductory level, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned at an introductory level, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as part of statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as part of statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as part of statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Membership is mentioned but lacks specific context or demonstration of skills or knowledge gained."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Membership is mentioned but lacks specific context or demonstration of skills or knowledge gained."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Attendance is mentioned but lacks specific context or demonstration of skills or knowledge gained."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to database management, which is important for a Database Administrator role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical analysis concepts, which are relevant for data analysis in database management."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This coursework directly relates to database management systems, providing relevant knowledge for the role of a Database Administrator."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework introduces Python programming, which is a valuable skill for data manipulation and analysis."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is mentioned as a data tool, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a data tool, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as a data tool at an introductory level, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned at an introductory level, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned at an introductory level, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as part of statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as part of statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as part of statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "This involvement is mentioned but lacks specific context or demonstration related to database administration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "This involvement is mentioned but lacks specific context or demonstration related to database administration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "This experience is mentioned but lacks specific context or demonstration related to database administration."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to database management, which is essential for a Database Administrator role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical analysis concepts, which are important for data interpretation in database management."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This course directly relates to database management systems, providing relevant knowledge for the role of a Database Administrator."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This introductory course provides basic programming skills in Python, which can be useful for data manipulation and analysis."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is mentioned as a data tool, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a data tool, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as a data tool at an introductory level, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned at an introductory level, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned at an introductory level, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as part of statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as part of statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as part of statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Membership is mentioned but lacks specific context or demonstration of skills or knowledge gained."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Membership is mentioned but lacks specific context or demonstration of skills or knowledge gained."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Attendance is mentioned but lacks specific context or demonstration of skills or knowledge gained."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Bachelor of Science in Information Systems \u2014 University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree is relevant to the field of database administration, indicating foundational knowledge in information systems, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides foundational knowledge relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database administration, indicating knowledge of database principles, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course indicates exposure to Python programming, which is relevant but does not demonstrate independent use or outcomes."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned as an introductory skill, but there is no evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as an introductory skill, but there is no evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as an introductory skill, but there is no evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as part of statistical concepts learned, but lacks practical application evidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as part of statistical concepts learned, but lacks practical application evidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as part of statistical concepts learned, but lacks practical application evidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "This tool is mentioned but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "This tool is mentioned but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "This tool is mentioned but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "This tool is mentioned but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Membership is mentioned but lacks evidence of specific contributions or skills gained."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Membership is mentioned but lacks evidence of specific contributions or skills gained."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Attendance is mentioned but lacks evidence of skills gained or practical application."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to database management, which is essential for a Database Administrator role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical analysis, which is relevant for data management and analysis tasks."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This course directly relates to database management systems, providing knowledge essential for a Database Administrator role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This introductory course provides basic programming skills in Python, which is useful for data manipulation and analysis."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a statistical concept but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a business skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Listed as a skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.0,
+          "confidence_reason": "Extracurricular involvement listed without specific context or demonstration of relevant skills."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.0,
+          "confidence_reason": "Extracurricular involvement listed without specific context or demonstration of relevant skills."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.0,
+          "confidence_reason": "Participation in events listed without specific context or demonstration of relevant skills."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to data analysis, but it is in a guided setting, hence the moderate confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical concepts which are essential for data analysis, but it is in a guided setting, hence the moderate confidence."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Bachelor of Science in Information Systems \u2014 University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree is relevant to the field of data science, indicating foundational knowledge, but does not demonstrate specific skills or tools directly."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides foundational knowledge relevant to data science, but does not demonstrate specific skills or tools directly."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This course covers statistical concepts relevant to data analysis, but does not demonstrate specific skills or tools directly."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to database management, which is important for a Database Administrator role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical concepts that are useful for data analysis, relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework is directly related to database management, which is essential for a Database Administrator."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework introduces Python programming, which is relevant for data manipulation and analysis."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is mentioned as a skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a skill but without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as a skill but only at an introductory level without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a skill but only at an introductory level without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned as a skill but only at an introductory level without specific context or demonstration of use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as a statistical concept but lacks context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as a statistical concept but lacks context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as a statistical concept but lacks context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context or demonstration of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context or demonstration of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context or demonstration of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context or demonstration of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "This involvement is mentioned but lacks context or demonstration of relevant skills or outcomes."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "This involvement is mentioned but lacks context or demonstration of relevant skills or outcomes."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "This experience is mentioned but lacks context or demonstration of relevant skills or outcomes."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to data analysis, but it is in a guided academic setting, hence the moderate confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical concepts that are essential for data analysis, but it is in a guided academic setting, hence the moderate confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides knowledge about database management, which is relevant for data handling, but it is in a guided academic setting, hence the moderate confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework introduces Python programming, which is essential for data analysis, but it is in a guided academic setting, hence the moderate confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as an introductory skill, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as an introductory skill, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned as an introductory skill, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as a statistical concept, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as a statistical concept, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as a statistical concept, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "Data-driven decision making is mentioned as a business skill, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Report writing is mentioned as a business skill, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Microsoft Office Suite is mentioned as a skill, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Google Workspace is mentioned as a skill, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Microsoft Excel is mentioned as a skill, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a skill, but there is no evidence of practical application or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club is mentioned, but there is no evidence of specific contributions or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club is mentioned, but there is no evidence of specific contributions or outcomes, hence the low confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Attendance at sessions is mentioned, but there is no evidence of practical application or outcomes, hence the low confidence."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to database management, which is important for a Database Administrator role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical analysis, which is relevant for data management and analysis tasks."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This course directly relates to database management systems, providing relevant knowledge for the role of a Database Administrator."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework introduces Python, which is a valuable skill for data manipulation and analysis."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is a commonly used tool for data analysis, but no specific context of use is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is a tool for data management, but no specific context of use is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as a skill, but only at an introductory level without demonstrated experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a skill at an introductory level, lacking specific application context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned as a skill at an introductory level, lacking specific application context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as a statistical concept, but without context of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as a statistical concept, but without context of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as a statistical concept, but without context of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This is a business skill mentioned without specific context of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "Report writing is mentioned as a business skill, but lacks specific context of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "This is a commonly used tool, but no specific context of use is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "This is a commonly used tool, but no specific context of use is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club indicates interest but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Membership in a club indicates interest but does not demonstrate specific skills or experience relevant to the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Attendance at sessions indicates interest in the field but does not demonstrate specific skills or experience relevant to the role."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to database management, which is essential for a Database Administrator."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical analysis, which is relevant for data interpretation and decision-making in database management."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This course directly relates to database management systems, providing relevant knowledge for the role of a Database Administrator."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework introduces Python, which is a useful programming language for data manipulation and analysis."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is mentioned as a data tool, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a data tool, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as a data visualization tool, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned as a programming language, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned under statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned under statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned under statistical concepts, but no specific context or demonstration is provided."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "This tool is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "This tool is mentioned but lacks specific context or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "This involvement is mentioned but lacks specific context or demonstration related to database administration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "This involvement is mentioned but lacks specific context or demonstration related to database administration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "This experience is mentioned but lacks specific context or demonstration related to database administration."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to data analysis, but it is in a guided academic setting."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical concepts that are essential for data analysis, but it is in a guided academic setting."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides knowledge about database management, which is relevant for data handling, but it is in a guided academic setting."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework introduces Python programming, which is relevant for data analysis, but it is in a guided academic setting."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is mentioned as a skill, but there is no context provided to demonstrate its use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a skill, but there is no context provided to demonstrate its use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as a skill at an introductory level, but there is no context provided to demonstrate its use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a skill at an introductory level, but there is no context provided to demonstrate its use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned as a skill at an introductory level, but there is no context provided to demonstrate its use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as a statistical concept, but there is no context provided to demonstrate its use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as a statistical concept, but there is no context provided to demonstrate its use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as a statistical concept in coursework, but there is no context provided to demonstrate its use."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context for demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context for demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context for demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context for demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Membership is mentioned but lacks context for demonstration of relevant skills."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Membership is mentioned but lacks context for demonstration of relevant skills."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Attendance is mentioned but lacks context for demonstration of relevant skills."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Bachelor of Science in Information Systems \u2014 University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree is relevant to the field of database administration, indicating foundational knowledge, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This course provides foundational knowledge relevant to database management, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.26,
+          "confidence_reason": "This course is directly relevant to database administration, indicating foundational knowledge, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.26,
+          "confidence_reason": "This course introduces Python, which is relevant for data manipulation, but does not demonstrate specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned as an introductory skill, but there is no evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as an introductory skill, but there is no evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as an introductory skill, but there is no evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as part of statistical concepts learned, but there is no evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as part of statistical concepts learned, but there is no evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as part of statistical concepts learned, but there is no evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is mentioned as a skill but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a skill but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "Microsoft Office Suite is mentioned as a skill but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "Google Workspace is mentioned as a skill but lacks evidence of practical application or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "Membership indicates interest in technology but lacks evidence of specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "Membership indicates interest in business analytics but lacks evidence of specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "Attendance at sessions indicates engagement with the field but lacks evidence of specific skills or experience."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Dean's List, Fall 2023",
+          "confidence": 0.1,
+          "confidence_reason": "Recognition indicates academic achievement but does not demonstrate specific skills or experience."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Bachelor of Science in Information Systems \u2014 University of North Carolina at Charlotte",
+          "confidence": 0.51,
+          "confidence_reason": "This degree is relevant to the field of database administration, indicating foundational knowledge in information systems, which is essential for the role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.51,
+          "confidence_reason": "This course provides foundational knowledge relevant to database management and administration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.51,
+          "confidence_reason": "This course covers statistical analysis skills, which are important for data interpretation in database roles."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Principles of Database Management",
+          "confidence": 0.51,
+          "confidence_reason": "This course directly relates to database management, providing essential knowledge for a Database Administrator role."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Python Programming",
+          "confidence": 0.51,
+          "confidence_reason": "This course introduces Python, a relevant programming language for data manipulation and analysis."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Excel",
+          "confidence": 0.1,
+          "confidence_reason": "Excel is mentioned as a skill but without context of application or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Sheets",
+          "confidence": 0.1,
+          "confidence_reason": "Google Sheets is mentioned as a skill but without context of application or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tableau (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Tableau is mentioned as a skill but only at an introductory level without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Python (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a skill but only at an introductory level without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "SQL (introductory)",
+          "confidence": 0.1,
+          "confidence_reason": "SQL is mentioned as a skill but only at an introductory level without demonstration context."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Descriptive statistics",
+          "confidence": 0.1,
+          "confidence_reason": "Descriptive statistics is mentioned as a statistical concept but lacks context of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Basic probability",
+          "confidence": 0.1,
+          "confidence_reason": "Basic probability is mentioned as a statistical concept but lacks context of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Regression (coursework)",
+          "confidence": 0.1,
+          "confidence_reason": "Regression is mentioned as a statistical concept but lacks context of application."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Data-driven decision making",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context of application or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Report writing",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context of application or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Microsoft Office Suite",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context of application or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Google Workspace",
+          "confidence": 0.1,
+          "confidence_reason": "This skill is mentioned but lacks context of application or demonstration."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Women in Technology Club",
+          "confidence": 0.1,
+          "confidence_reason": "This extracurricular activity is mentioned but lacks context of relevant skills or contributions."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Member, UNCC Business Analytics Association",
+          "confidence": 0.1,
+          "confidence_reason": "This extracurricular activity is mentioned but lacks context of relevant skills or contributions."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Attended two guest speaker sessions on business intelligence and data visualization",
+          "confidence": 0.1,
+          "confidence_reason": "This experience is mentioned but lacks context of application or demonstration of skills."
+        }
+      ],
+      [
+        {
+          "item_type": "claim",
+          "summary": "Introduction to Information Systems",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to data analysis, but it is in a guided setting, hence the moderate confidence."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Business Statistics",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework covers statistical concepts that are essential for data analysis, but it is in a guided setting, hence the moderate confidence."
+        }
+      ]
+    ]
+  }
+}

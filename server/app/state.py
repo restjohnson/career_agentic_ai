@@ -232,6 +232,7 @@ class CritiqueReport(BaseModel):
     satisfactory: bool = False
 
 #Shared State
+ConditionType = Literal["full", "ablation2"]
 RunStatus = Literal["queued", "running", "done", "failed"]
 StepName = Literal[
     "role_intake",
@@ -246,6 +247,7 @@ class AgentState(BaseModel):
     #for ownership of a session
     session_id: str
     run_id: Optional[str] = None
+    condition: ConditionType = "full"
 
     #colelct the user's intent
     desired_role: str

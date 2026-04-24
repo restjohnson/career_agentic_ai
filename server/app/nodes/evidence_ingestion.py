@@ -8,8 +8,8 @@ import os
 from app.tools.docling_parser import infer_suffix, parse_document_to_markdown
 from app.tools.evidence_llm import build_student_model, extract_evidence_items
 from app.tools.supabase_repo import SupabaseRepo
-# Ablation 2 flag — set env var to skip Docling
-ABLATION_2_NO_DOCLING = os.getenv("ABLATION_2_NO_DOCLING", "false").lower() == "true"
+# Legacy fallback — superseded by state.condition. Remove after per-run switching is confirmed.
+_LEGACY_ABLATION_2 = os.getenv("ABLATION_2_NO_DOCLING", "false").lower() == "true"
 
 def _role_hash(role_spec: Optional[RoleSpecModel]) -> str:
     """
@@ -51,6 +51,9 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     role_hash = _role_hash(s.role_spec)
     onet_code = s.role_spec.matched_onet_code if s.role_spec else None
+    use_ablation2 = (s.condition == "ablation2") or _LEGACY_ABLATION_2
+    if use_ablation2:
+        role_hash = f"ablation2_{role_hash}"
 
     for doc in s.evidence_documents:
         if not doc.storage_ref:
@@ -99,7 +102,7 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
         # ABLATION 2: Skip Docling — pass raw bytes directly to LLM
         # Full COMPASS: Parse with Docling first, then pass markdown
         # ----------------------------------------------------------------
-        if ABLATION_2_NO_DOCLING:
+        if use_ablation2:
             print(f"[ABLATION2] Skipping Docling — passing raw bytes to LLM", flush=True)
             suffix = infer_suffix(doc.storage_ref)
             mime_map = {
@@ -127,6 +130,13 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                     f"{type(e).__name__}: {e}"
                 )
                 continue
+
+            # Layer 2: flatten all item types to 'claim'.
+            # Removes the epistemological hierarchy — experience, project, and coursework
+            # all become claim (proficiency 0 in gap analysis). Reproduces the self-report
+            # baseline of prior AI career guidance systems.
+            for item in items:
+                item.item_type = "claim"
 
         else:
             # Full COMPASS path — Parse with Docling
