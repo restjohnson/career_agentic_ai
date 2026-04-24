@@ -1,69 +1,62 @@
 # Ablation Study Metrics Guide
 
-This guide shows how to collect and analyze metrics from your ablation tests.
+This guide documents how to collect, analyze, and interpret metrics from COMPASS ablation tests.
 
 ## Overview
 
-The metrics system measures:
+The metrics system measures four dimensions:
 
-1. **Critique Rubric Scores** — all 5 dimensions (feasibility, level_appropriateness, prerequisite_ordering, gap_coverage, internship_readiness) + composite
+1. **Plan Quality** — critique satisfactory rate and rubric scores across three dimensions (feasibility, level appropriateness, gap coverage)
 2. **Plan Structure** — number of phases, total actions, timeline in weeks
-3. **Personalization** — action specificity ratio (what % of student's resume terms appear in plan rationale)
-4. **Iterations** — how many times critique loop ran
-5. **Errors** — whether the run completed successfully
+3. **Personalization** — action specificity ratio (proportion of student resume terms appearing in action rationales)
+4. **Statistical Analysis** — Mann-Whitney U, Fisher's exact test, rank-biserial effect sizes, Levene's variance test
+
+---
 
 ## Workflow
 
 ### Step 1: Prepare Your Test Scenario
 
-Save the student's resume as a text file:
+Save the student's resume as a plain text file and note the desired role:
 
 ```
-path/to/test_resumes/ml_engineer_junior.txt
+scenario_3_backend.txt
 ```
 
-Note the desired role:
-```
-"ML Engineer"
+### Step 2: Start the Server
+
+```bash
+cd server
+python -m uvicorn app.main:app --reload
 ```
 
-### Step 2: Run Full COMPASS Baseline (N times)
-
-Collect baseline metrics for the full system:
+### Step 3: Collect Metrics — Full COMPASS
 
 ```bash
 python collect_metrics.py \
-  --scenario "ml_engineer_junior" \
-  --desired-role "ML Engineer" \
-  --resume-file "path/to/test_resumes/ml_engineer_junior.txt" \
+  --scenario "scenario_3_backend" \
+  --desired-role "Backend Software Engineer" \
+  --resume-file "scenario_3_backend.txt" \
   --condition "full" \
-  --runs 5 \
+  --runs 15 \
   --output "ablation_metrics.csv"
 ```
 
-This will:
-- Run the full COMPASS pipeline 5 times
-- Append each run's metrics to `ablation_metrics.csv`
-
-**Expected time:** ~5 min per run (adjust `--runs` if this is too long)
-
-### Step 3: Run Ablation 3 (N times on the same scenario)
+### Step 4: Collect Metrics — Ablation 3
 
 ```bash
 python collect_metrics.py \
-  --scenario "ml_engineer_junior" \
-  --desired-role "ML Engineer" \
-  --resume-file "path/to/test_resumes/ml_engineer_junior.txt" \
+  --scenario "scenario_3_backend" \
+  --desired-role "Backend Software Engineer" \
+  --resume-file "scenario_3_backend.txt" \
   --condition "ablation3" \
-  --runs 5 \
+  --runs 15 \
   --output "ablation_metrics.csv"
 ```
 
-This will:
-- Run Ablation 3 (single-pass baseline) 5 times
-- Append to the same `ablation_metrics.csv`
+The second run appends to the same CSV. Always delete `ablation_metrics.csv` before starting a fresh collection to avoid schema mismatches from prior runs.
 
-### Step 4: Analyze Results
+### Step 5: Analyze and Plot
 
 ```bash
 python analyze_metrics.py \
@@ -72,135 +65,131 @@ python analyze_metrics.py \
   --plot
 ```
 
-This generates:
-- `ablation_results/summary_table.md` — means, stdevs, ranges per metric per condition
-- `ablation_results/all_runs.csv` — raw data for all runs
-- `ablation_results/comparison_plots.png` — boxplots per metric
+Generates:
+
+| File | Contents |
+|------|----------|
+| `ablation_results/summary_table.md` | Mean ± SD [min–max] per metric per condition |
+| `ablation_results/all_runs.csv` | Full raw data for all runs |
+| `ablation_results/comparison_plots.png` | 2×3 grid: satisfactory rate bar + 5 box plots |
+| `ablation_results/radar_chart.png` | Rubric profile overlay per condition (polar) |
+| `ablation_results/satisfactory_rate.png` | Standalone satisfactory rate bar chart |
+
+### Step 6: Statistical Analysis
+
+```bash
+python stats_analysis.py \
+  --input "ablation_results/all_runs.csv" \
+  --output "ablation_results"
+```
+
+Generates `ablation_results/statistical_analysis.md` with:
+- Fisher's exact test + Wilson 95% CI on satisfactory rate
+- Mann-Whitney U + rank-biserial r on all continuous metrics
+- Levene's test on timeline variance
+
+---
 
 ## CSV Schema
 
-Each row represents one run:
+Each row represents one completed run. **Do not mix rows from different schema versions** — delete and re-collect if columns change.
 
-| Column | Type | Notes |
-|--------|------|-------|
-| `timestamp` | ISO string | When run started |
+| Column | Type | Description |
+|--------|------|-------------|
+| `timestamp` | ISO string | When the run started |
 | `run_id` | string | Unique run identifier |
-| `condition` | "full" or "ablation3" | Which variant ran |
-| `scenario` | string | Scenario ID (e.g., "ml_engineer_junior") |
-| `attempt` | int | Run number (1, 2, 3, ...) |
-| `critique_satisfactory` | bool | Did plan pass all rubric thresholds? |
-| `rubric_feasibility` | float | Feasibility score (1–5) |
-| `rubric_level_appropriateness` | float | Level appropriateness (1–5) |
-| `rubric_prerequisite_ordering` | float | Prerequisite order (1–5) |
-| `rubric_gap_coverage` | float | Gap coverage (1–5) |
-| `rubric_internship_readiness` | float | Internship readiness (1–5) |
-| `rubric_composite` | float | Mean of feasibility + level + ordering + internship (excludes gap_coverage) |
-| `plan_phases` | int | Number of phases in plan |
+| `condition` | string | `"full"` or `"ablation3"` |
+| `scenario` | string | Scenario identifier |
+| `attempt` | int | Run number within this condition |
+| `critique_satisfactory` | bool | Did the plan pass all rubric thresholds simultaneously? |
+| `rubric_feasibility` | float 1–5 | Is the plan scoped to student's stated time constraints? |
+| `rubric_level_appropriateness` | float 1–5 | Does difficulty match the student's academic level? |
+| `rubric_gap_coverage` | float 1–5 | Does the plan address the identified skill gaps? |
+| `plan_phases` | int | Number of phases in the generated plan |
 | `plan_actions_total` | int | Total learning actions across all phases |
-| `plan_timeline_weeks` | float | Total weeks in the plan |
-| `action_specificity_ratio` | float | % of resume terms mentioned in action rationales [0–1] |
+| `plan_timeline_weeks` | float | Total plan duration in weeks |
+| `action_specificity_ratio` | float 0–1 | Proportion of student's resume terms referenced in action rationales |
 | `resume_terms_mentioned` | int | Count of resume terms found in rationales |
-| `resume_terms_total` | int | Total unique terms extracted from resume |
-| `critique_iterations` | int | How many times critique loop ran (1 for ablations) |
-| `has_errors` | bool | Run encountered any errors? |
-| `error_count` | int | Number of errors |
+| `resume_terms_total` | int | Total unique terms extracted from the resume |
 
-## Interpretation
+---
+
+## Metric Interpretation
+
+### Satisfactory Rate (primary reliability metric)
+
+A plan is satisfactory only when **all three** rubric dimensions simultaneously meet their thresholds — no compensation across dimensions is permitted (conjunctive satisficing). This is the headline metric for comparing conditions.
+
+- **Full COMPASS (observed):** 100% (15/15), 95% CI [79.6%, 100.0%]
+- **Ablation 3 (observed):** 46.7% (7/15), 95% CI [24.8%, 69.9%]
+- **Test:** Fisher's exact, p = 0.002
 
 ### Rubric Scores
 
-- **Composite (key metric):** Mean of feasibility, level_appropriateness, prerequisite_ordering, internship_readiness
-  - Full COMPASS should be significantly higher if multi-agent orchestration produces quality
-  - Ablation 3 may excel at feasibility (simpler plans are more feasible) but lag on level appropriateness and prerequisite ordering
+**Feasibility** is the most discriminating dimension. The full pipeline enforces constraint-aware planning and iterative critique, producing zero-variance feasibility scores. The single-pass baseline exhibits a bimodal distribution (either 2 or 5) — it either over-scopes dramatically or gets it right, with no reliable mechanism to regulate scope.
 
-- **Gap Coverage:** Inflated for Ablation 3 (empty gap_report = vacuously true). Do not compare this dimension.
+**Level appropriateness** is a baseline LLM capability. Both conditions score uniformly at 5.00. Do not use this dimension to distinguish conditions.
 
-### Personalization Metrics
+**Gap coverage** is expected to favor Ablation 3. Without a feasibility constraint, the single-pass baseline generates broader plans that address more gaps. This is not evidence of higher quality — it reflects unconstrained generation. The high gap coverage in Ablation 3 co-occurs with a 46.7% satisfactory rate, confirming breadth without constraint adherence is not educationally useful.
 
-- **`action_specificity_ratio`** (key metric for RQ4): 
-  - Full COMPASS rationales should reference more student-specific skills/projects
-  - Ablation 3 may resort to generic guidance
-  - Example: Full = 0.65 (65% of resume terms mentioned), Ablation 3 = 0.25
+### Action Specificity (primary personalization metric)
+
+Measures how grounded the plan is in the individual student's background. Higher values mean the plan's learning actions explicitly reference skills, technologies, and projects from the student's resume rather than generic recommendations.
+
+- **Full COMPASS (observed):** Mdn = 0.21, SD = 0.02 — consistently personalized
+- **Ablation 3 (observed):** Mdn = 0.12, SD = 0.04 — less personalized, more variable
+- **Effect:** r = +0.85 (large), p < 0.001
 
 ### Plan Structure
 
-- **`plan_phases` and `plan_actions_total`:**
-  - Both conditions produce ~3–5 phases by design
-  - May differ due to gap structure (full) vs. raw resume (ablation3)
-  - Use as supporting evidence, not primary claim
+Both conditions produce similar average phase counts, but the key difference is **variance**:
 
-## Example Analysis
+- COMPASS: 3.13 actions ± 0.35 — consistent, scope-regulated plans
+- Ablation 3: 5.47 actions ± 2.47 (range 1–10) — highly variable, unregulated scope
 
-After running 5 iterations on both conditions, your `summary_table.md` might look like:
+**Timeline** should be analyzed for variance, not mean. Both conditions average 14.93 weeks, but COMPASS SD = 1.83 vs. Ablation 3 SD = 4.65 (Levene's F = 9.46, p = 0.005).
 
-```markdown
-# Ablation Study Results
+---
 
-| Metric | full | ablation3 |
-|--------|------|-----------|
-| Rubric Composite Score | 3.65 ± 0.21 [3.40–3.95] | 3.12 ± 0.35 [2.65–3.52] |
-| Feasibility | 4.20 ± 0.10 [4.05–4.35] | 4.15 ± 0.25 [3.80–4.45] |
-| Level Appropriateness | 3.60 ± 0.32 [3.15–4.05] | 2.95 ± 0.43 [2.30–3.60] |
-| Prerequisite Ordering | 3.40 ± 0.35 [2.90–3.85] | 2.65 ± 0.48 [2.10–3.25] |
-| Internship Readiness | 3.65 ± 0.29 [3.30–4.00] | 3.10 ± 0.38 [2.65–3.65] |
-| Action Specificity | 0.68 ± 0.08 [0.58–0.78] | 0.31 ± 0.12 [0.18–0.48] |
+## Statistical Tests Reference
 
-## Run Success Rate
+| Metric type | Test | Effect size | Reported as |
+|---|---|---|---|
+| Binary (satisfactory rate) | Fisher's exact | Odds ratio + Wilson 95% CI | OR, p, [CI_lo%, CI_hi%] |
+| Continuous (rubric, actions, specificity) | Mann-Whitney U | Rank-biserial r | U, p, r |
+| Variance (timeline) | Levene's | F statistic | F, p |
 
-| Condition | Successful | Failed | Error Rate |
-|-----------|-----------|--------|------------|
-| full | 5/5 | 0 | 0.0% |
-| ablation3 | 5/5 | 0 | 0.0% |
-```
+**Rank-biserial r interpretation:**
+- r > 0: COMPASS > Ablation 3
+- r < 0: Ablation 3 > COMPASS
+- |r| ≥ 0.1 small · |r| ≥ 0.3 medium · |r| ≥ 0.5 large
 
-**Claim for RQ4:** 
-- Multi-agent orchestration (full COMPASS) produces higher-quality pathways (composite 3.65 vs 3.12, p<0.05)
-- Full COMPASS is significantly more personalized (action specificity 0.68 vs 0.31, p<0.001)
-- Both conditions succeed on feasibility, but full COMPASS is better at level-appropriate sequencing (3.60 vs 2.95)
+---
 
-## Multiple Scenarios
+## Observed Results (Scenario 3: Backend Software Engineer, n = 15)
 
-To run across multiple test scenarios, repeat Steps 2–3 for each scenario:
+| Metric | COMPASS (Full) | Ablation 3 | p | r | Effect |
+|---|---|---|---|---|---|
+| Satisfactory Rate | **100.0%** | 46.7% | 0.002\*\* | OR = ∞ | — |
+| Feasibility | Mdn = 5.00 | Mdn = 5.00 | 0.008\*\* | +0.40 | medium |
+| Level Appropriateness | Mdn = 5.00 | Mdn = 5.00 | 1.000 ns | 0.00 | negligible |
+| Gap Coverage | Mdn = 5.00 | Mdn = 5.00 | 0.003\*\* | −0.47 | medium |
+| Plan Phases | Mdn = 3.00 | Mdn = 4.00 | 0.038\* | −0.39 | medium |
+| Total Actions | Mdn = 3.00 | Mdn = 5.00 | 0.001\*\*\* | −0.70 | large |
+| Timeline variance | SD = 1.83 wk | SD = 4.65 wk | 0.005\*\* | F = 9.46 | — |
+| Action Specificity | Mdn = 0.21 | Mdn = 0.12 | <0.001\*\*\* | +0.85 | large |
+| Resume Terms | Mdn = 19 | Mdn = 11 | <0.001\*\*\* | +0.85 | large |
 
-```bash
-# Scenario 1
-python collect_metrics.py --scenario s1 --desired-role "ML Engineer" --resume-file s1.txt --condition full --runs 5 --output metrics.csv
-python collect_metrics.py --scenario s1 --desired-role "ML Engineer" --resume-file s1.txt --condition ablation3 --runs 5 --output metrics.csv
-
-# Scenario 2
-python collect_metrics.py --scenario s2 --desired-role "Full-Stack Developer" --resume-file s2.txt --condition full --runs 5 --output metrics.csv
-python collect_metrics.py --scenario s2 --desired-role "Full-Stack Developer" --resume-file s2.txt --condition ablation3 --runs 5 --output metrics.csv
-
-# Analyze all
-python analyze_metrics.py --input metrics.csv --output results --plot
-```
-
-Then `summary_table.md` will show cross-scenario aggregates.
+---
 
 ## Troubleshooting
 
-### `graph_ablation3` not found
+**CSV column misalignment:** If you get unexpected values in plan_phases or other structural columns, the CSV likely mixes rows from two different schema versions. Delete `ablation_metrics.csv` and re-collect from scratch.
 
-Ensure you've created `app/graph_ablation3.py` following the Ablation 3 implementation guide.
+**`action_specificity_ratio` is 0:** Resume parsing may have failed. Verify the resume file is valid UTF-8 and contains recognizable skill keywords (Python, React, SQL, etc.). Check that action rationales are non-empty in the final state.
 
-### Metrics CSV has all zeros
+**Satisfactory rate always 0 for ablation3:** Confirm `graph_ablation3.py` exists and is imported correctly in `app/api/runs.py`. The critique node must still run even in the ablation condition for the satisfactory flag to be set.
 
-Check that critique node is running and returning scores. Print the final state to debug.
+**Matplotlib deprecation warning on `labels`:** Use `tick_labels` instead of `labels` in `ax.boxplot()` (Matplotlib >= 3.9).
 
-### `action_specificity_ratio` is 0
-
-Resume parsing may have failed. Check:
-1. Resume text is valid UTF-8
-2. Resume contains common skill keywords (Python, React, etc.)
-3. Rationales are non-empty
-
-### Matplotlib import error
-
-Optional; skipped by default. Install with: `pip install matplotlib`
-
-## Next Steps
-
-1. **Run baseline (full)** with your test scenario(s)
-2. **Run ablation3** on the same scenario(s)
-3. **Analyze** and compare metrics
-4. **Document findings** in paper (focus on action_specificity_ratio + composite rubric score)
+**scipy not found:** `pip install scipy` — required for `stats_analysis.py`.
