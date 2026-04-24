@@ -1,8 +1,8 @@
 # Ablation Study Results
 
-| Metric | full | ablation3 |
+| Metric | ablation3 | full |
 |--------|---|---|
-| Rubric Composite Score | 4.40 ± 0.76 [3.50–5.00] | 5.00 ± 0.00 [5.00–5.00] |
+| Satisfactory Rate | 46.7% (7/15) | 100.0% (15/15) |
 | Feasibility | 3.80 ± 1.52 [2.00–5.00] | 5.00 ± 0.00 [5.00–5.00] |
 | Level Appropriateness | 5.00 ± 0.00 [5.00–5.00] | 5.00 ± 0.00 [5.00–5.00] |
 | Gap Coverage | 5.00 ± 0.00 [5.00–5.00] | 4.53 ± 0.52 [4.00–5.00] |

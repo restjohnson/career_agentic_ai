@@ -44,7 +44,7 @@ def load_metrics_csv(csv_path: Path) -> List[Dict[str, Any]]:
             # Convert numeric columns to float
             numeric_cols = [
                 'rubric_feasibility', 'rubric_level_appropriateness',
-                'rubric_gap_coverage', 'rubric_composite',
+                'rubric_gap_coverage',
                 'plan_phases', 'plan_actions_total', 'plan_timeline_weeks',
                 'action_specificity_ratio',
                 'resume_terms_mentioned', 'resume_terms_total',
@@ -113,16 +113,17 @@ def generate_summary_table(
 ) -> str:
     """Generate markdown summary table with stats per condition."""
     # Metrics to include in summary
+    # Tuples of (key, label, is_satisfactory_rate)
     metrics = [
-        ('rubric_composite', 'Rubric Composite Score'),
-        ('rubric_feasibility', 'Feasibility'),
-        ('rubric_level_appropriateness', 'Level Appropriateness'),
-        ('rubric_gap_coverage', 'Gap Coverage'),
-        ('plan_phases', 'Plan Phases'),
-        ('plan_actions_total', 'Total Actions'),
-        ('plan_timeline_weeks', 'Timeline (weeks)'),
-        ('action_specificity_ratio', 'Specificity Ratio'),
-        ('resume_terms_mentioned', 'Resume Terms Mentioned'),
+        ('critique_satisfactory', 'Satisfactory Rate', True),
+        ('rubric_feasibility', 'Feasibility', False),
+        ('rubric_level_appropriateness', 'Level Appropriateness', False),
+        ('rubric_gap_coverage', 'Gap Coverage', False),
+        ('plan_phases', 'Plan Phases', False),
+        ('plan_actions_total', 'Total Actions', False),
+        ('plan_timeline_weeks', 'Timeline (weeks)', False),
+        ('action_specificity_ratio', 'Specificity Ratio', False),
+        ('resume_terms_mentioned', 'Resume Terms Mentioned', False),
     ]
 
     conditions = sorted(grouped_rows.keys())
@@ -134,15 +135,24 @@ def generate_summary_table(
     rows_md = [header, separator]
 
     # For each metric, compute stats per condition and add row
-    for metric_key, metric_label in metrics:
+    for metric_key, metric_label, is_rate in metrics:
         row_parts = [f"| {metric_label} |"]
 
         for condition in conditions:
             condition_rows = grouped_rows[condition]
-            values = [r.get(metric_key) for r in condition_rows]
-            stats = compute_metric_stats(values, metric_key)
 
-            row_parts.append(f" {stats} |")
+            if is_rate:
+                vals = [r.get(metric_key) for r in condition_rows]
+                vals = [v for v in vals if v is not None]
+                n_pass = sum(1 for v in vals if v is True)
+                pct = (n_pass / len(vals) * 100) if vals else 0.0
+                cell = f"{pct:.1f}% ({n_pass}/{len(vals)})"
+            else:
+                values = [r.get(metric_key) for r in condition_rows]
+                stats = compute_metric_stats(values, metric_key)
+                cell = str(stats)
+
+            row_parts.append(f" {cell} |")
 
         rows_md.append("".join(row_parts) + "\n")
 
@@ -220,42 +230,65 @@ def main():
             fig.suptitle("Ablation 3: COMPASS vs Non-Agentic LLM run", fontsize=16)
 
             plot_metrics = [
-                ('rubric_composite', 'Rubric Composite Score'),
-                ('plan_actions_total', 'Total Learning Actions'),
-                ('action_specificity_ratio', 'Action Specificity'),
-                ('plan_timeline_weeks', 'Timeline (weeks)'),
-                ('rubric_feasibility', 'Feasibility'),
-                ('resume_terms_mentioned', 'Resume Terms Mentioned'),
+                ('critique_satisfactory', 'Satisfactory Rate', True),
+                ('plan_actions_total', 'Total Learning Actions', False),
+                ('action_specificity_ratio', 'Action Specificity', False),
+                ('plan_timeline_weeks', 'Timeline (weeks)', False),
+                ('rubric_feasibility', 'Feasibility', False),
+                ('resume_terms_mentioned', 'Resume Terms Mentioned', False),
             ]
 
-            for idx, (metric_key, metric_label) in enumerate(plot_metrics):
+            colors_cycle = ['#2196F3', '#FF5722', '#4CAF50', '#9C27B0']
+
+            for idx, (metric_key, metric_label, is_rate) in enumerate(plot_metrics):
                 ax = axes[idx // 3, idx % 3]
 
-                positions = []
-                labels = []
-                data_to_plot = []
+                conds = sorted(grouped.keys())
 
-                for pos, condition in enumerate(sorted(grouped.keys())):
-                    condition_rows = grouped[condition]
-                    values = [r.get(metric_key) for r in condition_rows]
-                    values = [v for v in values if v is not None]
-                    if values:
-                        data_to_plot.append(values)
-                        positions.append(pos)
-                        labels.append(condition)
+                if is_rate:
+                    sat_rates = []
+                    for condition in conds:
+                        vals = [r.get(metric_key) for r in grouped[condition]]
+                        vals = [v for v in vals if v is not None]
+                        rate = sum(1 for v in vals if v is True) / len(vals) * 100 if vals else 0.0
+                        sat_rates.append(rate)
+                    x_pos = np.arange(len(conds))
+                    bars = ax.bar(x_pos, sat_rates,
+                                  color=colors_cycle[:len(conds)], width=0.5)
+                    ax.set_xticks(x_pos)
+                    ax.set_xticklabels(conds)
+                    ax.set_ylim(0, 110)
+                    ax.set_ylabel('%')
+                    for bar, rate in zip(bars, sat_rates):
+                        ax.text(bar.get_x() + bar.get_width() / 2,
+                                bar.get_height() + 2,
+                                f'{rate:.0f}%', ha='center', va='bottom', fontsize=11)
+                else:
+                    positions = []
+                    labels = []
+                    data_to_plot = []
 
-                if data_to_plot:
-                    bp = ax.boxplot(
-                        data_to_plot,
-                        positions=positions,
-                        labels=labels,
-                        patch_artist=True,
-                    )
-                    # Color boxes
-                    for patch in bp['boxes']:
-                        patch.set_facecolor('lightblue')
-                    ax.set_title(metric_label)
-                    ax.grid(True, alpha=0.3)
+                    for pos, condition in enumerate(conds):
+                        condition_rows = grouped[condition]
+                        values = [r.get(metric_key) for r in condition_rows]
+                        values = [v for v in values if isinstance(v, (int, float))]
+                        if values:
+                            data_to_plot.append(values)
+                            positions.append(pos)
+                            labels.append(condition)
+
+                    if data_to_plot:
+                        bp = ax.boxplot(
+                            data_to_plot,
+                            positions=positions,
+                            tick_labels=labels,
+                            patch_artist=True,
+                        )
+                        for patch in bp['boxes']:
+                            patch.set_facecolor('lightblue')
+
+                ax.set_title(metric_label)
+                ax.grid(True, alpha=0.3)
 
             plt.tight_layout()
             plot_path = args.output / "comparison_plots.png"
@@ -264,14 +297,15 @@ def main():
             plt.close()
 
             # --- Radar chart: rubric dimensions per condition ---
+            # critique_satisfactory is scaled 0-5 (rate * 5) to match rubric scale
             radar_metrics = [
-                ('rubric_composite', 'Composite'),
-                ('rubric_feasibility', 'Feasibility'),
-                ('rubric_level_appropriateness', 'Level\nAppropriateness'),
-                ('rubric_gap_coverage', 'Gap\nCoverage'),
-                ('action_specificity_ratio', 'Action\nSpecificity'),
+                ('critique_satisfactory', 'Satisfactory\nRate', True),
+                ('rubric_feasibility', 'Feasibility', False),
+                ('rubric_level_appropriateness', 'Level\nAppropriateness', False),
+                ('rubric_gap_coverage', 'Gap\nCoverage', False),
+                ('action_specificity_ratio', 'Action\nSpecificity', False),
             ]
-            radar_labels = [label for _, label in radar_metrics]
+            radar_labels = [label for _, label, _ in radar_metrics]
             num_vars = len(radar_labels)
             angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
             angles += angles[:1]  # close the polygon
@@ -283,10 +317,15 @@ def main():
             for color, condition in zip(colors, sorted(grouped.keys())):
                 condition_rows = grouped[condition]
                 vals = []
-                for metric_key, _ in radar_metrics:
+                for metric_key, _, is_bool_rate in radar_metrics:
                     raw = [r.get(metric_key) for r in condition_rows]
-                    valid = [v for v in raw if v is not None and isinstance(v, (int, float))]
-                    vals.append(mean(valid) if valid else 0.0)
+                    if is_bool_rate:
+                        valid = [v for v in raw if v is not None]
+                        rate = sum(1 for v in valid if v is True) / len(valid) if valid else 0.0
+                        vals.append(rate * 5)
+                    else:
+                        valid = [v for v in raw if isinstance(v, (int, float))]
+                        vals.append(mean(valid) if valid else 0.0)
                 vals += vals[:1]
                 ax_r.plot(angles, vals, color=color, linewidth=2, label=condition)
                 ax_r.fill(angles, vals, color=color, alpha=0.15)
