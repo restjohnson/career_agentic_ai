@@ -14,11 +14,16 @@ from app.state import AgentState, EvidenceDocument, StudentConstraints
 from app.tools.supabase_repo import SupabaseRepo
 from app.tools.session_token import get_session_id, get_session_id_from_query
 from app.graph import build_graph
+from app.graph_ablation4 import build_ablation4_graph
 from app.run_events import get_queue, publish, cleanup
 
 router = APIRouter(prefix="/runs", tags=["runs"])
 repo = SupabaseRepo()
-graph = build_graph(repo)
+
+_GRAPHS = {
+    "full":      build_graph(repo),
+    "ablation4": build_ablation4_graph(repo),
+}
 
 
 class RunCreateRequest(BaseModel):
@@ -31,6 +36,10 @@ class RunCreateRequest(BaseModel):
     student_constraints: Optional[StudentConstraints] = Field(
         default=None,
         description="Learning constraints: academic_level, hours_per_week, target_goal, target_date (optional ISO date), preferred_learning_mode.",
+    )
+    condition: str = Field(
+        default="full",
+        description="Graph condition: 'full' (production COMPASS) or 'ablation4' (no Reflexion loop).",
     )
 
 
@@ -72,10 +81,12 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
     )
 
     config = {"configurable": {"thread_id": run_id}, "recursion_limit": 15}
+    condition = payload.condition
+    graph = _GRAPHS.get(condition, _GRAPHS["full"])
 
     def _run_graph():
         try:
-            print(f"[{run_id}] Starting graph invocation...")
+            print(f"[{run_id}] Starting graph ({condition})...")
             out: Any = graph.invoke(state, config=config)
             print(f"[{run_id}] Graph completed, setting status to done...")
             repo.set_run_status(session_id=session_id, run_id=run_id, status="done")
