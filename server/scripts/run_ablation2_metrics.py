@@ -473,21 +473,32 @@ def save_figures(full: Dict, abl: Dict, out_path: Path, role: str = ""):
 
     has_gaps   = bool(full["gap_type_distribution"] or abl["gap_type_distribution"])
     has_rubric = bool(full["rubric_scores"]         or abl["rubric_scores"])
-    n_rows = 3
 
-    fig = plt.figure(figsize=(17, 5 * n_rows))
-    gs = gridspec.GridSpec(n_rows, 3, figure=fig, hspace=0.52, wspace=0.36)
+    # Paper-appropriate global font sizes
+    plt.rcParams.update({
+        "font.size": 11,
+        "axes.titlesize": 12,
+        "axes.labelsize": 11,
+        "xtick.labelsize": 10,
+        "ytick.labelsize": 10,
+        "legend.fontsize": 10,
+    })
 
-    def style(ax, title):
-        ax.set_title(title, fontsize=10, fontweight="bold", pad=9)
-        ax.tick_params(labelsize=8)
-        ax.spines["top"].set_visible(False)
-        ax.spines["right"].set_visible(False)
-        ax.yaxis.grid(True, linewidth=0.4, alpha=0.4)
-        ax.set_axisbelow(True)
+    # Fixed 2×3 grid — all 6 cells always populated
+    # Row 0: parsing quality  |  Row 1: gap analysis + plan quality
+    fig = plt.figure(figsize=(12, 7), constrained_layout=True)
+    gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.45, wspace=0.38)
 
     xlabels = ["Full COMPASS", "Ablation 2"]
     w = 0.36
+
+    def style(ax, title):
+        ax.set_title(title, fontsize=12, fontweight="bold", pad=8)
+        ax.tick_params(labelsize=10)
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+        ax.yaxis.grid(True, linewidth=0.5, alpha=0.4)
+        ax.set_axisbelow(True)
 
     def simple_bar(ax, vals, errs, title, ylabel="Count"):
         yerr = errs if multi else None
@@ -498,8 +509,8 @@ def save_figures(full: Dict, abl: Dict, out_path: Path, role: str = ""):
             ax.text(bar.get_x() + bar.get_width() / 2,
                     bar.get_height() + top * 0.03,
                     str(round(v, 4)), ha="center", va="bottom",
-                    fontsize=9, fontweight="bold")
-        ax.set_ylabel(ylabel, fontsize=8)
+                    fontsize=10, fontweight="bold")
+        ax.set_ylabel(ylabel, fontsize=11)
         style(ax, title)
 
     def grouped_bar(ax, keys, fd, ad, fd_s, ad_s, title, ylabel="Count", rotate=18):
@@ -513,12 +524,12 @@ def save_figures(full: Dict, abl: Dict, out_path: Path, role: str = ""):
         ax.bar(x + w/2, avals, w, label="Ablation 2",   color=ABL,  edgecolor="none",
                yerr=a_err, capsize=4, error_kw={"elinewidth": 1.0, "ecolor": "black"})
         ax.set_xticks(x)
-        ax.set_xticklabels(keys, rotation=rotate, ha="right", fontsize=7)
-        ax.legend(fontsize=7)
-        ax.set_ylabel(ylabel, fontsize=8)
+        ax.set_xticklabels(keys, rotation=rotate, ha="right", fontsize=9)
+        ax.legend(fontsize=9)
+        ax.set_ylabel(ylabel, fontsize=11)
         style(ax, title)
 
-    # ── Row 0: Layer 1 signals — parsing quality ──────────────────────
+    # ── Row 0: Layer 1 — parsing quality ─────────────────────────────
     simple_bar(fig.add_subplot(gs[0, 0]),
                [full["total_evidence_items"], abl["total_evidence_items"]],
                [full.get("total_evidence_items_stdev", 0), abl.get("total_evidence_items_stdev", 0)],
@@ -536,12 +547,12 @@ def save_figures(full: Dict, abl: Dict, out_path: Path, role: str = ""):
                [full.get("requirements_matched_stdev", 0), abl.get("requirements_matched_stdev", 0)],
                "Requirements Matched")
 
-    # ── Row 1: Layer 2 signals ─────────────────────────────────────────
+    # ── Row 1: Layer 2 + end-to-end — fills all 3 cells ──────────────
     simple_bar(fig.add_subplot(gs[1, 0]),
                [full["mean_student_level"], abl["mean_student_level"]],
                [full.get("mean_student_level_stdev", 0), abl.get("mean_student_level_stdev", 0)],
                "Mean Student Level",
-               ylabel="Student Level (0 - 3)")
+               ylabel="Student Level (0–3)")
 
     if has_gaps:
         all_gap = sorted(set(list(full["gap_type_distribution"]) + list(abl["gap_type_distribution"])))
@@ -550,11 +561,12 @@ def save_figures(full: Dict, abl: Dict, out_path: Path, role: str = ""):
                     full["gap_type_distribution"], abl["gap_type_distribution"],
                     full.get("gap_type_distribution_stdev", {}), abl.get("gap_type_distribution_stdev", {}),
                     "Gap Type Distribution")
+    else:
+        fig.add_subplot(gs[1, 1]).set_visible(False)
 
-    # ── Row 2: End-to-end — plan quality ──────────────────────────────
     if has_rubric:
         all_dims = sorted(set(list(full["rubric_scores"]) + list(abl["rubric_scores"])))
-        ax_rub = fig.add_subplot(gs[2, 0])
+        ax_rub = fig.add_subplot(gs[1, 2])
         x = np.arange(len(all_dims))
         fvals = [full["rubric_scores"].get(d, 0) for d in all_dims]
         avals = [abl["rubric_scores"].get(d, 0)  for d in all_dims]
@@ -565,27 +577,29 @@ def save_figures(full: Dict, abl: Dict, out_path: Path, role: str = ""):
         ax_rub.bar(x + w/2, avals, w, label="Ablation 2",   color=ABL,  edgecolor="none",
                    yerr=a_err, capsize=4, error_kw={"elinewidth": 1.0, "ecolor": "black"})
         ax_rub.set_xticks(x)
-        ax_rub.set_xticklabels(all_dims, rotation=18, ha="right", fontsize=7)
+        ax_rub.set_xticklabels(all_dims, rotation=18, ha="right", fontsize=9)
         ax_rub.set_ylim(0, 5.8)
-        ax_rub.legend(fontsize=7)
-        ax_rub.set_ylabel("Score (0 - 5)", fontsize=8)
-        style(ax_rub, "Rubric Scores (4 Dimensions)")
+        ax_rub.legend(fontsize=9)
+        ax_rub.set_ylabel("Score (0–5)", fontsize=11)
+        style(ax_rub, "Rubric Scores")
+    else:
+        fig.add_subplot(gs[1, 2]).set_visible(False)
 
     n_label = f"  (N={full.get('n_runs', 1)} runs per condition)" if multi else ""
     fig.suptitle(
-        f"Ablation 2 -- Remove Evidence Grounding  |  {role}{n_label}",
-        fontsize=13, fontweight="bold", y=0.998,
+        f"Ablation 2 — Remove Evidence Grounding  |  {role}{n_label}",
+        fontsize=13, fontweight="bold",
     )
     fig.legend(
         handles=[
             Patch(facecolor=FULL, label="COMPASS"),
             Patch(facecolor=ABL,  label="Ablation 2"),
         ],
-        loc="lower center", ncol=2, fontsize=9,
-        bbox_to_anchor=(0.5, 0.002),
+        loc="lower center", ncol=2, fontsize=10,
+        bbox_to_anchor=(0.5, -0.04),
     )
 
-    plt.savefig(out_path, dpi=150, bbox_inches="tight")
+    plt.savefig(out_path, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"  Figures saved -> {out_path}")
 
@@ -595,8 +609,12 @@ def save_figures(full: Dict, abl: Dict, out_path: Path, role: str = ""):
 # ---------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="Ablation 2 metrics runner")
-    parser.add_argument("--resume", required=True,
-                        help="Path to the resume file (PDF, DOCX, or TXT)")
+    parser.add_argument("--resume", default=None,
+                        help="Path to the resume file (PDF, DOCX, or TXT). Not required when using --from-json.")
+    parser.add_argument("--from-json", default=None,
+                        help="Regenerate figures from an existing raw JSON file without re-running the pipeline.")
+    parser.add_argument("--from-csv", default=None,
+                        help="Regenerate figures from an existing metrics CSV file without re-running the pipeline.")
     parser.add_argument("--role", default="Data Analyst",
                         help="Desired role (default: 'Data Analyst')")
     parser.add_argument("--runs", type=int, default=1,
@@ -614,6 +632,100 @@ def main():
                         choices=["structured","project_based","self_paced","mixed"],
                         default="mixed")
     args = parser.parse_args()
+
+    # ── Fast path: regenerate figures from existing JSON ─────────────
+    if args.from_json:
+        json_path = Path(args.from_json).resolve()
+        if not json_path.exists():
+            print(f"ERROR: JSON file not found: {json_path}")
+            sys.exit(1)
+        with open(json_path) as f:
+            data = json.load(f)
+        full_agg = data["full_compass"]
+        abl_agg  = data["ablation_2"]
+        role     = data.get("role", "")
+        out_dir  = json_path.parent
+        ts       = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        fig_path = out_dir / f"ablation2_figures_{ts}.png"
+        csv_path = out_dir / f"ablation2_metrics_{ts}.csv"
+        print(f"\nRegenerating outputs from {json_path.name} ...")
+        save_csv(full_agg, abl_agg, csv_path)
+        print(f"  CSV     ->  {csv_path}")
+        save_figures(full_agg, abl_agg, fig_path, role=role)
+        print(f"Done.\n")
+        return
+
+    # ── Fast path: regenerate figures from existing CSV ──────────────
+    if args.from_csv:
+        csv_path = Path(args.from_csv).resolve()
+        if not csv_path.exists():
+            print(f"ERROR: CSV file not found: {csv_path}")
+            sys.exit(1)
+
+        full_agg: Dict = {"item_type_distribution": {}, "item_type_distribution_stdev": {},
+                          "gap_type_distribution": {},  "gap_type_distribution_stdev": {},
+                          "rubric_scores": {},           "rubric_scores_stdev": {}, "n_runs": 1}
+        abl_agg:  Dict = {"item_type_distribution": {}, "item_type_distribution_stdev": {},
+                          "gap_type_distribution": {},  "gap_type_distribution_stdev": {},
+                          "rubric_scores": {},           "rubric_scores_stdev": {}, "n_runs": 1}
+
+        with open(csv_path, newline="") as f:
+            reader = csv.DictReader(f)
+            multi_csv = "full_compass_mean" in (reader.fieldnames or [])
+            for row in reader:
+                metric = row["metric"]
+                fv = float(row["full_compass_mean"] if multi_csv else row["full_compass"])
+                av = float(row["ablation_2_mean"]   if multi_csv else row["ablation_2"])
+                fs = float(row["full_compass_stdev"]) if multi_csv else 0.0
+                as_ = float(row["ablation_2_stdev"]) if multi_csv else 0.0
+                if multi_csv:
+                    full_agg["n_runs"] = 2  # signals multi so error bars render
+
+                if metric.startswith("item_type:"):
+                    k = metric.split(":", 1)[1]
+                    full_agg["item_type_distribution"][k] = fv
+                    full_agg["item_type_distribution_stdev"][k] = fs
+                    abl_agg["item_type_distribution"][k] = av
+                    abl_agg["item_type_distribution_stdev"][k] = as_
+                elif metric.startswith("gap_type:"):
+                    k = metric.split(":", 1)[1]
+                    full_agg["gap_type_distribution"][k] = fv
+                    full_agg["gap_type_distribution_stdev"][k] = fs
+                    abl_agg["gap_type_distribution"][k] = av
+                    abl_agg["gap_type_distribution_stdev"][k] = as_
+                elif metric.startswith("rubric:"):
+                    k = metric.split(":", 1)[1]
+                    full_agg["rubric_scores"][k] = fv
+                    full_agg["rubric_scores_stdev"][k] = fs
+                    abl_agg["rubric_scores"][k] = av
+                    abl_agg["rubric_scores_stdev"][k] = as_
+                elif metric == "Total Evidence Items":
+                    full_agg["total_evidence_items"] = fv
+                    full_agg["total_evidence_items_stdev"] = fs
+                    abl_agg["total_evidence_items"] = av
+                    abl_agg["total_evidence_items_stdev"] = as_
+                elif metric == "Requirements Matched":
+                    full_agg["requirements_matched"] = fv
+                    full_agg["requirements_matched_stdev"] = fs
+                    abl_agg["requirements_matched"] = av
+                    abl_agg["requirements_matched_stdev"] = as_
+                elif metric == "Mean Student Level (gap items)":
+                    full_agg["mean_student_level"] = fv
+                    full_agg["mean_student_level_stdev"] = fs
+                    abl_agg["mean_student_level"] = av
+                    abl_agg["mean_student_level_stdev"] = as_
+
+        out_dir  = csv_path.parent
+        ts       = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        fig_path = out_dir / f"ablation2_figures_{ts}.png"
+        role     = args.role if args.role else ""
+        print(f"\nRegenerating figures from {csv_path.name} ...")
+        save_figures(full_agg, abl_agg, fig_path, role=role)
+        print(f"Done.\n")
+        return
+
+    if not args.resume:
+        parser.error("--resume is required unless --from-json or --from-csv is provided.")
 
     resume_path = Path(args.resume).resolve()
     if not resume_path.exists():
