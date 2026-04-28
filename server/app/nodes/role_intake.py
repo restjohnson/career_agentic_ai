@@ -11,6 +11,81 @@ from app.tools.role_few_shot_examples import hybrid_retrieve_fused
 from app.tools.supabase_repo import SupabaseRepo
 
 
+def _summary_from_onet_item(item: Any) -> str:
+    if isinstance(item, str):
+        return item.strip()
+    if isinstance(item, dict):
+        for key in ["title", "name", "description", "label", "example", "commodity_title"]:
+            val = item.get(key)
+            if isinstance(val, str) and val.strip():
+                return val.strip()
+    return ""
+
+
+def _ablation1_role_spec_from_onet(
+    *,
+    role_title: str,
+    onet_code: str,
+    tech_payload: Dict[str, Any],
+    hot_tech_payload: Dict[str, Any],
+) -> RoleSpecModel:
+    reqs: List[RoleSpecRequirement] = []
+
+    seen: set[str] = set()
+    if isinstance(tech_payload, dict):
+        for _, examples in tech_payload.items():
+            if not isinstance(examples, list):
+                continue
+            for item in examples:
+                summary = _summary_from_onet_item(item)
+                if not summary:
+                    continue
+                key = summary.lower()
+                if key in seen:
+                    continue
+                seen.add(key)
+                reqs.append(
+                    RoleSpecRequirement(
+                        req_summary=summary,
+                        category="tech",
+                        provenance=[],
+                        optional=False,
+                    )
+                )
+
+    hot_items: List[Any] = []
+    if isinstance(hot_tech_payload, dict):
+        for k in ["hot_technology", "hotTechnology", "technology", "tool", "tools"]:
+            if isinstance(hot_tech_payload.get(k), list):
+                hot_items = hot_tech_payload[k]
+                break
+
+    for item in hot_items:
+        summary = _summary_from_onet_item(item)
+        if not summary:
+            continue
+        key = summary.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        reqs.append(
+            RoleSpecRequirement(
+                req_summary=summary,
+                category="hot_technology",
+                provenance=[],
+                optional=False,
+            )
+        )
+
+    return RoleSpecModel(
+        canonical_role_title=role_title,
+        matched_onet_code=onet_code,
+        confidence_role_match=0.7,
+        requirements=reqs,
+        assumptions=[],
+    )
+
+
 def _role_spec_from_cache(role_title: str, onet_code: str, rows: list) -> RoleSpecModel:
     """Reconstruct a RoleSpecModel from cached role_requirements DB rows."""
     requirements = []
@@ -41,6 +116,41 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     client = OnetClient()
     repo = SupabaseRepo()
+
+    # Ablation 1 baseline: direct O*NET keyword search (top result),
+    # raw structural mapping, and no provenance attribution.
+    if s.ablation_mode == "ablation1_no_role_grounding":
+        try:
+            hits = client.search_occupations(s.desired_role, limit=5)
+        except Exception as e:
+            s.errors.append(f"Ablation1 O*NET search failed: {type(e).__name__}: {e}")
+            return s.model_dump(exclude_none=True)
+
+        if not hits:
+            s.errors.append("Ablation1: no O*NET keyword matches found.")
+            return s.model_dump(exclude_none=True)
+
+        top = hits[0]
+        onet_code = top.get("code") or top.get("onet_code") or top.get("id")
+        role_title = top.get("title") or top.get("name") or s.desired_role
+
+        if not onet_code:
+            s.errors.append("Ablation1: top O*NET keyword result missing occupation code.")
+            return s.model_dump(exclude_none=True)
+
+        try:
+            tech = client.get_occupation_technology(onet_code)
+            hot_tech = client.get_hot_technology_skills(onet_code)
+            s.role_spec = _ablation1_role_spec_from_onet(
+                role_title=role_title,
+                onet_code=onet_code,
+                tech_payload=tech if isinstance(tech, dict) else {},
+                hot_tech_payload=hot_tech if isinstance(hot_tech, dict) else {},
+            )
+        except Exception as e:
+            s.errors.append(f"Ablation1 role spec build failed: {type(e).__name__}: {e}")
+
+        return s.model_dump(exclude_none=True)
 
     # --- Hybrid RAG-Fusion: dimensional retrieval + RRF + deduplication ---
     # Returns calibration examples for the LLM AND the best ONET code to anchor the spec.

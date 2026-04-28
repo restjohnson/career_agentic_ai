@@ -12,8 +12,8 @@ class SupabaseRepo:
     Uses SERVICE ROLE KEY
     """
     def __init__(self) -> None:
-        url = os.environ["SUPABASE_PUBLIC_URL"]
-        service_key = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+        url = os.environ["SUPABASE_PUBLIC_URL"].strip().strip('"').strip("'")
+        service_key = os.environ["SUPABASE_SERVICE_ROLE_KEY"].strip().strip('"').strip("'")
         # Force HTTP/1.1 to avoid stale HTTP/2 connection reuse errors
         # (httpx.RemoteProtocolError: Server disconnected) when the long-lived
         # module-level client tries to reuse an idle HTTP/2 stream.

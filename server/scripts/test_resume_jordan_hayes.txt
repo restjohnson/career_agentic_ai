@@ -1,0 +1,52 @@
+JORDAN HAYES
+Email: jordan.hayes@university.edu | GitHub: github.com/jordanhayes | LinkedIn: linkedin.com/in/jordanhayes
+
+DESIRED ROLE: Machine Learning Engineer
+
+EDUCATION
+Bachelor of Science in Computer Science - University of North Carolina at Charlotte
+Expected Graduation: May 2026 | GPA: 3.4 / 4.0
+Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning,
+Linear Algebra, Probability and Statistics, Database Systems
+
+SKILLS
+Programming Languages: Python, Java
+Libraries / Frameworks: scikit-learn, NumPy, pandas
+Tools: Git, Jupyter Notebook, VS Code
+Databases: MySQL (coursework only)
+
+PROJECTS
+Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024)
+- Built a classification model to predict whether students would pass or fail based on
+  attendance, assignment scores, and exam results
+- Used scikit-learn's RandomForestClassifier and LogisticRegression; selected best model
+  via cross-validation (accuracy: 83%)
+- Dataset: 200-row CSV from a Kaggle educational dataset
+- Submitted as final project for Introduction to Machine Learning course
+
+COURSEWORK HIGHLIGHTS
+- Introduction to Machine Learning: Completed supervised learning, unsupervised learning,
+  and model evaluation modules; final grade A-
+- Data Structures and Algorithms: Implemented binary search trees, hash maps, and sorting
+  algorithms in Java; final grade B+
+
+WORK EXPERIENCE
+Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present)
+- Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)
+- Help students debug Python code during weekly lab sessions
+
+EXTRACURRICULAR
+Member, UNCC Data Science Club (Fall 2023 - Present)
+- Attended workshops on data visualization and exploratory data analysis
+
+NOTES FOR EVALUATOR
+This resume is a synthetic test instrument for the COMPASS ablation study (Scenario 1).
+Designed to stress-test Ablation 1 (role grounding). The desired role "Machine Learning
+Engineer" sits at the research/modelling boundary where O*NET coverage is weakest -
+a direct keyword search for "machine learning engineer" returns a generic SOC code that
+under-specifies MLOps, model deployment, experiment tracking, and production systems
+requirements. RAG-Fusion with Kaggle job posting calibration is expected to surface these
+gaps that the naive O*NET baseline misses. The student has one genuine project (scikit-learn
+classification) and coursework evidence, but no experience with PyTorch, TensorFlow, model
+serving, experiment tracking, or MLOps tooling - gaps that should appear prominently in
+a well-grounded role spec but may be missed by a tech-payload-only O*NET extraction.

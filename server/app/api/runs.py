@@ -4,7 +4,7 @@ from __future__ import annotations
 import asyncio
 import json
 import threading
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
@@ -24,6 +24,10 @@ graph = build_graph(repo)
 class RunCreateRequest(BaseModel):
     desired_role: str = Field(min_length=2)
     raw_user_text: Optional[str] = None
+    ablation_mode: Literal["none", "ablation1_no_role_grounding"] = Field(
+        default="none",
+        description="Optional ablation mode for role intake. Use 'ablation1_no_role_grounding' to run naive O*NET top-result mapping with no provenance.",
+    )
     evidence_document_ids: List[str] = Field(
         default_factory=list,
         description="IDs of evidence documents previously uploaded via POST /evidence.",
@@ -65,6 +69,7 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
         session_id=session_id,
         run_id=run_id,
         desired_role=payload.desired_role,
+        ablation_mode=payload.ablation_mode,
         raw_user_text=payload.raw_user_text,
         evidence_documents=evidence_documents,
         student_constraints=payload.student_constraints,

@@ -43,6 +43,8 @@ TargetGoal = Literal[
     "career_change",      # transitioning from another field
 ]
 
+AblationMode = Literal["none", "ablation1_no_role_grounding"]
+
 # Default planning horizons when no target_date is given
 _GOAL_DEFAULT_WEEKS: Dict[str, int] = {
     "first_internship": 16,   # ~1 semester of prep
@@ -249,6 +251,7 @@ class AgentState(BaseModel):
 
     #colelct the user's intent
     desired_role: str
+    ablation_mode: AblationMode = "none"
 
     #evidence from user
     evidence_documents: List[EvidenceDocument] = Field(default_factory=list)
