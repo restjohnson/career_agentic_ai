@@ -1,0 +1,23 @@
+{
+  "role": "Machine Learning Engineer",
+  "resume": "test_resume_jordan_hayes.pdf",
+  "source": "Verma et al. (2022) — top-5 ML occupational skills from 1,700 Indeed.com ML job ads (Jul-Dec 2019). Absent buckets determined by mapping Jordan Hayes resume evidence against each Verma category.",
+  "present_buckets": ["programming", "data_mining"],
+  "absent_buckets": [
+    {
+      "bucket": "statistics",
+      "label": "Statistics",
+      "resume_evidence": "Probability and Statistics listed as coursework only; no applied statistical modeling in any project on resume"
+    },
+    {
+      "bucket": "big_data",
+      "label": "Big Data",
+      "resume_evidence": "No evidence of Hadoop, Spark, MapReduce, Kafka, distributed data pipelines, or NoSQL at scale on resume"
+    },
+    {
+      "bucket": "decision_making",
+      "label": "Decision Making",
+      "resume_evidence": "No analytical reporting, insight generation, business problem framing, or stakeholder communication on resume"
+    }
+  ]
+}

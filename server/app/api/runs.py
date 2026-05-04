@@ -24,9 +24,13 @@ graph = build_graph(repo)
 class RunCreateRequest(BaseModel):
     desired_role: str = Field(min_length=2)
     raw_user_text: Optional[str] = None
-    ablation_mode: Literal["none", "ablation1_no_role_grounding"] = Field(
+    ablation_mode: Literal["none", "ablation1_llm_only"] = Field(
         default="none",
-        description="Optional ablation mode for role intake. Use 'ablation1_no_role_grounding' to run naive O*NET top-result mapping with no provenance.",
+        description="Optional ablation mode for role intake. Use 'ablation1_llm_only' to generate the role spec from LLM parametric knowledge only, with no O*NET grounding.",
+    )
+    bypass_role_cache: bool = Field(
+        default=True,
+        description="If true, skips the Supabase role spec cache and regenerates via LLM on every run. Defaults to True on this ablation branch.",
     )
     evidence_document_ids: List[str] = Field(
         default_factory=list,
@@ -70,6 +74,7 @@ def create_run(payload: RunCreateRequest, session_id: str = Depends(get_session_
         run_id=run_id,
         desired_role=payload.desired_role,
         ablation_mode=payload.ablation_mode,
+        bypass_role_cache=payload.bypass_role_cache,
         raw_user_text=payload.raw_user_text,
         evidence_documents=evidence_documents,
         student_constraints=payload.student_constraints,

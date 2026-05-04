@@ -1,0 +1,3 @@
+condition,n_runs,canonical_role_title,matched_onet_code,num_requirements_mean,num_requirements_std,num_gaps_mean,num_gaps_std,num_no_evidence_gaps_mean,num_no_evidence_gaps_std,critique_satisfactory_rate,critique_satisfactory_std,critique_iterations_mean,critique_iterations_std,unique_to_full_mean,unique_to_full_std,unique_to_ablation_mean,unique_to_ablation_std,known_gap_recall_mean,known_gap_recall_std,requirement_categories
+full_compass,14,Machine Learning Engineer,15-2051.00,7.714,0.611,7.714,0.611,2.5,0.76,1.0,0.0,1.143,0.363,3.214,0.893,5.071,0.829,0,0,knowledge|skill|task|tech
+ablation1_llm_only,15,Machine Learning Engineer,,8.267,0.704,8.267,0.704,2.267,1.033,1.0,0.0,1.467,0.64,,,,,0,0,hot_technology|knowledge|skill|task|tech

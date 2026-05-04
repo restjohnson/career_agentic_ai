@@ -1,89 +1,16 @@
 from __future__ import annotations
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from app.state import AgentState, ProvenanceRef, RoleSpecModel, RoleSpecRequirement
 from app.tools.onet_client import OnetClient
 from app.tools.role_spec_llm import (
     build_role_spec_from_onet_raw,
+    llm_only_role_spec,
     llm_refactor_role_spec_from_onet_raw,
 )
 from app.tools.role_few_shot_examples import hybrid_retrieve_fused
 from app.tools.supabase_repo import SupabaseRepo
 
-
-def _summary_from_onet_item(item: Any) -> str:
-    if isinstance(item, str):
-        return item.strip()
-    if isinstance(item, dict):
-        for key in ["title", "name", "description", "label", "example", "commodity_title"]:
-            val = item.get(key)
-            if isinstance(val, str) and val.strip():
-                return val.strip()
-    return ""
-
-
-def _ablation1_role_spec_from_onet(
-    *,
-    role_title: str,
-    onet_code: str,
-    tech_payload: Dict[str, Any],
-    hot_tech_payload: Dict[str, Any],
-) -> RoleSpecModel:
-    reqs: List[RoleSpecRequirement] = []
-
-    seen: set[str] = set()
-    if isinstance(tech_payload, dict):
-        for _, examples in tech_payload.items():
-            if not isinstance(examples, list):
-                continue
-            for item in examples:
-                summary = _summary_from_onet_item(item)
-                if not summary:
-                    continue
-                key = summary.lower()
-                if key in seen:
-                    continue
-                seen.add(key)
-                reqs.append(
-                    RoleSpecRequirement(
-                        req_summary=summary,
-                        category="tech",
-                        provenance=[],
-                        optional=False,
-                    )
-                )
-
-    hot_items: List[Any] = []
-    if isinstance(hot_tech_payload, dict):
-        for k in ["hot_technology", "hotTechnology", "technology", "tool", "tools"]:
-            if isinstance(hot_tech_payload.get(k), list):
-                hot_items = hot_tech_payload[k]
-                break
-
-    for item in hot_items:
-        summary = _summary_from_onet_item(item)
-        if not summary:
-            continue
-        key = summary.lower()
-        if key in seen:
-            continue
-        seen.add(key)
-        reqs.append(
-            RoleSpecRequirement(
-                req_summary=summary,
-                category="hot_technology",
-                provenance=[],
-                optional=False,
-            )
-        )
-
-    return RoleSpecModel(
-        canonical_role_title=role_title,
-        matched_onet_code=onet_code,
-        confidence_role_match=0.7,
-        requirements=reqs,
-        assumptions=[],
-    )
 
 
 def _role_spec_from_cache(role_title: str, onet_code: str, rows: list) -> RoleSpecModel:
@@ -117,39 +44,13 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
     client = OnetClient()
     repo = SupabaseRepo()
 
-    # Ablation 1 baseline: direct O*NET keyword search (top result),
-    # raw structural mapping, and no provenance attribution.
-    if s.ablation_mode == "ablation1_no_role_grounding":
+    # Ablation 1: LLM-only role spec — no O*NET grounding, no RAG-Fusion.
+    # Isolates the contribution of O*NET grounding by using only LLM parametric knowledge.
+    if s.ablation_mode == "ablation1_llm_only":
         try:
-            hits = client.search_occupations(s.desired_role, limit=5)
+            s.role_spec = llm_only_role_spec(s.desired_role)
         except Exception as e:
-            s.errors.append(f"Ablation1 O*NET search failed: {type(e).__name__}: {e}")
-            return s.model_dump(exclude_none=True)
-
-        if not hits:
-            s.errors.append("Ablation1: no O*NET keyword matches found.")
-            return s.model_dump(exclude_none=True)
-
-        top = hits[0]
-        onet_code = top.get("code") or top.get("onet_code") or top.get("id")
-        role_title = top.get("title") or top.get("name") or s.desired_role
-
-        if not onet_code:
-            s.errors.append("Ablation1: top O*NET keyword result missing occupation code.")
-            return s.model_dump(exclude_none=True)
-
-        try:
-            tech = client.get_occupation_technology(onet_code)
-            hot_tech = client.get_hot_technology_skills(onet_code)
-            s.role_spec = _ablation1_role_spec_from_onet(
-                role_title=role_title,
-                onet_code=onet_code,
-                tech_payload=tech if isinstance(tech, dict) else {},
-                hot_tech_payload=hot_tech if isinstance(hot_tech, dict) else {},
-            )
-        except Exception as e:
-            s.errors.append(f"Ablation1 role spec build failed: {type(e).__name__}: {e}")
-
+            s.errors.append(f"Ablation1 LLM-only role spec failed: {type(e).__name__}: {e}")
         return s.model_dump(exclude_none=True)
 
     # --- Hybrid RAG-Fusion: dimensional retrieval + RRF + deduplication ---
@@ -171,8 +72,9 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     # Check cache first — reuse existing role_spec to keep required_level and
     # importance stable across runs for the same ONET code.
+    # Bypassed during ablation studies so every run generates a fresh spec.
     try:
-        cached = repo.get_cached_role_spec(onet_code)
+        cached = repo.get_cached_role_spec(onet_code) if not s.bypass_role_cache else None
         if cached:
             role_id, req_rows = cached
             s.role_spec = _role_spec_from_cache(role_title, onet_code, req_rows)
@@ -184,6 +86,9 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
     summary = client.get_occupation_summary(onet_code)
     tech = client.get_occupation_technology(onet_code)
     hot_tech = client.get_hot_technology_skills(onet_code)
+    skills = client.get_occupation_skills(onet_code)
+    tasks = client.get_occupation_tasks(onet_code)
+    knowledge = client.get_occupation_knowledge(onet_code)
     version = client.get_onet_version()
     summary_dict = summary if isinstance(summary, dict) else {"raw": summary}
 
@@ -208,6 +113,9 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
             summary=summary_dict,
             tech_payload=tech,
             hot_tech_payload=hot_tech,
+            skills_payload=skills,
+            tasks_payload=tasks,
+            knowledge_payload=knowledge,
             raw_user_text=s.raw_user_text,
             few_shot_examples=fused_examples,
         )
