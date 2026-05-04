@@ -74,6 +74,9 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
     summary = client.get_occupation_summary(onet_code)
     tech = client.get_occupation_technology(onet_code)
     hot_tech = client.get_hot_technology_skills(onet_code)
+    skills = client.get_occupation_skills(onet_code)
+    tasks = client.get_occupation_tasks(onet_code)
+    knowledge = client.get_occupation_knowledge(onet_code)
     version = client.get_onet_version()
     summary_dict = summary if isinstance(summary, dict) else {"raw": summary}
 
@@ -98,6 +101,9 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
             summary=summary_dict,
             tech_payload=tech,
             hot_tech_payload=hot_tech,
+            skills_payload=skills,
+            tasks_payload=tasks,
+            knowledge_payload=knowledge,
             raw_user_text=s.raw_user_text,
             few_shot_examples=fused_examples,
         )

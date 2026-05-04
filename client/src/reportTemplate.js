@@ -9,8 +9,21 @@ const CATEGORY_LABELS = {
 };
 
 const GAP_TYPE_LABELS = {
-  missing: 'Missing', weak: 'Weak',
-  not_evidenced: 'Not Evidenced', irrelevant: 'Irrelevant',
+  no_evidence: 'No Evidence',
+  claimed_only: 'Claimed Only',
+  partial: 'Partial',
+  optional_gap: 'Optional Gap',
+  met: 'Met',
+  missing: 'Missing',
+  weak: 'Weak',
+  not_evidenced: 'Not Evidenced',
+  irrelevant: 'Irrelevant',
+};
+
+const ROOT_CAUSE_LABELS = {
+  missing_entirely: 'Missing entirely',
+  no_theory: 'Has practice, lacks theory',
+  no_practice: 'Has theory, lacks practice',
 };
 
 const RESOURCE_ICONS = {
@@ -134,7 +147,7 @@ function pathwaySectionHTML(plan) {
 }
 
 /* ── Main HTML generator ────────────────────────────────────────── */
-export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, targetRole }) {
+export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, targetRole, evidenceItems }) {
   const roleName = esc(roleSpec?.canonical_role_title ?? targetRole ?? 'Unknown Role');
   const onet     = roleSpec?.matched_onet_code ? ` (O*NET ${esc(roleSpec.matched_onet_code)})` : '';
   const date     = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -144,6 +157,13 @@ export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, ta
   const education   = (studentModel?.education   ?? []).map(esc);
   const reqs        = [...(roleSpec?.requirements ?? [])].sort((a, b) => b.importance - a.importance);
   const gaps        = [...(gapReport?.gaps        ?? [])].sort((a, b) => b.weighted_gap - a.weighted_gap);
+
+  // Create evidence lookup map
+  const evidenceById = new Map(
+    (evidenceItems ?? [])
+      .filter((item) => item?.id)
+      .map((item) => [item.id, item])
+  );
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -199,11 +219,34 @@ export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, ta
   .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7pt; margin-top: 4pt; }
   .gap-card { padding: 6pt 8pt; border: 1px solid #e2e8f0; border-radius: 4pt; background: #fafbfc; break-inside: avoid; }
   .gap-name { font-weight: 700; font-size: 9pt; margin-bottom: 2pt; }
+  .gap-meta { display: flex; gap: 4pt; flex-wrap: wrap; margin-bottom: 2pt; }
   .gap-type { display: inline-block; font-size: 7.5pt; font-weight: 600; padding: 0 4pt; border-radius: 2pt; }
-  .gap-type-missing      { background: #fee2e2; color: #991b1b; }
-  .gap-type-weak         { background: #fef3c7; color: #92400e; }
-  .gap-type-not_evidenced { background: #f1f5f9; color: #475569; }
+  .gap-type-no_evidence    { background: #f3f4f6; color: #374151; }
+  .gap-type-claimed_only   { background: #fef3c7; color: #92400e; }
+  .gap-type-partial        { background: #fcd34d; color: #78350f; }
+  .gap-type-optional_gap   { background: #dbeafe; color: #1e40af; }
+  .gap-type-met            { background: #d1fae5; color: #065f46; }
+  .gap-type-missing        { background: #fee2e2; color: #991b1b; }
+  .gap-type-weak           { background: #fef3c7; color: #92400e; }
+  .gap-type-not_evidenced  { background: #f1f5f9; color: #475569; }
+  .gap-type-irrelevant     { background: #f1f5f9; color: #64748b; }
+  .root-cause { display: inline-block; font-size: 7pt; font-weight: 600; padding: 1pt 3pt; background: #fef08a; color: #78350f; border-radius: 2pt; }
   .gap-levels { display: flex; gap: 10pt; font-size: 8pt; color: #64748b; margin-top: 2pt; }
+  .gap-prereqs { font-size: 8pt; color: #64748b; margin-top: 3pt; }
+  .gap-prereqs-label { font-weight: 600; text-transform: uppercase; letter-spacing: 0.3pt; font-size: 7pt; }
+  .gap-prereqs-items { padding-left: 8pt; margin-top: 1pt; }
+  .prereq-item { font-size: 7.5pt; margin: 1pt 0; }
+
+  .evidence-section { margin-top: 3pt; }
+  .evidence-label { display: block; font-size: 7pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3pt; color: #64748b; margin-bottom: 1pt; }
+  .evidence-list { list-style: none; padding: 0; }
+  .evidence-item { padding: 2pt 0; margin: 1pt 0; font-size: 7.5pt; }
+  .evidence-item-header { display: flex; gap: 4pt; align-items: center; margin-bottom: 1pt; }
+  .evidence-type { display: inline-block; padding: 0 3pt; background: #e0e7ff; color: #3730a3; border-radius: 2pt; font-weight: 600; font-size: 6.5pt; }
+  .evidence-confidence { display: inline-block; padding: 0 3pt; background: #d1fae5; color: #065f46; border-radius: 2pt; font-weight: 600; font-size: 6.5pt; }
+  .evidence-summary { font-size: 7.5pt; color: #475569; margin: 1pt 0; }
+  .evidence-snippet { font-size: 7pt; color: #64748b; font-style: italic; margin: 1pt 0; padding-left: 4pt; border-left: 1px solid #cbd5e1; }
+  .evidence-empty { font-size: 7pt; color: #94a3b8; font-style: italic; }
 
   .summary-text { font-size: 9pt; color: #475569; font-style: italic; margin-bottom: 6pt; }
   .footer { margin-top: 12pt; text-align: center; font-size: 7.5pt; color: #94a3b8; }
@@ -399,19 +442,59 @@ export function generateReportHTML({ studentModel, roleSpec, gapReport, plan, ta
   ${gaps.length > 0 ? `
     <div class="gap-grid">
       ${gaps.map(g => {
-        const typeClass = g.gap_type === 'missing' ? 'gap-type-missing'
-          : g.gap_type === 'weak' ? 'gap-type-weak'
-          : 'gap-type-not_evidenced';
+        const typeClass = `gap-type-${g.gap_type}`;
+        const evidenceIds = g.evidence_item_ids ?? [];
+        const matchedEvidence = evidenceIds
+          .map((id) => evidenceById.get(id))
+          .filter(Boolean);
+
+        const evidenceHTML = matchedEvidence.length > 0 ? `
+          <div class="evidence-section">
+            <span class="evidence-label">Supporting Evidence</span>
+            <ul class="evidence-list">
+              ${matchedEvidence.map(item => `
+                <li class="evidence-item">
+                  <div class="evidence-item-header">
+                    <span class="evidence-type">${esc(item.item_type ?? 'claim')}</span>
+                    ${typeof item.confidence === 'number' ? `<span class="evidence-confidence">${Math.round(item.confidence * 100)}%</span>` : ''}
+                  </div>
+                  <p class="evidence-summary">${esc(item.summary)}</p>
+                  ${item.snippet ? `<p class="evidence-snippet">${esc(item.snippet)}</p>` : ''}
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        ` : '';
+
+        const prereqsHTML = g.knowledge_prerequisites?.length > 0 ? `
+          <div class="gap-prereqs">
+            <span class="gap-prereqs-label">Prerequisites</span>
+            <div class="gap-prereqs-items">
+              ${g.knowledge_prerequisites.map(kp => `
+                <div class="prereq-item">
+                  ${esc(kp.concept)}${kp.is_foundational ? ' <strong>·foundational</strong>' : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : '';
+
         return `
           <div class="gap-card">
             <div class="gap-name">
               ${esc(g.summary)}
               <span class="gap-type ${typeClass}">${GAP_TYPE_LABELS[g.gap_type] ?? g.gap_type}</span>
             </div>
-            <div class="gap-levels">
-              <span>Required: ${levelDots(g.required_level)}</span>
-              <span>Current: ${levelDots(g.student_score)}</span>
+            <div class="gap-meta">
+              <span class="cat">${CATEGORY_LABELS[g.category] ?? g.category}</span>
+              ${g.gap_root_cause ? `<span class="root-cause">${ROOT_CAUSE_LABELS[g.gap_root_cause] ?? g.gap_root_cause}</span>` : ''}
             </div>
+            <div class="gap-levels">
+              <span>Required: ${levelDots(g.required_level)} <strong>${g.required_level.toFixed(1)}</strong></span>
+              <span>Current: ${levelDots(g.student_level)} <strong>${g.student_level.toFixed(1)}</strong></span>
+            </div>
+            ${evidenceHTML}
+            ${prereqsHTML}
           </div>
         `;
       }).join('')}

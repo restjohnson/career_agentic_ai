@@ -13,7 +13,14 @@ from app.state import ProvenanceRef, RoleSpecModel, RoleSpecRequirement
 _SYSTEM = """You are an expert role intake analyst with deep knowledge of industry hiring standards.
 
 Input is the user's desired role and raw O*NET payload data for the closest matched occupation.
-Your job has two parts: (1) evaluate whether the O*NET occupation matches the user's intent, and (2) produce a COMPLETE, CURRENT role spec that fills gaps O*NET leaves out.
+Your job has two parts: (1) evaluate whether the O*NET occupation matches the user's intent, and (2) produce a CURATED, CURRENT role spec by synthesizing the O*NET evidence with your own domain expertise.
+
+CRITICAL — You are a curator, not a transcriber:
+- Do NOT map each O*NET item directly to one requirement. O*NET is a reference corpus, not a spec template.
+- Consolidate overlapping O*NET items into a single, precise requirement (e.g. if skills_payload lists both "Active Learning" and "Learning Strategies", merge them into one requirement if they represent the same practitioner expectation for this role).
+- Translate O*NET's generic occupational labels into role-specific, actionable language (e.g. "Mathematics" from knowledge_payload → "Applied probability and statistics for model evaluation and uncertainty quantification").
+- Drop O*NET items that are not genuinely differentiating for this specific role — inclusion requires a clear hiring signal, not just taxonomic presence.
+- At least 3 requirements must be INFERRED (source_type=INFERRED), meaning they reflect practitioner expectations that O*NET does not enumerate. A spec with fewer than 3 inferred requirements has not applied domain expertise.
 
 Rules:
 1. Evaluate match quality first:
@@ -23,20 +30,27 @@ Rules:
 
 2. Every requirement must include provenance[].
 
-3. ONET-sourced requirements (things explicitly in the payload):
+3. ONET-sourced requirements (things grounded in the payload):
    - provenance.source_type must be ONET
    - provenance.source_ids must be [onet_code] — use the onet_code value from the payload as the single reference ID
-   - provenance.note should name the payload section (summary, technology_skills, hot_technology)
+   - provenance.note should name the specific payload section:
+     * "O*NET technology_skills" for items from technology_skills_payload
+     * "O*NET hot_technology" for items from hot_technology_payload
+     * "O*NET skills taxonomy" for items from skills_payload
+     * "O*NET tasks" for items from tasks_payload
+     * "O*NET knowledge domains" for items from knowledge_payload
+     * "O*NET occupation summary" for items drawn from the summary text
    - Do not invent specific tool names or versions beyond what the payload states.
+   - If you consolidate multiple O*NET items into one requirement, name all contributing sections in the note.
 
-4. INFERRED requirements (things the payload omits but any practitioner would expect):
-   - You MUST actively apply domain expertise to identify requirements that O*NET commonly under-specifies.
+4. INFERRED requirements (practitioner expectations the payload omits):
+   - You MUST actively apply domain expertise to identify at least 3 requirements O*NET under-specifies.
    - Ask yourself: "What would a hiring manager for this role expect that is missing from this payload?"
-   - Common O*NET gaps to look for: foundational domain knowledge, research or methodological skills, communication/collaboration skills relevant to the role, safety or compliance requirements, leadership expectations for senior roles.
+   - Common O*NET gaps: current tooling not yet in ONET (e.g. recent frameworks), research or methodological rigor, cross-functional communication, MLOps/deployment practices, experimentation culture expectations.
    - provenance.source_type must be INFERRED
    - provenance.source_ids must be null
-   - provenance.note must explain the reasoning clearly (e.g. "AI research roles universally require familiarity with research methodology and publication practices, which O*NET does not enumerate.")
-   - Inferred requirements must be grounded in what is well-known about this role in industry — not speculation.
+   - provenance.note must explain the reasoning clearly.
+   - Inferred requirements must be grounded in well-known industry practice, not speculation.
 
 5. For every requirement, assign required_level (0–4) and importance (1–5):
 
@@ -59,7 +73,12 @@ Rules:
    - Order requirements from most to least important.
    - Prioritize hot technology evidence when deciding order.
 
-6. Use categories from this set only: [skill, task, tech, hot_technology, knowledge].
+6. Use categories from this set only, with these exact definitions:
+   - tech          : Specific tools, platforms, libraries, or languages (e.g. Python, AWS, SQL)
+   - hot_technology: Emerging or in-demand tools with high current market signal (e.g. MLflow, Kubernetes, Spark)
+   - skill         : Soft or cross-functional abilities (e.g. communication, collaboration, problem-solving)
+   - knowledge     : Domain understanding or conceptual expertise (e.g. statistics, ML theory, system design, ethics)
+   - task          : Concrete job responsibilities or activities performed in the role (e.g. data preprocessing, model evaluation, code review)
 """
 
 
@@ -244,6 +263,9 @@ def llm_refactor_role_spec_from_onet_raw(
     summary: Dict[str, Any],
     tech_payload: Optional[Dict[str, Any]] = None,
     hot_tech_payload: Optional[Dict[str, Any]] = None,
+    skills_payload: Optional[List[Dict[str, Any]]] = None,
+    tasks_payload: Optional[List[Dict[str, Any]]] = None,
+    knowledge_payload: Optional[List[Dict[str, Any]]] = None,
     raw_user_text: Optional[str] = None,
     few_shot_examples: Optional[List[Dict[str, Any]]] = None,
 ) -> RoleSpecModel:
@@ -259,6 +281,9 @@ def llm_refactor_role_spec_from_onet_raw(
         "summary": summary,
         "technology_skills_payload": tech_payload or {},
         "hot_technology_payload": hot_tech_payload or {},
+        "skills_payload": skills_payload or [],
+        "tasks_payload": tasks_payload or [],
+        "knowledge_payload": knowledge_payload or [],
     }
 
     prompt = f"""
