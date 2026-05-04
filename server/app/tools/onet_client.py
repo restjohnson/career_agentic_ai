@@ -43,12 +43,36 @@ class OnetClient:
         summary = details.get("description")
         return summary
 
-    #edited to return only skills
-    '''def get_occupation_tasks(self, onet_code: str) -> Dict[str, Any]:
-        return self._get(f"/online/occupations/{onet_code}/summary/tasks", params={"start": 1, "end": 10})
+    _IMPORTANCE_THRESHOLD = 3.0
 
-    def get_occupation_skills(self, onet_code: str) -> Dict[str, Any]:
-        return self._get(f"/online/occupations/{onet_code}/summary/skills", params={"start": 1, "end": 15})'''
+    def _extract_scored_elements(
+        self, data: Dict[str, Any], list_key: str, *, threshold: float = _IMPORTANCE_THRESHOLD
+    ) -> List[Dict[str, Any]]:
+        items = []
+        for el in data.get(list_key, []):
+            name = el.get("name", "")
+            importance = next(
+                (s.get("value") for s in el.get("score", []) if s.get("id") == "IM"),
+                None,
+            )
+            if name and importance is not None and importance >= threshold:
+                items.append({"name": name, "importance": importance})
+        return items
+
+    def get_occupation_skills(self, onet_code: str) -> List[Dict[str, Any]]:
+        """Return skills with importance >= 3.0 (ONET standardized skills taxonomy)."""
+        data = self._get(f"/online/occupations/{onet_code}/summary/skills", params={"start": 1, "end": 20})
+        return self._extract_scored_elements(data, "element")
+
+    def get_occupation_tasks(self, onet_code: str) -> List[Dict[str, Any]]:
+        """Return tasks with importance >= 3.0."""
+        data = self._get(f"/online/occupations/{onet_code}/summary/tasks", params={"start": 1, "end": 15})
+        return self._extract_scored_elements(data, "task")
+
+    def get_occupation_knowledge(self, onet_code: str) -> List[Dict[str, Any]]:
+        """Return knowledge domains with importance >= 3.0."""
+        data = self._get(f"/online/occupations/{onet_code}/summary/knowledge", params={"start": 1, "end": 15})
+        return self._extract_scored_elements(data, "element")
 
     def get_occupation_technology(self, onet_code: str) -> Dict[str, Any]:
         occupation_info = self._get(f"/online/occupations/{onet_code}/summary/technology_skills")
