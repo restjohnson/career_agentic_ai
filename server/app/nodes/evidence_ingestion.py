@@ -4,12 +4,10 @@ import hashlib
 from typing import Any, Dict, Optional
 
 from app.state import AgentState, EvidenceItem, RoleSpecModel
-import os
 from app.tools.docling_parser import infer_suffix, parse_document_to_markdown
 from app.tools.evidence_llm import build_student_model, extract_evidence_items
+from app.tools.selfreport_llm import assess_student_holistic
 from app.tools.supabase_repo import SupabaseRepo
-# Legacy fallback — superseded by state.condition. Remove after per-run switching is confirmed.
-_LEGACY_ABLATION_2 = os.getenv("ABLATION_2_NO_DOCLING", "false").lower() == "true"
 
 def _role_hash(role_spec: Optional[RoleSpecModel]) -> str:
     """
@@ -51,7 +49,7 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     role_hash = _role_hash(s.role_spec)
     onet_code = s.role_spec.matched_onet_code if s.role_spec else None
-    use_ablation2 = (s.condition == "ablation2") or _LEGACY_ABLATION_2
+    use_ablation2 = s.condition == "ablation2"
     if use_ablation2:
         role_hash = f"ablation2_{role_hash}"
 
@@ -97,46 +95,39 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
             )
             continue
 
-        #Parse with Docling
         # ----------------------------------------------------------------
-        # ABLATION 2: Skip Docling — pass raw bytes directly to LLM
-        # Full COMPASS: Parse with Docling first, then pass markdown
+        # ABLATION 2: Docling parse → single holistic LLM assessment.
+        #   Bypasses per-item evidence extraction entirely.
+        #   Populates selfreport_scores (req_summary → student_level 0–3).
+        #   No evidence items are written; gap_analysis uses scores directly.
+        # FULL COMPASS: Docling parse → typed evidence extraction.
         # ----------------------------------------------------------------
         if use_ablation2:
-            print(f"[ABLATION2] Skipping Docling — passing raw bytes to LLM", flush=True)
-            suffix = infer_suffix(doc.storage_ref)
-            mime_map = {
-                ".pdf": "application/pdf",
-                ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                ".doc": "application/msword",
-                ".txt": "text/plain",
-                ".md": "text/markdown",
-            }
-            mime_type = mime_map.get(suffix, "application/pdf")
-
             try:
-                items = extract_evidence_items(
-                    file_bytes=file_bytes,
-                    file_mime_type=mime_type,
-                    source_type=doc.source_type,
-                    role_spec=s.role_spec,
-                    consent_level=doc.consent_level,
-                )
-                print(f"[ABLATION2] LLM extracted {len(items)} items from {doc.storage_ref}", flush=True)
+                suffix = infer_suffix(doc.storage_ref)
+                markdown_content = parse_document_to_markdown(file_bytes, suffix)
+                print(f"[ABLATION2] Docling parsed {len(markdown_content)} chars", flush=True)
             except Exception as e:
-                print(f"[ABLATION2] LLM extraction FAILED: {type(e).__name__}: {e}", flush=True)
+                print(f"[ABLATION2] Docling FAILED: {type(e).__name__}: {e}", flush=True)
                 s.errors.append(
-                    f"evidence_ingestion: Ablation2 LLM extraction failed for {doc.storage_ref}: "
+                    f"evidence_ingestion: ablation2 Docling parse failed for {doc.storage_ref}: "
                     f"{type(e).__name__}: {e}"
                 )
                 continue
 
-            # Layer 2: flatten all item types to 'claim'.
-            # Removes the epistemological hierarchy — experience, project, and coursework
-            # all become claim (proficiency 0 in gap analysis). Reproduces the self-report
-            # baseline of prior AI career guidance systems.
-            for item in items:
-                item.item_type = "claim"
+            try:
+                scores = assess_student_holistic(markdown_content, s.role_spec)
+                s.selfreport_scores = scores
+                print(f"[ABLATION2] Holistic assessment: {len(scores)} requirements scored.", flush=True)
+            except Exception as e:
+                print(f"[ABLATION2] Holistic assessment FAILED: {type(e).__name__}: {e}", flush=True)
+                s.errors.append(
+                    f"evidence_ingestion: ablation2 holistic assessment failed: "
+                    f"{type(e).__name__}: {e}"
+                )
+                continue
+
+            items = []
 
         else:
             # Full COMPASS path — Parse with Docling
@@ -170,6 +161,10 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                     f"{type(e).__name__}: {e}"
                 )
                 continue
+
+        # Ablation2 produces no items — nothing to persist.
+        if use_ablation2:
+            continue
 
         #persist EvidenceItems and back-fill ids
         if doc.id and items:

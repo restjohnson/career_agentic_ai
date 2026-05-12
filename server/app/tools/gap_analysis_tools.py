@@ -147,6 +147,53 @@ def compute_gaps(
     return gap_items
 
 
+def compute_gaps_selfreport(
+    selfreport_scores: Dict[str, float],
+    role_spec: RoleSpecModel,
+) -> List[GapItem]:
+    """
+    Compute gaps for the selfreport condition.
+
+    student_level comes from the holistic LLM assessment (no evidence items).
+    gap_type reflects holistic score magnitude rather than evidence type:
+      met          — raw_gap < _MET_THRESHOLD
+      partial      — student_level >= 1.0 (substantial mention)
+      claimed_only — 0 < student_level < 1.0 (minimal mention)
+      no_evidence  — student_level == 0.0 (not mentioned)
+    """
+    gap_items: List[GapItem] = []
+
+    for req in role_spec.requirements:
+        student_level = selfreport_scores.get(req.req_summary, 0.0)
+        raw_gap      = max(0.0, round(req.required_level - student_level, 4))
+        weighted_gap = round(req.importance * raw_gap, 4)
+
+        if raw_gap < _MET_THRESHOLD:
+            gap_type = "met"
+        elif student_level >= 1.0:
+            gap_type = "partial"
+        elif student_level > 0.0:
+            gap_type = "claimed_only"
+        else:
+            gap_type = "no_evidence"
+
+        gap_items.append(GapItem(
+            summary=req.req_summary,
+            category=req.category,
+            required_level=req.required_level,
+            student_level=student_level,
+            raw_gap=raw_gap,
+            weighted_gap=weighted_gap,
+            proficiency=0,
+            confidence=0.0,
+            gap_type=gap_type,
+            evidence_item_ids=[],
+        ))
+
+    gap_items.sort(key=lambda g: g.weighted_gap, reverse=True)
+    return gap_items
+
+
 # ---------------------------------------------------------------------------
 # knowledge decomposition (LLM call)
 # ---------------------------------------------------------------------------

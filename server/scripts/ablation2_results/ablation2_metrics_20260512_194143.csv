@@ -1,0 +1,20 @@
+metric,full_compass_mean,full_compass_stdev,ablation2_mean,ablation2_stdev,delta_mean
+Mean Student Level,0.8561,0.075,1.3583,0.044,0.5022
+gap_type:claimed_only,0.6667,0.488,0,0,-0.6667
+gap_type:met,0,0,0.8667,0.3519,0.8667
+gap_type:no_evidence,3.1333,0.7432,1,0.0,-2.1333
+gap_type:optional_gap,0.0667,0.2582,0,0,-0.0667
+gap_type:partial,4.1333,0.5164,6.1333,0.3519,2.0
+rubric:feasibility,5,0.0,5,0.0,0.0
+rubric:gap_coverage,4.1333,0.3519,4.5333,0.5164,0.4
+rubric:jit_compliance,4.5333,0.5164,4.9333,0.2582,0.4
+rubric:level_appropriateness,5,0.0,5,0.0,0.0
+divergence:gap_jaccard,0.8917,0.044,,0,
+divergence:compass_only_gap_count,0.8667,0.3519,,0,
+divergence:ablation2_only_gap_count,0,0,,0,
+divergence:mean_student_level_delta,-0.5022,0.0764,,0,
+judge:precision,3.7933,0.3494,3.6,0.4,-0.1933
+judge:gap_specificity,4.0667,0.2895,3.78,0.2007,-0.2867
+judge:level_appropriateness,3.9333,0.1633,3.8533,0.1407,-0.08
+judge:actionability,4.3133,0.29,4.16,0.2324,-0.1533
+judge:overall,4.0267,0.2172,3.8483,0.1865,-0.1784

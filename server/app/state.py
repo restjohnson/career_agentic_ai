@@ -275,6 +275,11 @@ class AgentState(BaseModel):
     prev_critique_issues: List[str] = Field(default_factory=list)
     # ^ holds the issues from the previous critique iteration for stall detection
 
+    # Self-report condition: holistic LLM-estimated student_level per requirement.
+    # Populated by evidence_ingestion when condition == "ablation2".
+    # Consumed by gap_analysis in place of compute_student_scores.
+    selfreport_scores: Optional[Dict[str, float]] = None
+
     status: RunStatus = "queued"
     step: Optional[StepName] = None
     errors: List[str] = Field(default_factory=list)

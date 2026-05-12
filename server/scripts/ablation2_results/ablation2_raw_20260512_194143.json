@@ -1,0 +1,1080 @@
+{
+  "run_timestamp": "2026-05-12T19:41:43.617603",
+  "role": "Data Scientist",
+  "n_runs": 15,
+  "full_compass": {
+    "label": "full_compass",
+    "n_runs": 15,
+    "total_evidence_items": 8.4667,
+    "total_evidence_items_stdev": 1.302,
+    "requirements_matched": 4.8667,
+    "requirements_matched_stdev": 0.7432,
+    "mean_student_level": 0.8561,
+    "mean_student_level_stdev": 0.075,
+    "item_type_distribution": {
+      "claim": 4.3333,
+      "coursework": 2.1333,
+      "experience": 1,
+      "project": 1
+    },
+    "item_type_distribution_stdev": {
+      "claim": 1.291,
+      "coursework": 0.3519,
+      "experience": 0.0,
+      "project": 0.0
+    },
+    "gap_type_distribution": {
+      "claimed_only": 0.6667,
+      "no_evidence": 3.1333,
+      "optional_gap": 0.0667,
+      "partial": 4.1333
+    },
+    "gap_type_distribution_stdev": {
+      "claimed_only": 0.488,
+      "no_evidence": 0.7432,
+      "optional_gap": 0.2582,
+      "partial": 0.5164
+    },
+    "rubric_scores": {
+      "feasibility": 5,
+      "gap_coverage": 4.1333,
+      "jit_compliance": 4.5333,
+      "level_appropriateness": 5
+    },
+    "rubric_scores_stdev": {
+      "feasibility": 0.0,
+      "gap_coverage": 0.3519,
+      "jit_compliance": 0.5164,
+      "level_appropriateness": 0.0
+    },
+    "per_run_raw_items": [
+      [
+        {
+          "item_type": "project",
+          "summary": "Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024) - Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with a clear outcome, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte",
+          "confidence": 0.5,
+          "confidence_reason": "This degree includes relevant coursework in machine learning and data structures, indicating foundational knowledge, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.5,
+          "confidence_reason": "The coursework includes machine learning and data-related subjects, indicating foundational knowledge, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present) - Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)",
+          "confidence": 0.25,
+          "confidence_reason": "Assisting with grading and helping students debug Python code indicates some experience with Python, but lacks independent project context, so I assigned it a confidence of 0.25."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without context of application or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed without specific context of use in projects or experiences, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned without context of application, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework, but lacks independent demonstration, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte",
+          "confidence": 0.5,
+          "confidence_reason": "This degree includes relevant coursework in machine learning and data structures, indicating foundational knowledge, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.5,
+          "confidence_reason": "These courses provide foundational knowledge in data processing and machine learning concepts, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present)",
+          "confidence": 0.4,
+          "confidence_reason": "Assisting with grading and helping students debug Python code indicates some level of proficiency in Python, but it's in a guided setting, so I assigned it a confidence of 0.40."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but there is no context demonstrating its use, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed without context demonstrating their use, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned without any demonstration context, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework, but there is no demonstration of its use, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results using Python and scikit-learn.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with a clear outcome, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Completed supervised learning, unsupervised learning, and model evaluation modules in the Introduction to Machine Learning course.",
+          "confidence": 0.51,
+          "confidence_reason": "This coursework involved learning about model evaluation techniques, which indicates a strong understanding of the subject, thus I assigned it a confidence of 0.51."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework includes Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems.",
+          "confidence": 0.26,
+          "confidence_reason": "This coursework provides foundational knowledge relevant to data science, but it is not independently demonstrated, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Assisted professor with grading and office hours for Introduction to Programming, helping students debug Python code during weekly lab sessions.",
+          "confidence": 0.51,
+          "confidence_reason": "This experience involves direct interaction with Python code, indicating practical use of Python skills, thus I assigned it a confidence of 0.51."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Proficient in Python programming language.",
+          "confidence": 0.1,
+          "confidence_reason": "This is a self-reported skill without demonstration context, so I assigned it a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Familiar with Java programming language.",
+          "confidence": 0.1,
+          "confidence_reason": "This is a self-reported skill without demonstration context, so I assigned it a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Experienced with scikit-learn library for machine learning.",
+          "confidence": 0.1,
+          "confidence_reason": "This is a self-reported skill without demonstration context, so I assigned it a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Knowledgeable in NumPy library for data manipulation.",
+          "confidence": 0.1,
+          "confidence_reason": "This is a self-reported skill without demonstration context, so I assigned it a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Knowledgeable in pandas library for data analysis.",
+          "confidence": 0.1,
+          "confidence_reason": "This is a self-reported skill without demonstration context, so I assigned it a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Familiar with Git for version control.",
+          "confidence": 0.1,
+          "confidence_reason": "This is a self-reported skill without demonstration context, so I assigned it a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Experienced with Jupyter Notebook for data analysis.",
+          "confidence": 0.1,
+          "confidence_reason": "This is a self-reported skill without demonstration context, so I assigned it a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Familiar with VS Code as a development environment.",
+          "confidence": 0.1,
+          "confidence_reason": "This is a self-reported skill without demonstration context, so I assigned it a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Knowledgeable in MySQL for database management.",
+          "confidence": 0.1,
+          "confidence_reason": "This is a self-reported skill without demonstration context, so I assigned it a low confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024) - Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte, Expected Graduation: May 2026 | GPA: 3.4 / 4.0",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to data science, but it is not a direct demonstration of skills, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.26,
+          "confidence_reason": "These courses provide relevant knowledge for data science, particularly in machine learning and data handling, but do not demonstrate skills directly, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Machine Learning: Completed supervised learning, unsupervised learning, and model evaluation modules; final grade A-",
+          "confidence": 0.51,
+          "confidence_reason": "This coursework involved practical applications of machine learning concepts, indicating independent use of techniques, so I assigned it a confidence of 0.51."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present) - Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)",
+          "confidence": 0.26,
+          "confidence_reason": "This role involves assisting with programming, which may include Python, but does not demonstrate independent use of skills, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language but without specific context of use, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed but not demonstrated in a specific context outside of the project, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned but without specific context of use, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework but without specific demonstration, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024) - Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte",
+          "confidence": 0.5,
+          "confidence_reason": "This degree includes relevant coursework in machine learning and data structures, indicating foundational knowledge, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.5,
+          "confidence_reason": "The coursework includes machine learning and data-related subjects, indicating knowledge relevant to data science, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present) - Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)",
+          "confidence": 0.25,
+          "confidence_reason": "This role involves assisting with programming, which may include Python, but lacks specific data science context, so I assigned it a confidence of 0.25."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed but not demonstrated in a project or experience context, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned but lack demonstration context, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework, but without specific application, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024) - Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte, Expected Graduation: May 2026 | GPA: 3.4 / 4.0",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to data science, but it is not a direct demonstration of skills or experience, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.26,
+          "confidence_reason": "These courses provide relevant theoretical knowledge for data science, but do not demonstrate practical application, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Introduction to Machine Learning: Completed supervised learning, unsupervised learning, and model evaluation modules; final grade A-",
+          "confidence": 0.51,
+          "confidence_reason": "This coursework involved practical learning of machine learning concepts and model evaluation, indicating independent use of relevant skills, so I assigned it a confidence of 0.51."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present) - Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)",
+          "confidence": 0.26,
+          "confidence_reason": "This role involves assisting with programming, which may include Python, but does not demonstrate independent application of skills, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without specific context of application, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed as skills, but without context of application, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned without specific context of use, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework, but without practical application, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024) - Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte, Expected Graduation: May 2026 | GPA: 3.4 / 4.0",
+          "confidence": 0.5,
+          "confidence_reason": "This degree program includes relevant coursework that supports foundational knowledge for data science, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.5,
+          "confidence_reason": "The coursework includes key subjects relevant to data science, particularly Introduction to Machine Learning, which supports understanding of data preprocessing and model evaluation, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present) - Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)",
+          "confidence": 0.25,
+          "confidence_reason": "This role involves assisting with Python code debugging, which indicates some level of proficiency with Python, but lacks independent project context, so I assigned it a confidence of 0.25."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without context of application or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed as skills, but without specific project context for each, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned without specific application context, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework, but lacks independent demonstration, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with a clear outcome, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree includes relevant coursework in machine learning and data structures, indicating foundational knowledge, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.26,
+          "confidence_reason": "The coursework includes machine learning and data-related subjects, indicating foundational knowledge, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present)",
+          "confidence": 0.26,
+          "confidence_reason": "Assisting with grading and helping students debug Python code indicates practical experience with Python, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without specific context of use, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed but not demonstrated in a project context, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned but not demonstrated in a project context, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework, but without specific project use, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with a clear outcome, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree includes relevant coursework in machine learning and data structures, indicating foundational knowledge, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.26,
+          "confidence_reason": "These courses provide foundational knowledge in data processing and machine learning concepts, justifying a confidence of 0.26."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present)",
+          "confidence": 0.26,
+          "confidence_reason": "Assisting with grading and helping students debug Python code indicates practical experience with Python, justifying a confidence of 0.26."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without specific context of use, I assigned a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed but not demonstrated in a project context, so I assigned a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned without context of use, leading to a low confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework, but without practical application, so I assigned a low confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to data science, but does not demonstrate specific skills or tools independently, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework includes Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems.",
+          "confidence": 0.26,
+          "confidence_reason": "These courses provide relevant knowledge for data science, particularly in machine learning and data handling, but do not demonstrate specific skills or tools independently, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present)",
+          "confidence": 0.26,
+          "confidence_reason": "Assisting with grading and helping students debug Python code indicates some level of proficiency in Python, but it is in a guided setting, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed as skills, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned as part of the skill set, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned as a database skill, but it is noted as coursework only, indicating limited practical experience, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024) - Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte",
+          "confidence": 0.5,
+          "confidence_reason": "This degree includes relevant coursework in machine learning and data structures, indicating foundational knowledge in data science, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.5,
+          "confidence_reason": "The coursework includes machine learning and data-related subjects, indicating knowledge relevant to data science, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present) - Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)",
+          "confidence": 0.25,
+          "confidence_reason": "Assisting with grading and helping students debug Python code indicates some level of experience with Python, but lacks independent project context, so I assigned it a confidence of 0.25."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed as skills, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are listed as skills, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework, but lacks independent project context, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024) - Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte, Expected Graduation: May 2026 | GPA: 3.4 / 4.0",
+          "confidence": 0.5,
+          "confidence_reason": "This degree program includes relevant coursework that supports foundational knowledge in data science, thus I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.5,
+          "confidence_reason": "The coursework includes subjects relevant to data science and machine learning, indicating foundational knowledge, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present) - Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)",
+          "confidence": 0.25,
+          "confidence_reason": "This role involves assisting with programming, which may involve Python, but lacks specific outcomes related to data science, so I assigned it a confidence of 0.25."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed as skills, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned as skills, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned as a database skill, but only in the context of coursework, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024) - Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with a clear outcome, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte, Expected Graduation: May 2026 | GPA: 3.4 / 4.0",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to data science, but does not demonstrate specific skills or tools used, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.26,
+          "confidence_reason": "These courses provide relevant knowledge for data science, particularly in machine learning and data handling, but do not demonstrate specific skills or tools used, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present) - Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)",
+          "confidence": 0.25,
+          "confidence_reason": "This role involves assisting with programming, which may include Python, but lacks specific outcomes or independent use of skills, so I assigned it a confidence of 0.25."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed as skills, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are listed as skills, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned as a database skill, but only in the context of coursework, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Student Grade Predictor | Python, scikit-learn, pandas (Spring 2024) - Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte, Expected Graduation: May 2026 | GPA: 3.4 / 4.0",
+          "confidence": 0.26,
+          "confidence_reason": "This degree provides foundational knowledge relevant to data science, but it is not directly demonstrated through practical application, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.26,
+          "confidence_reason": "These courses provide relevant theoretical knowledge for data science, but they are not independently demonstrated through projects or experiences, so I assigned it a confidence of 0.26."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present) - Assist professor with grading and office hours for Introduction to Programming (ITSC 1213)",
+          "confidence": 0.25,
+          "confidence_reason": "This role involves assisting with programming, which may include Python, but lacks specific evidence of independent application or outcomes, so I assigned it a confidence of 0.25."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but there is no specific evidence of its application outside of coursework, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed as skills, but there is no specific evidence of their application outside of the project, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned as skills, but there is no specific evidence of their application, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned as a skill but is only tied to coursework, lacking independent application, so I assigned it a confidence of 0.10."
+        }
+      ],
+      [
+        {
+          "item_type": "project",
+          "summary": "Built a classification model to predict whether students would pass or fail based on attendance, assignment scores, and exam results.",
+          "confidence": 0.65,
+          "confidence_reason": "This project involved building a classification model using Python and scikit-learn, demonstrating independent use of Python with clear outcomes, so I assigned it a confidence of 0.65."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Bachelor of Science in Computer Science - University of North Carolina at Charlotte",
+          "confidence": 0.5,
+          "confidence_reason": "This degree includes relevant coursework in machine learning and data structures, indicating foundational knowledge, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "coursework",
+          "summary": "Relevant coursework: Data Structures and Algorithms, Introduction to Machine Learning, Linear Algebra, Probability and Statistics, Database Systems",
+          "confidence": 0.5,
+          "confidence_reason": "These courses provide foundational knowledge in data processing and machine learning, which supports understanding of data preprocessing and feature engineering, so I assigned it a confidence of 0.50."
+        },
+        {
+          "item_type": "experience",
+          "summary": "Undergraduate Teaching Assistant - UNCC Department of Computer Science (Aug 2024 - Present)",
+          "confidence": 0.25,
+          "confidence_reason": "Assisting with grading and helping students debug Python code indicates some level of proficiency with Python, but lacks independent project context, so I assigned it a confidence of 0.25."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Programming Languages: Python, Java",
+          "confidence": 0.1,
+          "confidence_reason": "Python is mentioned as a programming language, but without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Libraries / Frameworks: scikit-learn, NumPy, pandas",
+          "confidence": 0.1,
+          "confidence_reason": "These libraries are listed as skills, but without specific project context, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Tools: Git, Jupyter Notebook, VS Code",
+          "confidence": 0.1,
+          "confidence_reason": "These tools are mentioned without specific context or demonstration, so I assigned it a confidence of 0.10."
+        },
+        {
+          "item_type": "claim",
+          "summary": "Databases: MySQL (coursework only)",
+          "confidence": 0.1,
+          "confidence_reason": "MySQL is mentioned in the context of coursework, but lacks independent demonstration, so I assigned it a confidence of 0.10."
+        }
+      ]
+    ]
+  },
+  "ablation2": {
+    "label": "ablation2",
+    "n_runs": 15,
+    "total_evidence_items": 0,
+    "total_evidence_items_stdev": 0.0,
+    "requirements_matched": 0,
+    "requirements_matched_stdev": 0.0,
+    "mean_student_level": 1.3583,
+    "mean_student_level_stdev": 0.044,
+    "item_type_distribution": {},
+    "item_type_distribution_stdev": {},
+    "gap_type_distribution": {
+      "met": 0.8667,
+      "no_evidence": 1,
+      "partial": 6.1333
+    },
+    "gap_type_distribution_stdev": {
+      "met": 0.3519,
+      "no_evidence": 0.0,
+      "partial": 0.3519
+    },
+    "rubric_scores": {
+      "feasibility": 5,
+      "gap_coverage": 4.5333,
+      "jit_compliance": 4.9333,
+      "level_appropriateness": 5
+    },
+    "rubric_scores_stdev": {
+      "feasibility": 0.0,
+      "gap_coverage": 0.5164,
+      "jit_compliance": 0.2582,
+      "level_appropriateness": 0.0
+    },
+    "per_run_raw_items": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ]
+  },
+  "divergence": {
+    "gap_jaccard": 0.8917,
+    "gap_jaccard_stdev": 0.044,
+    "compass_only_gap_count": 0.8667,
+    "compass_only_gap_count_stdev": 0.3519,
+    "ablation2_only_gap_count": 0,
+    "selfreport_only_gap_count_stdev": 0.0,
+    "mean_student_level_delta": -0.5022,
+    "mean_student_level_delta_stdev": 0.0764
+  },
+  "divergence_runs": [
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.4797,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.46,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 1.0,
+      "compass_only_gap_count": 0,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.3474,
+      "compass_only_gaps": [],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.5156,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.5762,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.3888,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.4611,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.512,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.512,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.5457,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.4797,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.5762,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 1.0,
+      "compass_only_gap_count": 0,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.537,
+      "compass_only_gaps": [],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.662,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    },
+    {
+      "gap_jaccard": 0.875,
+      "compass_only_gap_count": 1,
+      "ablation2_only_gap_count": 0,
+      "mean_student_level_delta": -0.4797,
+      "compass_only_gaps": [
+        "Strong problem-solving skills and ability to work collaboratively in cross-functional teams"
+      ],
+      "ablation2_only_gaps": []
+    }
+  ],
+  "judge_scores": {
+    "full_compass": {
+      "precision": 3.7933,
+      "precision_stdev": 0.3494,
+      "gap_specificity": 4.0667,
+      "gap_specificity_stdev": 0.2895,
+      "level_appropriateness": 3.9333,
+      "level_appropriateness_stdev": 0.1633,
+      "actionability": 4.3133,
+      "actionability_stdev": 0.29,
+      "overall": 4.0267,
+      "overall_stdev": 0.2172
+    },
+    "ablation2": {
+      "precision": 3.6,
+      "precision_stdev": 0.4,
+      "gap_specificity": 3.78,
+      "gap_specificity_stdev": 0.2007,
+      "level_appropriateness": 3.8533,
+      "level_appropriateness_stdev": 0.1407,
+      "actionability": 4.16,
+      "actionability_stdev": 0.2324,
+      "overall": 3.8483,
+      "overall_stdev": 0.1865
+    }
+  }
+}

@@ -39,6 +39,12 @@ def role_intake_node(state: Dict[str, Any]) -> Dict[str, Any]:
     s = AgentState.model_validate(state)
     s.step = "role_intake"
 
+    # Allow callers (e.g. ablation paired runs) to pre-inject a role_spec so
+    # both conditions share identical requirements — required for valid divergence metrics.
+    if s.role_spec:
+        print(f"[ROLE_INTAKE] role_spec pre-injected ({len(s.role_spec.requirements)} reqs) — skipping intake.", flush=True)
+        return s.model_dump(exclude_none=True)
+
     client = OnetClient()
     repo = SupabaseRepo()
 

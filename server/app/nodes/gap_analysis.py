@@ -11,6 +11,7 @@ from app.state import AgentState, GapReport, KnowledgePrerequisite
 from app.tools.gap_analysis_tools import (
     build_gap_report,
     compute_gaps,
+    compute_gaps_selfreport,
     compute_student_scores,
     decompose_knowledge_prerequisites,
     generate_student_level_reasoning,
@@ -89,6 +90,39 @@ def gap_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
     if not s.student_model:
         print("[GAP_ANALYSIS] ERROR: student_model missing.", flush=True)
         s.errors.append("gap_analysis: student_model missing from state.")
+        return s.model_dump(exclude_none=True)
+
+    # ------------------------------------------------------------------
+    # ABLATION 2 fast path — bypass the ReAct agent entirely.
+    # student_level estimates come from selfreport_scores (holistic LLM
+    # assessment); compute_student_scores is not called.
+    # ------------------------------------------------------------------
+    if s.condition == "ablation2" and s.selfreport_scores:
+        print(f"[GAP_ANALYSIS] Ablation2 path: using holistic scores for {len(s.selfreport_scores)} requirements.", flush=True)
+
+        gap_items = compute_gaps_selfreport(s.selfreport_scores, s.role_spec)
+        n_met = sum(1 for g in gap_items if g.gap_type == "met")
+        print(f"[GAP_ANALYSIS] compute_gaps_selfreport: {len(gap_items)} total, {n_met} met.", flush=True)
+
+        actionable = [g for g in gap_items if g.gap_type != "met"]
+
+        reasoning_map = generate_student_level_reasoning(gap_items, s.evidence_items, s.role_spec.canonical_role_title)
+        for gap in gap_items:
+            gap.student_level_reasoning = reasoning_map.get(gap.summary)
+        print(f"[GAP_ANALYSIS] generate_student_level_reasoning: {len(reasoning_map)} gaps explained.", flush=True)
+
+        if any(g.raw_gap > 0.5 for g in gap_items):
+            prerequisites = decompose_knowledge_prerequisites(
+                gap_items=actionable,
+                evidence_items=s.evidence_items,
+                role_title=s.role_spec.canonical_role_title,
+            )
+            _attach_prerequisites(gap_items, prerequisites)
+            print(f"[GAP_ANALYSIS] decompose_prerequisites: {len(prerequisites)} concepts.", flush=True)
+
+        gap_report = build_gap_report(gap_items)
+        print(f"[GAP_ANALYSIS] Done (ablation2). {len(gap_report.gaps)} gaps ({n_met} met).", flush=True)
+        s.gap_report = gap_report
         return s.model_dump(exclude_none=True)
 
     # Shared mutable container for tool results (accessed via closure)
