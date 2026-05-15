@@ -1,0 +1,13 @@
+.venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+server/.pytest_cache
+server/scripts/
+server/tests/
+server/.env
+server/outpt.json
+client/node_modules
+client/dist
+client/.vite
+.git
