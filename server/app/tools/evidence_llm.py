@@ -43,8 +43,8 @@ Your job is to extract ALL evidence items from the document — exhaustively, wi
 Item types:
 - experience: A work, internship, research, or teaching role entry.
 - project: A standalone project the student built or contributed to.
-- coursework: A course, degree, certification, or academic programme.
-- claim: Any self-reported skill, tool, technology, or capability that is listed but not independently demonstrated by a project or experience entry. This includes all COMPETENCIES, Technical Skills, Summary statements, and skill list sections.
+- coursework: A degree (B.S., M.S., Ph.D., etc.), diploma, academic coursework, certification, or academic programme. Degrees and academic qualifications are ALWAYS coursework.
+- claim: Any self-reported skill, tool, technology, or capability that is listed but not independently demonstrated by a project or experience entry. This includes all COMPETENCIES, Technical Skills, Summary statements, and skill list sections. Academic degrees are NOT claims.
 
 Rules:
 1. Extract EVERY item in the document regardless of relevance to the target role. Do not filter.
@@ -58,9 +58,8 @@ Rules:
    - 0.00–0.09: Completely unsupported — vague or unverifiable assertion.
 5. For each assigned confidence level, include a reason why that evidence item deserves that confidence score.
    For example, "This project involved building a web scraper using Python and BeautifulSoup, which demonstrates independent use of Python with a clear outcome, so I assigned it a confidence of 0.65."
-6. snippet: Include the most relevant quoted text when it strengthens the evidence item. Prefer direct quotes for projects and experience entries.
+6. snippet: Include the most relevant quoted text when it strengthens the evidence item. Prefer direct quotes for projects and experience entries. For individual skill or tool claim items (e.g. "Python", "TensorFlow"), set to null.
 7. Do not invent capabilities the document does not support.
-8. Produce items in order of relevance to the target role (most relevant first), with claim items last.
 """
 
 
@@ -119,6 +118,13 @@ Extract ALL evidence items from this document. For skill list or competency sect
     result: _ExtractionResult = llm_struct.invoke(
         [{"role": "system", "content": _SYSTEM}, {"role": "user", "content": prompt}]
     )
+
+    from collections import Counter
+    type_counts = Counter(item.item_type for item in result.items)
+    print(f"[EVIDENCE_LLM] Extracted {len(result.items)} items: {dict(type_counts)}", flush=True)
+    for item in result.items:
+        snippet_len = len(item.snippet) if item.snippet else 0
+        print(f"[EVIDENCE_LLM]   {item.item_type:12s} | snippet_len={snippet_len:4d} | {item.summary[:60]}", flush=True)
 
     return [
         EvidenceItem(
