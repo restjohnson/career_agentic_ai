@@ -58,7 +58,7 @@ Rules:
    - 0.00–0.09: Completely unsupported — vague or unverifiable assertion.
 5. For each assigned confidence level, include a reason why that evidence item deserves that confidence score.
    For example, "This project involved building a web scraper using Python and BeautifulSoup, which demonstrates independent use of Python with a clear outcome, so I assigned it a confidence of 0.65."
-6. snippet: Include the most relevant quoted text ONLY if consent_level is "excerpt_ok" or "raw_ok". Otherwise set to null.
+6. snippet: Include the most relevant quoted text when it strengthens the evidence item. Prefer direct quotes for projects and experience entries.
 7. Do not invent capabilities the document does not support.
 8. Produce items in order of relevance to the target role (most relevant first), with claim items last.
 """
@@ -73,7 +73,6 @@ def extract_evidence_items(
     markdown_content: str,
     source_type: str,
     role_spec: Optional[RoleSpecModel] = None,
-    consent_level: str = "derived_only",
 ) -> List[EvidenceItem]:
     """
     Use an LLM to extract structured EvidenceItems from Docling markdown output.
@@ -86,8 +85,6 @@ def extract_evidence_items(
         markdown_content: Markdown representation of the parsed document.
         source_type: One of EvidenceSourceType ("resume", "portfolio", etc.).
         role_spec: The current RoleSpecModel so the LLM can match evidence to requirements.
-        consent_level: Controls whether snippets are included.
-
     Returns:
         List of EvidenceItem objects (without DB ids — caller sets those after insert).
     """
@@ -106,7 +103,6 @@ def extract_evidence_items(
     prompt = f"""\
 Document type: {source_type}
 Target role: {role_spec.canonical_role_title if role_spec else "Unknown"}
-Consent level: {consent_level}
 
 Role requirements (use index number, starting from 0, in matched_requirement_indices):
 {requirements_text}

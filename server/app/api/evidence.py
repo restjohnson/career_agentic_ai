@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import hashlib
 import os
-from typing import Literal
-
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from pydantic import BaseModel
 
@@ -39,7 +37,6 @@ class EvidenceUploadResponse(BaseModel):
 @router.post("", response_model=EvidenceUploadResponse)
 async def upload_evidence(
     source_type: str = Form(..., description="One of: resume, transcript, portfolio, job_posting, other"),
-    consent_level: str = Form(default="derived_only", description="One of: derived_only, excerpt_ok, raw_ok"),
     file: UploadFile = File(...),
     session_id: str = Depends(get_session_id),
 ):
@@ -55,7 +52,6 @@ async def upload_evidence(
     The returned document_id can be passed to POST /runs as evidence_document_ids[].
     """
     _validate_source_type(source_type)
-    _validate_consent_level(consent_level)
 
     file_bytes = await file.read()
 
@@ -100,7 +96,6 @@ async def upload_evidence(
             source_type=source_type,
             content_hash=content_hash,
             strorage_ref=storage_ref,
-            consent_level=consent_level,
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"DB record creation failed: {type(e).__name__}: {e}")
@@ -122,10 +117,3 @@ def _validate_source_type(value: str) -> None:
         )
 
 
-def _validate_consent_level(value: str) -> None:
-    allowed = {"derived_only", "excerpt_ok", "raw_ok"}
-    if value not in allowed:
-        raise HTTPException(
-            status_code=422,
-            detail=f"consent_level must be one of: {', '.join(sorted(allowed))}",
-        )

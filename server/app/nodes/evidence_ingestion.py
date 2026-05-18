@@ -114,7 +114,6 @@ def evidence_ingestion_node(state: Dict[str, Any]) -> Dict[str, Any]:
                 markdown_content=markdown_content,
                 source_type=doc.source_type,
                 role_spec=s.role_spec,
-                consent_level=doc.consent_level,
             )
             print(f"[EVIDENCE] LLM extracted {len(items)} items from {doc.storage_ref}", flush=True)
         except Exception as e:

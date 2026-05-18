@@ -101,16 +101,14 @@ class SupabaseRepo:
             source_type: str, 
             content_hash: str, 
             strorage_ref: Optional[str] = None,
-            consent_level: str = "derived_only",
             ) -> str:
-        
+
         res = self.sb.table("evidence_documents").insert(
             {
                 "session_id": session_id,
                 "source_type": source_type,
                 "content_hash": content_hash,
                 "storage_ref": strorage_ref,
-                "consent_level": consent_level,
             }
         ).execute()
         if not res.data:

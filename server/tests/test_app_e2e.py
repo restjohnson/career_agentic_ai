@@ -112,7 +112,7 @@ def step_upload_evidence(token: str, file_path: Path | None) -> str:
     resp = requests.post(
         f"{BASE_URL}/evidence",
         headers=_bearer(token),
-        data={"source_type": "resume", "consent_level": "excerpt_ok"},
+        data={"source_type": "resume"},
         files=files,
     )
     data = _check(resp, label)
