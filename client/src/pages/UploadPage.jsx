@@ -6,7 +6,6 @@ import { startSession, uploadEvidence } from '../api';
 export default function UploadPage() {
   const [dragOver, setDragOver]         = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [consentLevel, setConsentLevel] = useState('derived_only');
   const [isUploading, setIsUploading]   = useState(false);
   const [uploadError, setUploadError]   = useState(null);
   const [alreadyUploaded, setAlreadyUploaded] = useState(false);
@@ -66,7 +65,7 @@ export default function UploadPage() {
     setIsUploading(true);
     try {
       const token = localStorage.getItem('session_token');
-      const { document_id } = await uploadEvidence(token, uploadedFile, 'resume', consentLevel);
+      const { document_id } = await uploadEvidence(token, uploadedFile, 'resume');
       sessionStorage.setItem('career_flow_evidence_ids', JSON.stringify([document_id]));
       sessionStorage.setItem('career_flow_resume_meta', JSON.stringify({ name: uploadedFile.name, size: uploadedFile.size }));
       navigate('/constraints', { replace: true, state: { evidenceDocIds: [document_id] } });
@@ -162,20 +161,6 @@ export default function UploadPage() {
             <span>Your file is only used to generate your personal career plan and is never shared.</span>
           </div>
 
-          {/* ── Consent level ────────────────────────────────────── */}
-          <div className={styles.consentGroup}>
-            <label className={styles.consentTitle} htmlFor="consentSelect">Data Consent Level</label>
-            <select
-              id="consentSelect"
-              className={styles.consentSelect}
-              value={consentLevel}
-              onChange={(e) => setConsentLevel(e.target.value)}
-            >
-              <option value="derived_only">Derived Only — never quotes your document</option>
-              <option value="excerpt_ok">Excerpts OK — may include short snippets</option>
-              <option value="raw_ok">Full Access — may reference any part</option>
-            </select>
-          </div>
         </div>
 
         {/* ── Actions ────────────────────────────────────────────── */}

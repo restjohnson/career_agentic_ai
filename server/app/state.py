@@ -13,7 +13,6 @@ class EvidenceDocument(BaseModel):
     source_type: EvidenceSourceType
     content_hash: str
     storage_ref: Optional[str] = None
-    consent_level: Literal["derived_only", "excerpt_ok", "raw_ok"] = "derived_only"
 
 class EvidenceItem(BaseModel):
     id: Optional[str] = None

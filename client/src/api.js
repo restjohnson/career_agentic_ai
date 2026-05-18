@@ -6,10 +6,9 @@ export async function startSession() {
   return res.json(); // { session_token, session_id }
 }
 
-export async function uploadEvidence(sessionToken, file, sourceType = 'resume', consentLevel = 'derived_only') {
+export async function uploadEvidence(sessionToken, file, sourceType = 'resume') {
   const form = new FormData();
   form.append('source_type', sourceType);
-  form.append('consent_level', consentLevel);
   form.append('file', file);
   const res = await fetch(`${API}/evidence`, {
     method: 'POST',

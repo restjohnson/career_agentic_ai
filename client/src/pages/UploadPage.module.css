@@ -324,38 +324,6 @@
   background: var(--color-primary-light);
 }
 
-/* ── Consent level ──────────────────────────────────────────────── */
-.consentGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.consentTitle {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.consentSelect {
-  width: 100%;
-  padding: 0.625rem 0.875rem;
-  font-size: 0.9375rem;
-  font-family: inherit;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg);
-  color: var(--color-text);
-  outline: none;
-  cursor: pointer;
-  transition: border-color 250ms ease;
-}
-
-.consentSelect:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
 /* ── Actions ─────────────────────────────────────────────────────── */
 .actions {
   display: flex;
