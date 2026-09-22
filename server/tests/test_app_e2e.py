@@ -21,6 +21,7 @@ from pathlib import Path
 import requests
 
 BASE_URL = "http://localhost:8000"
+API = f"{BASE_URL}/api"  # app/main.py mounts session/evidence/runs routers under /api; /health is not prefixed
 
 SAMPLE_RESUME = """
 John Smith
@@ -85,7 +86,7 @@ def step_health() -> None:
 
 
 def step_start_session() -> tuple[str, str]:
-    resp = requests.post(f"{BASE_URL}/session/start")
+    resp = requests.post(f"{API}/session/start")
     data = _check(resp, "POST /session/start")
     print(f"       session_id    = {data['session_id']}")
     print(f"       session_token = {data['session_token'][:24]}…")
@@ -110,7 +111,7 @@ def step_upload_evidence(token: str, file_path: Path | None) -> str:
         label = "POST /evidence  (sample resume text)"
 
     resp = requests.post(
-        f"{BASE_URL}/evidence",
+        f"{API}/evidence",
         headers=_bearer(token),
         data={"source_type": "resume"},
         files=files,
@@ -127,7 +128,7 @@ def step_create_run(token: str, document_id: str, role: str, constraints: dict) 
         "student_constraints": constraints,
     }
     resp = requests.post(
-        f"{BASE_URL}/runs",
+        f"{API}/runs",
         headers=_bearer(token),
         json=payload,
     )
@@ -140,7 +141,7 @@ def step_create_run(token: str, document_id: str, role: str, constraints: dict) 
 def step_stream_run(run_id: str, token: str) -> dict:
     """Connect to the SSE stream and block until the done event arrives."""
     import json as _json
-    url = f"{BASE_URL}/runs/{run_id}/stream?token={token}"
+    url = f"{API}/runs/{run_id}/stream?token={token}"
     print(f"\n[...] Streaming run results (this may take a minute)...")
     with requests.get(url, stream=True, timeout=600) as resp:
         if not resp.ok:

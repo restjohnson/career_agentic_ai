@@ -1,12 +1,15 @@
 from __future__ import annotations
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
-from pydantic import BaseModel, Field, computed_field
+from pydantic import BaseModel, Field, computed_field, model_validator
 
 EvidenceSourceType = Literal["resume", "transcript", "portfolio", "job_posting", "other"]
 EvidenceItemType = Literal["experience", "project", "coursework", "claim"]
+EvidenceProvenance = Literal["self_supplied", "externally_verified"]
 
-#student evidence such as resume and others
+# ---------------------------------------------------------------------------
+# Evidence documents and items (Stage 2 output)
+# ---------------------------------------------------------------------------
 
 class EvidenceDocument(BaseModel):
     id: Optional[str] = None
@@ -14,15 +17,23 @@ class EvidenceDocument(BaseModel):
     content_hash: str
     storage_ref: Optional[str] = None
 
+
 class EvidenceItem(BaseModel):
+    """
+    Stage 2 output. Goal-independent: no field on this object references a
+    requirement, so accumulated evidence survives a change of target role.
+    `type` and `quality` are assigned by two separate LLM calls — the quality
+    call receives neither type nor any requirement (COMPASS spec §4 Stage 2).
+    """
     id: Optional[str] = None
     document_id: Optional[str] = None
-    item_type: EvidenceItemType
+    type: EvidenceItemType
     summary: str
     snippet: Optional[str] = None
-    confidence: float = 0.8
-    confidence_reason: Optional[str] = None
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    quality: float = Field(ge=0.0, le=1.0, default=0.10)
+    provenance: EvidenceProvenance = "self_supplied"
+    type_rationale: Optional[str] = None
+    quality_rationale: Optional[str] = None
 
 # ---------------------------------------------------------------------------
 # Student constraints (supplied upfront at API call time)
@@ -70,167 +81,160 @@ class StudentConstraints(BaseModel):
                 pass
         return _GOAL_DEFAULT_WEEKS.get(self.target_goal, 26)
 
-#student model
-class StudentModel(BaseModel):
-    skills: List[str] = Field(default_factory=list, description="career-related skills extracted from evidence")
-    experiences: List[str] = Field(default_factory=list, description="career-related experiences extracted from evidence")
-    education: List[str] = Field(default_factory=list, description="career-related education extracted from student submitted evidence")
-    constraints: Dict[str, Any] = Field(
-        default_factory=dict,
-        description="student constraints such as time/week, current college year, anticipated graduation date")
-    evidence_map: Dict[str, List[str]] = Field(default_factory=dict)
+# ---------------------------------------------------------------------------
+# Requirement (Stage 1 output)
+# ---------------------------------------------------------------------------
 
-RoleReqType = Literal["skill", "task", "tech", "hot_technology", "knowledge"]
+RequirementCategory = Literal["skill", "knowledge", "task", "technology"]
+RequirementProvenance = Literal["grounded", "inferred"]
 
-# role requirement and role model retrived from ONET
-class RoleRequirement(BaseModel):
-    req_type: RoleReqType
-    req_summary: str
-    importance: Optional[float] = None
-    source_id: Optional[str] = None
-    metadata: Dict[str, Any] = Field(default_factory=dict)
 
-class RoleModel(BaseModel):
-    role_title: str
-    onet_code: Optional[str] = None
-    version: Optional[str] = None
-    summary: Dict[str, Any] = Field(default_factory=dict)
-    requirements: List[RoleRequirement] = Field(default_factory=list)
+class Requirement(BaseModel):
+    id: Optional[str] = None
+    category: RequirementCategory
+    description: str
+    required_depth: int = Field(ge=0, le=3)     # the quality level of demonstration the role demands
+    importance: int = Field(ge=1, le=5)
+    provenance: RequirementProvenance
+    justification: Optional[str] = None         # required when provenance == inferred
+    source_ref: Optional[str] = None            # O*NET code or posting id when grounded
 
-#LLM curated verification of role requirement (provenance)
-SpecSourceType = Literal["ONET", "JOB_POSTINGS", "CURATED", "USER_INPUT", "INFERRED"]
+    @model_validator(mode="after")
+    def _justification_required_when_inferred(self) -> "Requirement":
+        if self.provenance == "inferred" and not self.justification:
+            raise ValueError("Requirement.justification is required when provenance == 'inferred'.")
+        return self
 
-class ProvenanceRef(BaseModel):
-    source_type: SpecSourceType
-    source_ids: Optional[List[str]] = None  # required for ONET (onet_code); null for all other source types
-    note: Optional[str] = None
-
-class RoleSpecRequirement(BaseModel):
-    req_summary: str
-    category: RoleReqType
-    provenance: List[ProvenanceRef] = Field(default_factory=list)
-    optional: bool = False
-    required_level: float = 3.0   # 0–4, LLM-assigned at role_intake time
-    importance: float = 3.0       # 1–5, LLM-assigned at role_intake time
 
 class RoleSpecModel(BaseModel):
+    """Role-level container around the requirement set produced by Stage 1."""
     canonical_role_title: str
     matched_onet_code: Optional[str] = None
     confidence_role_match: float = Field(ge=0.0, le=1.0, default=0.7)
-    requirements: List[RoleSpecRequirement] = Field(default_factory=list)
+    requirements: List[Requirement] = Field(default_factory=list)
     assumptions: List[str] = Field(default_factory=list)
 
-# Gap Analysis, Planning, and critique
-class KnowledgePrerequisite(BaseModel):
-    concept: str                          # specific knowledge concept, role-grounded
-    parent_skill_gap: str                 # req_summary of the parent GapItem
-    is_foundational: bool                 # hard prerequisite vs supporting knowledge
+# ---------------------------------------------------------------------------
+# RequirementState (Stage 3 output) — one per requirement; the set of these
+# is the "student state" passed to Stages 4 and 5.
+# ---------------------------------------------------------------------------
+
+GapType = Literal["no_evidence", "claimed_only", "met", "partial", "uncertain", "unmet"]
+Disposition = Literal["satisfied", "remediate", "verify", "defer"]
+DiagnosticForm = Literal["artifact_submission", "external_validation"]
 
 
-class GapItem(BaseModel):
-    summary: str
-    category: RoleReqType
-    required_level: float
-    student_level: float
-    raw_gap: float
-    weighted_gap: float
-    proficiency: int                      #0–4, aggregated from evidence collection
-    confidence: float                     #0–1, Bayesian-combined from evidence
-    student_level_reasoning: Optional[str] = None  #LLM-generated explanation of why student_level is what it is
-    gap_type: Literal["no_evidence", "claimed_only", "partial", "optional_gap", "met"] = "no_evidence"
-    evidence_item_ids: List[str] = Field(default_factory=list)
-    knowledge_prerequisites: List[KnowledgePrerequisite] = Field(default_factory=list)
+class MatchedItem(BaseModel):
+    item_id: str
+    relevance: float = Field(ge=0.0, le=1.0)
 
-class GapReport(BaseModel):
-    summary: str = ""
-    gaps: List[GapItem] = Field(default_factory=list)
+
+class RequirementState(BaseModel):
+    requirement_id: str
+    alpha: float
+    beta: float
+    estimate: float
+    variance: float
+    evidential_mass: float
+    p_met: float
+    gap_type: GapType = "no_evidence"
+    disposition: Disposition = "defer"
+    strongest_type: Optional[EvidenceItemType] = None
+    closure_cost_est: float = 0.0            # hours; a budget heuristic, not an effort prediction
+    matched_items: List[MatchedItem] = Field(default_factory=list)
+    reasoning: Optional[str] = None          # explanatory only, cannot modify any number above
 
 # ---------------------------------------------------------------------------
-# Pathway planning — learning resources and plan structure
+# Plan (Stage 4 output)
 # ---------------------------------------------------------------------------
+
+ActivityKind = Literal["development", "diagnostic"]
 
 ResourceType = Literal[
-    "tutorial",       # blog posts, YouTube walkthroughs — primary informal channel
-    "project",        # hands-on build (guided or self-directed)
-    "open_source",    # contributing to existing OSS repos
-    "workshop",       # hackathons, bootcamp-style intensives
-    "certification",  # professional certs (AWS, Google, etc.)
-    "online_course",  # structured MOOCs — secondary (less informal)
-    "documentation",  # official docs + guided practice
-]
-
-BloomLevel = Literal[
-    "remember", "understand", "apply", "analyse", "evaluate", "create"
+    "tutorial", "project", "open_source", "workshop",
+    "certification", "online_course", "documentation",
 ]
 
 
-class InternshipOpportunity(BaseModel):
-    """
-    Internship application recommendation for a phase.
-    Suggests the best recruiting window and tailored resume updates.
-    """
-    message: str                                 # Narrative explaining readiness and timing
-    recruiting_season: str                       # e.g. "Fall 2026 recruiting cycle (Aug–Oct)"
-    suggested_internship_types: List[str]        # e.g. ["Data Analyst Internship", "ML Research Intern"]
-    resume_updates: List[str]                    # Specific projects/skills to add before applying
-
-
-class LearningResource(BaseModel):
+class Resource(BaseModel):
     title: str
-    provider: Optional[str] = None            # "Coursera", "GitHub", "Handshake", etc.
     url: Optional[str] = None
-    resource_type: ResourceType
+    verified: bool = False               # false when model-generated (not URL-validated)
+    provider: Optional[str] = None
+    resource_type: Optional[ResourceType] = None
     estimated_hours: Optional[int] = None
     is_free: Optional[bool] = None
-    addresses_gap: str                        # req_summary of the gap this covers
 
 
-class LearningAction(BaseModel):
-    """
-    A concrete, buildable project within a phase.
-    Multi-gap addressing and customized tech stack/methodologies.
-    """
-    title: str                                # e.g. "Customer Churn Prediction API" or "Analyze local housing market trends"
-    description: str                          # Detailed step-by-step spec the student can follow
-    stack: List[str] = Field(default_factory=list)  # Tools, libraries, methodologies (e.g., ["Pandas", "Matplotlib", "SQL"])
-    rationale: str                            # Personalised: why this project for this student
-    addresses_gaps: List[str] = Field(default_factory=list)  # Multiple gap labels this project covers
-    bloom_level: BloomLevel = "apply"
-    example_resources: List[LearningResource] = Field(default_factory=list)
+class ExpectedYield(BaseModel):
+    type: EvidenceItemType
+    provenance: EvidenceProvenance
+    quality: float
 
 
-class PlanPhase(BaseModel):
+class Activity(BaseModel):
+    kind: ActivityKind
+    addresses: List[str] = Field(default_factory=list)   # requirement ids
     title: str
-    rationale: str
-    outcome: str
-    checkpoint: str = ""                      # "After this phase, you will be able to..."
-    weeks: int = Field(ge=1, default=2)
-    learning_actions: List[LearningAction] = Field(default_factory=list)
-    resources: List[LearningResource] = Field(default_factory=list)
-    # ^ derived from learning_actions[].example_resources; kept for critique compatibility
-    addresses_gaps: List[str] = Field(default_factory=list)
-    resume_updates: List[str] = Field(default_factory=list)
-    # ^ Skills/projects to add to resume before the NEXT phase (machine-readable for critique)
-    internship_opportunity: Optional[InternshipOpportunity] = None
-    # ^ Optional recommendation to apply for internship after this phase
+    steps: List[str] = Field(default_factory=list)
+    tech_stack: List[str] = Field(default_factory=list)
+    rationale: str                        # why this activity for this student
+    hours: float
+    resources: List[Resource] = Field(default_factory=list)
+
+    # diagnostic only
+    target_uncertain: List[str] = Field(default_factory=list)
+    discriminating_question: Optional[str] = None
+    expected_yield: Optional[ExpectedYield] = None
+    branch_consequence: Optional[str] = None
 
 
-class CareerPlan(BaseModel):
-    timeline_weeks: int = Field(ge=1, default=8)
-    phases: List[PlanPhase] = Field(default_factory=list)
+class Phase(BaseModel):
+    index: int
+    activities: List[Activity] = Field(default_factory=list)
+    novelty_mass: float = 0.0
+    coupling: float = Field(ge=0.0, le=1.0, default=0.0)
+    load: float = 0.0                     # computed, not model-assigned
+
+
+class DeferralEntry(BaseModel):
+    requirement_id: str
+    reason: str
+
+
+class Plan(BaseModel):
+    phases: List[Phase] = Field(default_factory=list)
+    deferral_report: List[DeferralEntry] = Field(default_factory=list)
+    total_hours: float = 0.0
+    horizon_weeks: int = 0
+
+# ---------------------------------------------------------------------------
+# Stage 5: quality check — score_report (logging only) and diagnosis
+# (feedback-generator input) are structurally separate types; diagnosis
+# carries no score or threshold fields at all.
+# ---------------------------------------------------------------------------
+
+class CriterionScore(BaseModel):
+    criterion: str
+    score: int = Field(ge=1, le=5)
+    threshold: int
+
+
+class DiagnosisEntry(BaseModel):
+    criterion: str
+    location: str
+    direction: str
+
 
 class CritiqueReport(BaseModel):
-    rubric_scores: Dict[str, int] = Field(default_factory=dict)
-    '''Dimensions and minimum passing thresholds (out of 5)
-    gap_coverage           >= 3
-    prerequisite_ordering  >= 4
-    feasibility            >= 3
-    level_appropriateness  >= 3'''
-    issues: List[str] = Field(default_factory=list)
-    narrative_feedback: Optional[str] = None
+    score_report: List[CriterionScore] = Field(default_factory=list)   # -> logging only
+    diagnosis: List[DiagnosisEntry] = Field(default_factory=list)      # -> feedback generator
     satisfactory: bool = False
 
-#Shared State
+# ---------------------------------------------------------------------------
+# Shared state
+# ---------------------------------------------------------------------------
+
 RunStatus = Literal["queued", "running", "done", "failed"]
 StepName = Literal[
     "role_intake",
@@ -241,36 +245,40 @@ StepName = Literal[
     "explanation",
 ]
 
+
 class AgentState(BaseModel):
     #for ownership of a session
     session_id: str
     run_id: Optional[str] = None
+    turn_id: Optional[str] = None
 
-    #colelct the user's intent
+    #collect the user's intent
     desired_role: str
 
-    #evidence from user
+    #evidence from user — accumulates across turns, never turn-scoped
     evidence_documents: List[EvidenceDocument] = Field(default_factory=list)
     evidence_items: List[EvidenceItem] = Field(default_factory=list)
     raw_user_text: Optional[str] = None
+    raw_documents_markdown: Dict[str, str] = Field(default_factory=dict)
+    # ^ doc_id -> parsed markdown; read by the Stage 5 calibration judge,
+    #   which must see source documents directly rather than the assessment.
 
     #information from agents
-    student_model: Optional[StudentModel] = None
     student_constraints: Optional[StudentConstraints] = None
-    role_model: Optional[RoleModel] = None
     role_spec: Optional[RoleSpecModel] = None
-    gap_report: Optional[GapReport] = None
-    plan: Optional[CareerPlan] = None
+    requirement_states: List[RequirementState] = Field(default_factory=list)
+    plan: Optional[Plan] = None
     critique: Optional[CritiqueReport] = None
 
     # Iterative refinement tracking
     critique_iterations: int = 0
-    best_plan: Optional[CareerPlan] = None
+    best_plan: Optional[Plan] = None
     best_critique_score: float = 0.0
-    prev_plan: Optional[CareerPlan] = None
-    # ^ snapshot of plan before current iteration, used by _reflect() for Reflexion comparison
-    prev_critique_issues: List[str] = Field(default_factory=list)
-    # ^ holds the issues from the previous critique iteration for stall detection
+    prev_plan: Optional[Plan] = None
+    # ^ snapshot of plan before current iteration, for feedback-generation comparison
+    prev_failing_criteria: List[str] = Field(default_factory=list)
+    # ^ criterion names that failed last iteration; stall detection compares
+    #   this SET, not issue text, to the current iteration's failing set.
 
     status: RunStatus = "queued"
     step: Optional[StepName] = None
